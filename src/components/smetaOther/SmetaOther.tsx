@@ -83,7 +83,7 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                 await Swal.fire({
                     icon: 'error',
                     title: 'Xəta!',
-                    text: response.data.error || 'Xəta baş verdi',
+                    text: "Xəta baş verdi",
                 });
                 window.location.reload();
             }
@@ -91,11 +91,37 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
             await Swal.fire({
                 icon: 'error',
                 title: 'Xəta!',
-                text: error.response?.data?.error || 'Sorğu alınmadı',
+                text: 'Sorğu alınmadı',
             });
             window.location.reload();
         }
     };
+
+    const handleDelete = async (projectCode: number, id: number) => {
+        try {
+            const response = await apiClient.delete(`/api/delete-other_exp-table/${projectCode}/${id}`);
+            if (response.status === 200) {
+                await Swal.fire({
+                    icon: "success",
+                    title: "Uğurlu!",
+                    text: "Məlumat silindi.",
+                });
+                window.location.reload();
+            } else {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Xəta!",
+                    text: "Silinmə zamanı xəta baş verdi.",
+                });
+            }
+        } catch (error: any) {
+            await Swal.fire({
+                icon: "error",
+                title: "Xəta!",
+                text: "Sorğu alınmadı",
+            });
+        }
+    }
 
     return (
         <>
@@ -165,7 +191,12 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                     </TableCell>
                                     {projectRole === 0 && !viewOnly ? (
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            <div className="bg-red-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]">
+                                            <div
+                                                className="bg-red-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
+                                                onClick={() => {
+                                                    if (projectCode !== null) handleDelete(Number(projectCode), item.id);
+                                                }}
+                                            >
                                                 <DeleteIcon className="text-white cursor-pointer" />
                                             </div>
                                         </TableCell>

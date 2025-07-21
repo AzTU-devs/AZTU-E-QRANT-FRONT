@@ -24,6 +24,7 @@ interface ServiceItem {
     price: number;
     quantity: number;
     total_amount: number;
+    id?: number;
 }
 
 export default function SmetaServices({ projectCode }: { projectCode: Number | null }) {
@@ -40,6 +41,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
             try {
                 const response = await apiClient.get(`/api/get-services/${projectCode}`);
                 setServices(response.data);
+            	console.log(response.data);
             } catch (error) {
                 console.error("Failed to fetch services", error);
             }
@@ -92,6 +94,32 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
         }
     }, [location.pathname])
     console.log(location.pathname);
+
+    const handleDelete = async (projectCode: number, id: number) => {
+        try {
+            const response = await apiClient.delete(`/api/delete-services/${projectCode}/${id}`);
+            if (response.status === 200) {
+                await Swal.fire({
+                    icon: "success",
+                    title: "Uğurlu!",
+                    text: "Məlumat silindi",
+                });
+                window.location.reload();
+            } else {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Xəta!",
+                    text: "Silinmə zamanı xəta baş verdi",
+                });
+            }
+        } catch (error: any) {
+            await Swal.fire({
+                icon: "error",
+                title: "Xəta!",
+                text: "Sorğu alınmadı",
+            });
+        }
+    }
 
     return (
         <>
@@ -164,7 +192,11 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                     </TableCell>
                                     {projectRole === 0 && !viewOnly ? (
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            <div className="bg-red-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]">
+                                            <div
+                                                className="bg-red-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
+                                                onClick={() => handleDelete(service.project_code, service.id!)}
+                                                title="Sil"
+                                            >
                                                 <DeleteIcon className="text-white cursor-pointer" />
                                             </div>
                                         </TableCell>

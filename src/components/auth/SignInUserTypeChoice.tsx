@@ -44,15 +44,7 @@ export default function SignInUserTypeChoice() {
                         </Link>
                     </p>
                     ) : (
-                        <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                        Artıq hesabınız mövcuddur? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <Link
-                            to="/signin"
-                            className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                        >
-                            Daxil Ol
-                        </Link>
-                    </p>
+                        null
                     )}
                 </div>
             </div>

@@ -39,6 +39,11 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
     const [subjects, setSubjects] = useState<SubjectOfPurchase[]>([]);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
 
+    const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
+
+    console.log('fin_kod:', fin_kod);
+    console.log('projectCode:', projectCode);
+
     useEffect(() => {
         const fetchSubjects = async () => {
             try {
@@ -55,7 +60,7 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
         try {
             await apiClient.post('/api/add-subject', {
                 project_code: projectCode,
-                fin_code: "1CEB3D",
+                fin_code: fin_kod,
                 equipment_name: equipmentName,
                 unit_of_measure: unit,
                 price: Number(price),
@@ -210,7 +215,7 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
                             <TableRow>
                                 <TableCell
                                     isHeader
-                                    colSpan={4}   // <-- this makes the cell span 4 columns
+                                    colSpan={4}
                                     className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400"
                                 >
                                     Cəm

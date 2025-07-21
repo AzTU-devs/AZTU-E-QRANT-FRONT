@@ -5,12 +5,12 @@ import Button from "../ui/button/Button";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
+import DatePicker from "../form/date-picker";
 import Input from "../form/input/InputField";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
 import Profile from "../../../public/profile.webp";
 import PhoneInput from "../form/group-input/PhoneInput";
-import DropzoneComponent from "../../components/form/form-elements/DropZone";
 
 interface UserDetailsFormData {
     name: string;
@@ -20,6 +20,7 @@ interface UserDetailsFormData {
     personal_id_number: string;
     sex: string;
     born_place: string;
+    born_date: string;
     living_location: string;
     citizenship: string;
     work_place: string;
@@ -58,6 +59,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
         personal_id_number: "",
         sex: "",
         born_place: "",
+        born_date: "",
         living_location: "",
         citizenship: "",
         work_place: "",
@@ -82,22 +84,12 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
             sex: value,
         });
     };
-    const handleHomePhoneNumberChange = (phoneNumber: string) => {
-        setFormData({
-            ...formData,
-            home_phone: phoneNumber,
-        });
-    };
     const handlePersonalPhoneNumberChange = (phoneNumber: string) => {
         setFormData({
             ...formData,
             personal_mobile_number: phoneNumber,
-        });
-    };
-    const handleCorporativePhoneNumberChange = (phoneNumber: string) => {
-        setFormData({
-            ...formData,
-            work_phone: phoneNumber,
+            home_phone: phoneNumber,
+            work_phone: phoneNumber
         });
     };
 
@@ -121,12 +113,14 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        console.log('FormData values:', formData);
+
         const requiredFields: (keyof UserDetailsFormData)[] = [
-            "name", "surname", "father_name", "fin_kod", "personal_id_number", "sex", "born_place",
+            "name", "surname", "father_name", "personal_id_number", "sex", "born_place",
             "living_location", "citizenship", "work_place", "department", "duty", "main_education",
-            "additonal_education", "scientific_degree", "scientific_date", "scientific_name",
-            "scientific_name_date", "work_location", "home_phone", "personal_mobile_number", "work_phone",
-            "personal_email", "work_email"
+            "additonal_education", "scientific_degree", "scientific_name",
+            "scientific_name_date",
+            "personal_email",
         ];
 
         const emptyFields = requiredFields.filter(field => {
@@ -170,7 +164,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                 confirmButtonText: "OK"
             });
 
-            navigate("/");
+            navigate("/home");
         } catch (error: unknown) {
             let errorMessage = "Bilinməyən xəta";
 
@@ -198,6 +192,45 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
             .then((res) => setUser(res.data.data))
             .catch((err) => console.error(err));
     }, []);
+
+    const userFinKod = useSelector((state: RootState) => state.auth.fin_kod);
+    const projectRole = useSelector((state: RootState) => state.auth.projectRole);
+
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            fin_kod: userFinKod ?? "Not given"
+        }));
+    }, [userFinKod]);
+
+    useEffect(() => {
+        setFormData((prev) => ({
+            ...prev,
+            home_phone: "Not given"
+        }));
+    }, []);
+
+    useEffect(() => {
+        setFormData(prev => ({
+            ...prev,
+            work_location:
+                projectRole !== null
+                    ? projectRole === 0
+                        ? "Layihə rəhbəri"
+                        : projectRole === 1
+                            ? "Lahiyə icraçısı"
+                            : "Not Given"
+                    : "Not Given"
+        }));
+    }, [projectRole]);
+
+    useEffect(() => {
+        setFormData(prev => ({
+            ...prev,
+            work_email: prev.personal_email
+        }));
+    }, [formData.personal_email]);
+
     return (
         <>
             {profileCompleted === 1 ? (
@@ -270,7 +303,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Fin kod
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {user?.fin_kod || ""}
+                                            {userFinKod}
                                         </p>
                                     </div>
                                     <div>
@@ -291,18 +324,18 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                     </div>
                                     <div>
                                         <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                                            Doğum yeri
+                                            Doğum tarixi
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {user?.born_place || ""}
+                                            {user?.born_date || ""}
                                         </p>
                                     </div>
                                     <div>
                                         <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                                            Yaşayış yeri
+                                            Doğum yeri
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {user?.living_location || ""}
+                                            {user?.born_place || ""}
                                         </p>
                                     </div>
                                     <div>
@@ -393,6 +426,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Lahiyə rolu
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                                            {projectRole}
                                         </p>
                                     </div>
 
@@ -483,7 +517,22 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                         name="fin_kod"
                                         value={formData.fin_kod}
                                         required
-                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="col-span-2 lg:col-span-1">
+                                    <Label>Doğum tarixi</Label>
+                                    <DatePicker
+                                        id="birth-date-picker"
+                                        value={formData.born_date}
+                                        placeholder="Tarix seçin"
+                                        onChange={(dates, currentDateString) => {
+                                            console.log(dates);
+                                            
+                                            setFormData(prev => ({
+                                                ...prev,
+                                                born_date: currentDateString
+                                            }));
+                                        }}
                                     />
                                 </div>
 
@@ -609,12 +658,18 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
 
                                 <div className="col-span-2 lg:col-span-1">
                                     <Label>Elmi dərəcənin tarixi</Label>
-                                    <Input
-                                        type="text"
-                                        name="scientific_date"
+                                    <DatePicker
+                                        id="scientific-date-picker"
                                         value={formData.scientific_date}
-                                        onChange={handleChange}
-                                        required
+                                        placeholder="Tarix seçin"
+                                        onChange={(dates, currentDateString) => {
+                                            console.log(dates);
+                                            
+                                            setFormData(prev => ({
+                                                ...prev,
+                                                scientific_date: currentDateString
+                                            }));
+                                        }}
                                     />
                                 </div>
 
@@ -631,12 +686,18 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
 
                                 <div className="col-span-2 lg:col-span-1">
                                     <Label>Elmi adın verilmə tarixi</Label>
-                                    <Input
-                                        type="text"
-                                        name="scientific_name_date"
+                                    <DatePicker
+                                        id="scientific-name-date-picker"
                                         value={formData.scientific_name_date}
-                                        onChange={handleChange}
-                                        required
+                                        placeholder="Tarix seçin"
+                                        onChange={(dates, currentDateString) => {
+                                            console.log(dates);
+                                            
+                                            setFormData(prev => ({
+                                                ...prev,
+                                                scientific_name_date: currentDateString
+                                            }));
+                                        }}
                                     />
                                 </div>
 
@@ -646,16 +707,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                         type="text"
                                         name="work_location"
                                         value={formData.work_location}
-                                        onChange={handleChange}
                                         required
-                                    />
-                                </div>
-                                <div className="col-span-2 lg:col-span-1">
-                                    <Label>Ev telefonu</Label>
-                                    <PhoneInput
-                                        selectPosition="start"
-                                        placeholder="+1 (555) 000-0000"
-                                        onChange={handleHomePhoneNumberChange}
                                     />
                                 </div>
                                 <div className="col-span-2 lg:col-span-1">
@@ -664,15 +716,6 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                         selectPosition="start"
                                         placeholder="+1 (555) 000-0000"
                                         onChange={handlePersonalPhoneNumberChange}
-                                    />
-                                </div>
-
-                                <div className="col-span-2 lg:col-span-1">
-                                    <Label>Əlaqə nömrəsi-koperativ</Label>
-                                    <PhoneInput
-                                        selectPosition="start"
-                                        placeholder="+1 (555) 000-0000"
-                                        onChange={handleCorporativePhoneNumberChange}
                                     />
                                 </div>
 
@@ -688,20 +731,8 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                 </div>
 
                                 <div className="col-span-2 lg:col-span-1">
-                                    <Label>Epoçt-adres-koperativ</Label>
-                                    <Input
-                                        type="text"
-                                        name="work_email"
-                                        value={formData.work_email}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-
-                                <div className="col-span-2 lg:col-span-1">
                                     <Label>Şəkil yüklə</Label>
                                     <input type="file" accept="image/*" onChange={handleImageChange} />
-                                    <DropzoneComponent />
                                 </div>
                             </div>
                             <Button className="mt-10">

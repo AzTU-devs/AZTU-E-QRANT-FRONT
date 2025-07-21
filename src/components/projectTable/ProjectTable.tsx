@@ -52,7 +52,7 @@ export default function ProjectTable() {
                     cancelButtonText: 'Bağla'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = '/user-details'; // adjust the route if needed
+                        window.location.href = `/user-details/${fin_kod}`;
                     }
                 });
             } else {
