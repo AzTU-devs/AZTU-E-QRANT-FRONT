@@ -3,6 +3,7 @@ import Label from '../form/Label';
 import Button from '../ui/button/Button';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import Input from '../form/input/InputField'; // new
 import apiClient from '../../util/apiClient';
 import TextArea from '../form/input/TextArea';
 import { RootState } from '../../redux/store';
@@ -24,6 +25,8 @@ export default function ProjectDetails() {
     const [projectRequirements, setProjectRequirements] = useState("");
     const [projectScientificIdea, setProjectScientificIdea] = useState("");
     const [projectCode, setProjectCode] = useState("");
+	const [collaboratorLimit, setCollaboratorLimit] = useState<number | null>(null); // new
+    const [maxSmetaExpense, setMaxSmetaExpense] = useState<number | null>(30000); // new
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const projectRole = useSelector((state: RootState) =>  state.auth.projectRole);
 
@@ -44,6 +47,8 @@ export default function ProjectDetails() {
                     setProjectEvaluation(response.data.data.project_assessment);
                     setProjectRequirements(response.data.data.project_requirements);
                     setProjectCode(response.data.data.project_code);
+                	setCollaboratorLimit(response.data.data.collaborator_limit);
+                	setMaxSmetaExpense(response.data.data.max_smeta_amount);
                     return response.data;
                 } catch (error: any) {
                     console.error('Error fetching project by fin_kod:', error);
@@ -106,6 +111,36 @@ export default function ProjectDetails() {
 
     return (
         <div>
+    <div className='mt-[20px] flex justify-between items-center'>
+                <div style={{
+                    width: "calc((100% / 2) - 10px)"
+                }}>
+                    <Label className='mb-[10px]'>Layihənin icraçı sayı</Label>
+                    <Input
+                        type='number'
+                        value={collaboratorLimit ? collaboratorLimit : 0}
+                        placeholder='Burada: Layihənin məqsədi ifadə edilir. \n Layihədə həllinə çalışılan problem (məsələ) təsvir olunur. \n Problemin elmi-tədqiqatın inkişafı üçün aktual olduğu əsaslandırılır'
+                        onChange={(e) => {
+                            setCollaboratorLimit(+e.target.value);
+                            postProjectField('collaborator_limit', String(+e.target.value))
+                        }}
+                    />
+                </div>
+                <div style={{
+                    width: "calc((100% / 2) - 10px)"
+                }}>
+                    <Label className='mb-[10px]'>Layihənin maksimum smeta xərci</Label>
+                    <Input
+                        type='number'
+                        value={maxSmetaExpense ? maxSmetaExpense : 0}
+                        placeholder='Burada: Layihənin məqsədi ifadə edilir. \n Layihədə həllinə çalışılan problem (məsələ) təsvir olunur. \n Problemin elmi-tədqiqatın inkişafı üçün aktual olduğu əsaslandırılır'
+                        onChange={(e) => {
+                            setMaxSmetaExpense(+e.target.value);
+                            postProjectField('max_smeta_amount', String(+e.target.value));
+                        }}
+                    />
+                </div>
+            </div>
             <div className='flex justify-between items-start'>
                 <div className='w-[100%]'>
                     <Label className='mb-[10px]'>Layihınin adı</Label>

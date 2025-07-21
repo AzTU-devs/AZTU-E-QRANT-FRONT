@@ -9,7 +9,7 @@ export default function ProjectDetailsPage() {
         title="AzTU E-Qrant"
         description="This is React.js Form Elements  Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
       />
-      <PageBreadcrumb pageTitle="Layihə Detalları" />
+      <PageBreadcrumb pageTitle="Layih?? M?zmunu
       <ProjectDetails />
     </div>
   );

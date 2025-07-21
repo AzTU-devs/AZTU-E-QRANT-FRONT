@@ -17,7 +17,8 @@ interface MainSmeta {
     total_rent_smeta?: number,
     total_salary_smeta?: number,
     total_services_smeta?: number,
-    total_tools_smeta?: number
+    total_tools_smeta?: number,
+	total_main_amount?: number
 }
 
 export default function MainSmeta({ projectCode }: { projectCode: Number | null }) {
@@ -27,7 +28,8 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
   total_rent_smeta: 0,
   total_salary_smeta: 0,
   total_services_smeta: 0,
-  total_tools_smeta: 0
+  total_tools_smeta: 0,
+  total_main_amount: 0
 });
 
     useEffect(() => {
@@ -42,13 +44,13 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
         };
         fetchProjects();
     }, []);
-    // Calculate total smeta sum
-    const totalSmetaSum =
-      (mainSmeta.total_other_smeta || 0) +
-      (mainSmeta.total_rent_smeta || 0) +
-      (mainSmeta.total_salary_smeta || 0) +
-      (mainSmeta.total_services_smeta || 0) +
-      (mainSmeta.total_tools_smeta || 0);
+    // // Calculate total smeta sum
+    // const totalSmetaSum =
+    //   (mainSmeta.total_other_smeta || 0) +
+    //   (mainSmeta.total_rent_smeta || 0) +
+    //   (mainSmeta.total_salary_smeta || 0) +
+    //   (mainSmeta.total_services_smeta || 0) +
+    //   (mainSmeta.total_tools_smeta || 0);
 
     const exportToExcel = () => {
       // Define the headers
@@ -99,7 +101,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
         ],
         [
           "Cəm",
-          totalSmetaSum,
+          mainSmeta.total_main_amount,
           0,
           0
         ],
@@ -263,7 +265,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                     isHeader
                                     className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400"
                                 >
-                                    {totalSmetaSum}
+                                    {mainSmeta.total_main_amount}
                                 </TableCell>
                                 <TableCell
                                     isHeader

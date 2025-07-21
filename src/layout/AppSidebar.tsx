@@ -82,6 +82,11 @@ const AppSidebar: React.FC = () => {
     ...navItems,
     ...(projectRole === 0
       ? [
+    	{
+          icon: <UserCircleIcon />,
+          name: "Təsdiq gözləyən icraçılar",
+          path: "/approve-waiting-users"
+        },
         {
           icon: <UserCircleIcon />,
           name: "Lahiyə Detalları",

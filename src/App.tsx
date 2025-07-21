@@ -23,6 +23,7 @@ import SmetaExpensesPage from "./pages/SmetaExpenses/SmetaExpensesPage";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import AcademicTypeChoicePage from "./pages/AuthPages/AcademicTypeChoicePage";
 import ProjectDetailsPage from "./pages/ProjectDetailsPage/ProjectDetailsPage";
+import ApproveWaitingCollaboratorsPage from "./pages/ApproveWaitingCollaboratorsPage/ApproveWaitingCollaboratorsPage";
 
 export default function App() {
   return (
@@ -68,6 +69,7 @@ function AppWithRouter() {
             <Route path="/project-smeta-other-expences" element={<SmetaOtherPage />} />
             <Route path="/project-view/:projectCode" element={<ProjectViewPage />} />
             <Route path="/user-view/:fin_kod" element={<UserViewPage />} />
+            <Route path="/approve-waiting-users" element={<ApproveWaitingCollaboratorsPage />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/" />} />

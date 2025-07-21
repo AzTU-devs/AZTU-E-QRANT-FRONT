@@ -39,8 +39,13 @@ export default function ProjectTable() {
                 fin_kod,
                 project_code
             });
-            console.log(response.data); // Or show a success message
-            alert('İştirakçı olaraq əlavə olundunuz!');
+            console.log(response.data);
+        Swal.fire({
+  icon: 'success',
+  title: 'İştirakçı olaraq əlavə olundunuz!',
+  confirmButtonText: 'OK'
+});
+
         } catch (error: any) {
             if (error.response?.status === 403) {
                 Swal.fire({
@@ -55,6 +60,13 @@ export default function ProjectTable() {
                         window.location.href = `/user-details/${fin_kod}`;
                     }
                 });
+            } else if (error.response?.status === 409) {
+            	Swal.fire({
+                    title: 'Xəta!',
+                    text: 'Layihə üçün bütün yerlər doludur!',
+                    icon: 'error',
+                    confirmButtonText: 'Ok',
+                })
             } else {
                 Swal.fire('Xəta!', 'Serverlə əlaqə zamanı xəta baş verdi.', 'error');
             }
