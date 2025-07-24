@@ -49,6 +49,7 @@ export default function ProjectDetails() {
                     setProjectCode(response.data.data.project_code);
                     setCollaboratorLimit(response.data.data.collaborator_limit);
                     setMaxSmetaExpense(response.data.data.max_smeta_amount);
+                    setPrioritet(response.data.data.priotet || "");
                 } catch (error: any) {
                     console.error('Error fetching project by fin_kod:', error);
                 } finally {
@@ -109,13 +110,25 @@ export default function ProjectDetails() {
         }
     };
 
-    const prioritetOptions = [
-        { value: "1", label: "1. First" },
-        { value: "2", label: "1. First" },
-        { value: "3", label: "1. First" },
-        { value: "4", label: "1. First" },
-        { value: "5", label: "1. First" }
-    ];
+    const [prioritetOptions, setPrioritetOptions] = useState<{ value: string; label: string }[]>([]);
+
+    useEffect(() => {
+        const fetchPrioritets = async () => {
+            try {
+                const response = await apiClient.get("/api/priotets");
+                const data = response.data?.data || [];
+                setPrioritetOptions(
+                    data.map((p: any) => ({
+                        value: p.prioritet_code,
+                        label: p.prioritet_name
+                    }))
+                );
+            } catch (err) {
+                console.error("Failed to fetch prioritet options:", err);
+            }
+        };
+        fetchPrioritets();
+    }, []);
 
     if (loading) {
         return (
@@ -123,7 +136,10 @@ export default function ProjectDetails() {
                 <CircularProgress />
             </div>
         );
-    }
+    };
+
+    console.log(prioritet);
+    
 
     return (
         <div>
@@ -159,14 +175,16 @@ export default function ProjectDetails() {
             </div>
             <div className='flex justify-between items-start mb-[20px]'>
                 <div className='w-[100%]'>
-                    <Label className='mb-[10px]'>Layihınin adı</Label>
+                    <Label className='mb-[10px]'>Layihə prioriteti</Label>
                     <div className='w-[100%]'>
                         <Select
                             options={prioritetOptions}
+                            defaultValue={prioritet || undefined}
                             placeholder='Layihə prioriteti'
-                            onChange={(value) => {
-                                setPrioritet(value)
-                                postProjectField('project_name', value)
+                            onChange={(option: any) => {
+                                const value = typeof option === 'string' ? option : option?.value;
+                                setPrioritet(value || "");
+                                postProjectField('priotet', value || "");
                             }}
                             className='w-[100%]'
                         />
