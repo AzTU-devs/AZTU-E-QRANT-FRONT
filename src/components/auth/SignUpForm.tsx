@@ -28,7 +28,7 @@ export default function SignUpForm() {
   };
 
   const userType = useSelector((state: RootState) => state.auth.userType);
-const academicType = useSelector((state: RootState) => state.auth.academicType);
+// const academicType = useSelector((state: RootState) => state.auth.academicType);
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -41,7 +41,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     fin_kod: finKod,
     password,
     user_type: userType,
-    academic_type: academicType,
+    // academic_type: academicType,
     project_role: role,
   });
 
@@ -50,7 +50,7 @@ const handleSubmit = async (e: React.FormEvent) => {
       fin_kod: finKod,
       password,
       user_type: userType,
-      academic_type: academicType,
+      // academic_type: academicType,
       project_role: Number(role),
     });
 

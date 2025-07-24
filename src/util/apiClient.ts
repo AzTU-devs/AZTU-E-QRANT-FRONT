@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { RootState, store } from "../redux/store";
 
-const API_BASE_URL = 'http://e-grant.aztu.edu.az';
+// const API_BASE_URL = 'http://e-grant.aztu.edu.az';
+const API_BASE_URL = 'http://127.0.0.1:8080';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,

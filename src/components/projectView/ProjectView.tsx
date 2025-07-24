@@ -17,9 +17,9 @@ export default function ProjectView() {
 
     return (
         <>
-            <h1 className="text-center mb-[20px] text-gray-700 dark:text-gray-400">Laayihə detalları</h1>
+            <h1 className="text-center mb-[20px] text-gray-700 dark:text-gray-400">Layihə detalları</h1>
             <ProjectDetailsView projectCode={+projectCode} />
-            <h1 className="text-center mb-[20px] text-gray-700 dark:text-gray-400 mt-[20px]">Laayihənin komandası</h1>
+            <h1 className="text-center mb-[20px] text-gray-700 dark:text-gray-400 mt-[20px]">Layihənin komandası</h1>
             <Collaborators projectCode={+projectCode} />
             <h1 className="text-center mb-[20px] text-gray-700 dark:text-gray-400 mt-[20px]">Layihə Smetası</h1>
             <MainSmeta projectCode={+projectCode} />

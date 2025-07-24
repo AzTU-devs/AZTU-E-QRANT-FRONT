@@ -2,24 +2,26 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
   userType: number | null;
-  academicType: number | null;
+  // academicType: number | null;
   fin_kod: string | null;
   projectRole: number | null;
   token: string | null;
   isAuthenticated: boolean;
   projectCode: Number | null;
   profileCompleted: Number | null;
+  showLoginToast: Boolean;
 }
 
 const initialState: AuthState = {
   userType: null,
-  academicType: null,
+  // academicType: null,
   fin_kod: null,
   projectRole: null,
   token: null,
   isAuthenticated: false,
   projectCode: null,
-  profileCompleted: null
+  profileCompleted: null,
+  showLoginToast: false
 };
 
 const authSlice = createSlice({
@@ -29,9 +31,9 @@ const authSlice = createSlice({
     setUserType: (state, action: PayloadAction<number | null>) => {
       state.userType = action.payload;
     },
-    setAcademicType: (state, action: PayloadAction<number | null>) => {
-      state.academicType = action.payload;
-    },
+    // setAcademicType: (state, action: PayloadAction<number | null>) => {
+    //   state.academicType = action.payload;
+    // },
     setFinKod: (state, action: PayloadAction<string>) => {
       state.fin_kod = action.payload;
     },
@@ -51,27 +53,33 @@ const authSlice = createSlice({
     ) => {
       state.token = action.payload.token;
       state.isAuthenticated = true;
-      state.academicType = action.payload.user.academic_role;
+      // state.academicType = action.payload.user.academic_role;
       state.fin_kod = action.payload.user.fin_kod;
       state.projectRole = action.payload.user.project_role;
       state.userType = action.payload.user.user_type;
       state.projectCode = action.payload.projectCode;
       state.profileCompleted = action.payload.profileCompleted;
+      state.showLoginToast = true;
+    },
+    clearLoginToast: (state) => {
+      state.showLoginToast = false;
     },
     logout: () => initialState,
     clearLoginSteps: (state) => {
       state.userType = null;
-      state.academicType = null;
+      state.showLoginToast = false;
+      // state.academicType = null;
     },
   },
 });
 
 export const {
   setUserType,
-  setAcademicType,
+  // setAcademicType,
   setFinKod,
   loginSuccess,
   clearLoginSteps,
-  logout
+  logout,
+  clearLoginToast
 } = authSlice.actions;
 export default authSlice.reducer;

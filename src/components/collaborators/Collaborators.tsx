@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
 import Profile from "../../../public/profile.webp";
+import NotFoundImage from "../../../public/not_found.png";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 interface Collaborator {
@@ -36,6 +37,15 @@ export default function Collaborators({ projectCode }: { projectCode: Number | n
         };
         fetchCollaborators();
     }, []);
+
+    if (collaborators.length === 0) {
+        return (
+            <div className="w-full flex flex-col justify-center items-center">
+                <img src={NotFoundImage} alt="not-found" className="w-[400px]"/>
+                <p className="mt-[10px] text-[30px]" style={{color: "rgb(18, 32, 87)", fontWeight: 500}}>Layihə icraçıları mövcud deyil.</p>
+            </div>
+        )
+    }
 
     return (
         <>

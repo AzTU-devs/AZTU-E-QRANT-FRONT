@@ -11,6 +11,7 @@ import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
 import Profile from "../../../public/profile.webp";
 import PhoneInput from "../form/group-input/PhoneInput";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface UserDetailsFormData {
     name: string;
@@ -49,7 +50,6 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
     ];
 
     const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
-    console.log(profileCompleted);
 
     const [formData, setFormData] = useState<UserDetailsFormData>({
         name: "",
@@ -180,17 +180,19 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
         }
     };
     const [user, setUser] = useState<UserDetailsFormData | null>(null)
-    console.log(fin_kod);
+    const [loading, setLoading] = useState(true);
+    console.log(user);
 
     useEffect(() => {
         apiClient.get(`/api/profile/${fin_kod}`)
-            .then((res) => setUser(res.data.data))
-            .catch((err) => console.error(err));
-    }, []);
-    useEffect(() => {
-        apiClient.get(`/api/profile/${fin_kod}`)
-            .then((res) => setUser(res.data.data))
-            .catch((err) => console.error(err));
+            .then((res) => {
+                setUser(res.data.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            });
     }, []);
 
     const userFinKod = useSelector((state: RootState) => state.auth.fin_kod);
@@ -230,6 +232,14 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
             work_email: prev.personal_email
         }));
     }, [formData.personal_email]);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center w-full h-full py-10">
+                <CircularProgress />
+            </div>
+        );
+    };
 
     return (
         <>
@@ -426,7 +436,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Lahiyə rolu
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {projectRole}
+                                            {projectRole === 0 ? "Layihə rəhbəri" : "Layihə icraçısı"}
                                         </p>
                                     </div>
 
@@ -527,7 +537,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                         placeholder="Tarix seçin"
                                         onChange={(dates, currentDateString) => {
                                             console.log(dates);
-                                            
+
                                             setFormData(prev => ({
                                                 ...prev,
                                                 born_date: currentDateString
@@ -664,7 +674,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                         placeholder="Tarix seçin"
                                         onChange={(dates, currentDateString) => {
                                             console.log(dates);
-                                            
+
                                             setFormData(prev => ({
                                                 ...prev,
                                                 scientific_date: currentDateString
@@ -692,7 +702,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                         placeholder="Tarix seçin"
                                         onChange={(dates, currentDateString) => {
                                             console.log(dates);
-                                            
+
                                             setFormData(prev => ({
                                                 ...prev,
                                                 scientific_name_date: currentDateString

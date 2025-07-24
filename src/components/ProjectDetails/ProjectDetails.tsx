@@ -1,19 +1,17 @@
+// import './ProjectDetails.css';
 import Swal from 'sweetalert2';
 import Label from '../form/Label';
+import Select from '../form/Select';
 import Button from '../ui/button/Button';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import Input from '../form/input/InputField'; // new
+import Input from '../form/input/InputField';
 import apiClient from '../../util/apiClient';
 import TextArea from '../form/input/TextArea';
 import { RootState } from '../../redux/store';
-// import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
-// import ProjectInfoDetail from '../projectInfoDetail/ProjectInfoDetail';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function ProjectDetails() {
-
-    // const [infoIsVisible, setInfoIsVisible] = useState(false);
-
     const [projectName, setProjectName] = useState("");
     const [projectGoal, setProjectGoal] = useState("");
     const [projectKeyWords, setProjectKeyWords] = useState("");
@@ -25,16 +23,18 @@ export default function ProjectDetails() {
     const [projectRequirements, setProjectRequirements] = useState("");
     const [projectScientificIdea, setProjectScientificIdea] = useState("");
     const [projectCode, setProjectCode] = useState("");
-	const [collaboratorLimit, setCollaboratorLimit] = useState<number | null>(null); // new
-    const [maxSmetaExpense, setMaxSmetaExpense] = useState<number | null>(30000); // new
+    const [prioritet, setPrioritet] = useState("");
+    const [collaboratorLimit, setCollaboratorLimit] = useState<number | null>(null);
+    const [maxSmetaExpense, setMaxSmetaExpense] = useState<number | null>(30000);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
-    const projectRole = useSelector((state: RootState) =>  state.auth.projectRole);
-
+    const projectRole = useSelector((state: RootState) => state.auth.projectRole);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (fin_kod) {
             const getProjectByFinKod = async (finKod: string) => {
                 try {
+                    setLoading(true);
                     const response = await apiClient.get(`/api/project/${finKod}`);
                     setProjectName(response.data.data.project_name);
                     setProjectGoal(response.data.data.project_purpose);
@@ -47,12 +47,12 @@ export default function ProjectDetails() {
                     setProjectEvaluation(response.data.data.project_assessment);
                     setProjectRequirements(response.data.data.project_requirements);
                     setProjectCode(response.data.data.project_code);
-                	setCollaboratorLimit(response.data.data.collaborator_limit);
-                	setMaxSmetaExpense(response.data.data.max_smeta_amount);
-                    return response.data;
+                    setCollaboratorLimit(response.data.data.collaborator_limit);
+                    setMaxSmetaExpense(response.data.data.max_smeta_amount);
                 } catch (error: any) {
                     console.error('Error fetching project by fin_kod:', error);
-                    throw error.response?.data || { message: 'An unexpected error occurred' };
+                } finally {
+                    setLoading(false);
                 }
             };
             getProjectByFinKod(fin_kod);
@@ -81,7 +81,7 @@ export default function ProjectDetails() {
                     cancelButtonText: 'Bağla'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = '/user-details'; // adjust the route if needed
+                        window.location.href = '/user-details';
                     }
                 });
             } else {
@@ -107,11 +107,27 @@ export default function ProjectDetails() {
         } catch (error) {
             console.error('Network error:', error);
         }
+    };
+
+    const prioritetOptions = [
+        { value: "1", label: "1. First" },
+        { value: "2", label: "1. First" },
+        { value: "3", label: "1. First" },
+        { value: "4", label: "1. First" },
+        { value: "5", label: "1. First" }
+    ];
+
+    if (loading) {
+        return (
+            <div className="w-full h-[300px] flex justify-center items-center">
+                <CircularProgress />
+            </div>
+        );
     }
 
     return (
         <div>
-    <div className='mt-[20px] flex justify-between items-center'>
+            <div className='mt-[20px] flex justify-between items-center mb-[20px]'>
                 <div style={{
                     width: "calc((100% / 2) - 10px)"
                 }}>
@@ -141,6 +157,22 @@ export default function ProjectDetails() {
                     />
                 </div>
             </div>
+            <div className='flex justify-between items-start mb-[20px]'>
+                <div className='w-[100%]'>
+                    <Label className='mb-[10px]'>Layihınin adı</Label>
+                    <div className='w-[100%]'>
+                        <Select
+                            options={prioritetOptions}
+                            placeholder='Layihə prioriteti'
+                            onChange={(value) => {
+                                setPrioritet(value)
+                                postProjectField('project_name', value)
+                            }}
+                            className='w-[100%]'
+                        />
+                    </div>
+                </div>
+            </div>
             <div className='flex justify-between items-start'>
                 <div className='w-[100%]'>
                     <Label className='mb-[10px]'>Layihınin adı</Label>
@@ -150,19 +182,11 @@ export default function ProjectDetails() {
                             placeholder='Burada layihənin adı qısa aydın və layihənin məzmununu dolğun şəklində əks etdirilir'
                             onChange={(value) => {
                                 setProjectName(value)
-                                postProjectField('project_name', projectName)
+                                postProjectField('project_name', value)
                             }}
                             rows={6}
                             className='w-[100%]'
                         />
-                        {/* <div style={{ position: "relative" }} >
-                            <ProjectInfoDetail
-                                info={'Burada layihənin adı qısa aydın və layihənin məzmununu dolğun şəklində əks etdirilir'}
-                                isVisible={infoIsVisible} />
-                            <div onClick={handleVisibility} className='' style={{ border: '1px solid black', borderRadius: 5, padding: 10 }}>
-                                <InfoOutlineIcon />
-                            </div>
-                        </div> */}
                     </div>
                 </div>
             </div>
@@ -173,7 +197,7 @@ export default function ProjectDetails() {
                     placeholder='Burada: Layihənin məqsədi ifadə edilir. \n Layihədə həllinə çalışılan problem (məsələ) təsvir olunur. \n Problemin elmi-tədqiqatın inkişafı üçün aktual olduğu əsaslandırılır'
                     onChange={(value) => {
                         setProjectGoal(value)
-                        postProjectField('project_purpose', projectGoal)
+                        postProjectField('project_purpose', value)
                     }}
                     rows={6}
                 />
@@ -185,7 +209,7 @@ export default function ProjectDetails() {
                     placeholder='Burada layihənin qısa, dolğun təsviri verilir.'
                     onChange={(value) => {
                         setProjectAnnotation(value)
-                        postProjectField('project_annotation', projectAnnotation)
+                        postProjectField('project_annotation', value)
                     }}
                     rows={6}
                 />
@@ -197,7 +221,7 @@ export default function ProjectDetails() {
                     placeholder='Burada layihənin məzmununu tam əks etdirən açar sözlər verilir'
                     onChange={(value) => {
                         setProjectKeyWords(value)
-                        postProjectField('project_key_words', projectKeyWords)
+                        postProjectField('project_key_words', value)
                     }}
                     rows={6}
                 />
@@ -209,7 +233,7 @@ export default function ProjectDetails() {
                     placeholder='Burada layihənin əsas elmi konsepsiyası ( layihənin elmi əsaslarını, nəzəriyyə və metodologiyasını izah edən, onun hansı elmi problemə cavab verdiyini və bu problemin necə həll ediləcəyini əsaslandıran qısa və konkret təsvir hissəsi) qeyd olunur.'
                     onChange={(value) => {
                         setProjectScientificIdea(value)
-                        postProjectField('project_scientific_idea', projectScientificIdea)
+                        postProjectField('project_scientific_idea', value)
                     }}
                     rows={6}
                 />
@@ -221,7 +245,7 @@ export default function ProjectDetails() {
                     placeholder='Burada layihənin iş planı, mərhələləri və tədqiqat üsulları göstərilir'
                     onChange={(value) => {
                         setProjectStructure(value)
-                        postProjectField('project_structure', projectStructure)
+                        postProjectField('project_structure', value)
                     }}
                     rows={6}
                 />
@@ -233,7 +257,7 @@ export default function ProjectDetails() {
                     placeholder='Burada layihə rəhbəri və icraçılarının ixtisasları və onların layihə mövzusuna uyğunluq dərəcəsi; əvvəllər həmin sahədə tədqiqat aparmaq təcrübəsi ölkədaxili, regional və beynəlxalq qrant müsabiqələri çərçivəsində; layihə mövzusu üzrə iştirakçıların əsas elmi əsərləri, 8-dan artıq olmamaq şərtilə) göstərilir.'
                     onChange={(value) => {
                         setProjectCharacterize(value)
-                        postProjectField('team_characterization', projectCharacterize)
+                        postProjectField('team_characterization', value)
                     }}
                     rows={6}
                 />
@@ -245,7 +269,7 @@ export default function ProjectDetails() {
                     placeholder='Burada layihənin icrası və nəticələri haqqında ictimaiyyətin məlumatlandırılması və informasiya əldə edilməsi yollarını göstərilr. Layihənin icrası başa çatdıqdan sonra onun davamlılığının təmin olunması istiqamətində görəcələcək işlər qeyd olunur.'
                     onChange={(value) => {
                         setProjectMonitoring(value)
-                        postProjectField('project_monitoring', projectMonitoring)
+                        postProjectField('project_monitoring', value)
                     }}
                     rows={6}
                 />
@@ -257,7 +281,7 @@ export default function ProjectDetails() {
                     placeholder='Burada layihənin qiymətləndirilməsi meyarlarını və hesabatlılıq formaları qeyd olunur. Nail olunmuş dəyişikliyin hansı meyarlar əsasında müəyyənləşdiriləcəyi izah olunur'
                     onChange={(value) => {
                         setProjectEvaluation(value)
-                        postProjectField('project_assessment', projectEvaluation)
+                        postProjectField('project_assessment', value)
                     }}
                     rows={6}
                 />
@@ -269,17 +293,17 @@ export default function ProjectDetails() {
                     placeholder='Burada layihə üzrə elmi-tədqiqat işinin yerinə yetirilməsi üçün lazım olan avadanlıq, cihaz və qurğulardan mövcud olanlar haqqında məlumat, əlavə lazım olanlar əsaslandırılır.'
                     onChange={(value) => {
                         setProjectRequirements(value)
-                        postProjectField('project_requirements', projectRequirements)
+                        postProjectField('project_requirements', value)
                     }}
                     rows={6}
                 />
             </div>
             {projectRole === 0 ? (
                 <div className='mt-[20px] flex justify-end items-end'>
-                <Button onClick={handleApprove}>
-                    Təsdiq et
-                </Button>
-            </div>
+                    <Button onClick={handleApprove}>
+                        Təsdiq et
+                    </Button>
+                </div>
             ) : null}
         </div>
     )

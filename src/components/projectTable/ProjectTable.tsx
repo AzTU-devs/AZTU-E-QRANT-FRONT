@@ -12,22 +12,26 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
+import NotFoundImage from "../../../public/not_found.png";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function ProjectTable() {
     const [projects, setProjects] = useState<any[]>([]);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProjects = async () => {
             try {
                 const response = await apiClient.get('/api/projects');
                 console.log(response.data.data);
-
                 setProjects(response.data.data);
+                setLoading(false);
             } catch (error) {
                 console.error("Failed to fetch projects:", error);
+                setLoading(false);
             }
         };
         fetchProjects();
@@ -40,11 +44,11 @@ export default function ProjectTable() {
                 project_code
             });
             console.log(response.data);
-        Swal.fire({
-  icon: 'success',
-  title: 'İştirakçı olaraq əlavə olundunuz!',
-  confirmButtonText: 'OK'
-});
+            Swal.fire({
+                icon: 'success',
+                title: 'İştirakçı olaraq əlavə olundunuz!',
+                confirmButtonText: 'OK'
+            });
 
         } catch (error: any) {
             if (error.response?.status === 403) {
@@ -61,7 +65,7 @@ export default function ProjectTable() {
                     }
                 });
             } else if (error.response?.status === 409) {
-            	Swal.fire({
+                Swal.fire({
                     title: 'Xəta!',
                     text: 'Layihə üçün bütün yerlər doludur!',
                     icon: 'error',
@@ -72,6 +76,22 @@ export default function ProjectTable() {
             }
         }
     };
+
+    if (loading) {
+        return (
+            <div className="w-full h-[300px] flex items-center justify-center">
+                <CircularProgress />
+            </div>
+        );
+    }
+    if (projects.length === 0) {
+        return (
+            <div className="w-full flex flex-col justify-center items-center">
+                <img src={NotFoundImage} alt="not-found" className="w-[400px]" />
+                <p className="mt-[10px] text-[30px]" style={{ color: "rgb(18, 32, 87)", fontWeight: 500 }}>Layihə mövcud deyil.</p>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -119,18 +139,14 @@ export default function ProjectTable() {
                                         İştirakçı Ol
                                     </TableCell>
                                 ) : null}
-                                {/* <TableCell
-                            isHeader
-                            className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                        >
-                            Redaktə
-                        </TableCell> */}
-                                {/* <TableCell
-                            isHeader
-                            className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                        >
-                            Sil
-                        </TableCell> */}
+                                {projectRole === 2 ? (
+                                    <TableCell
+                                        isHeader
+                                        className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                                    >
+                                        Ekspert təyin et
+                                    </TableCell>
+                                ) : null}
                             </TableRow>
                         </TableHeader>
                         {/* Table Body */}
@@ -172,6 +188,17 @@ export default function ProjectTable() {
                                                     İştirakçı Ol
                                                 </Button>
                                             )}
+                                        </TableCell>
+                                    ) : null}
+                                    {projectRole === 2 ? (
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            {
+                                                <Link to={"/set-expert"} state={project}>
+                                                    <Button>
+                                                        Ekspert təyin et
+                                                    </Button>
+                                                </Link>
+                                            }
                                         </TableCell>
                                     ) : null}
                                 </TableRow>

@@ -7,6 +7,8 @@ import {
     TableFooter,
 } from "../ui/table";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
+import Button from "../ui/button/Button";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { useState, useEffect } from "react";
@@ -15,7 +17,10 @@ import Input from "../form/input/InputField";
 import { RootState } from "../../redux/store";
 import DoneIcon from "@mui/icons-material/Done";
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
+import WarningImage from "../../../public/warning.png";
 
 interface RentItem {
     id?: number;
@@ -37,6 +42,11 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
     const [duration, setDuration] = useState(0);
     const totalAmount = unitPrice * quantity * duration;
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
+    const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
+
+    const [editingId, setEditingId] = useState<number | null>(null);
+    // Temp state for edited fields of the currently edited row
+    const [editForm, setEditForm] = useState<Partial<RentItem>>({});
 
     useEffect(() => {
         async function fetchRents() {
@@ -48,7 +58,8 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
             }
         }
         fetchRents();
-    }, []);
+    }, [projectCode]);
+
     const location = useLocation();
 
     const [viewOnly, setViewOnly] = useState<boolean>(false);
@@ -57,8 +68,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
         if (location.pathname.startsWith("/project-view/")) {
             setViewOnly(true);
         }
-    }, [location.pathname])
-    console.log(location.pathname);
+    }, [location.pathname]);
 
     const handleSubmit = async () => {
         try {
@@ -76,7 +86,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                 await Swal.fire({
                     icon: "success",
                     title: "Uğurlu!",
-                    text: "Uğurla əlavə edildi",
+                    text: "Məlumat uğurla yadda saxlanıldı",
                 });
                 window.location.reload();
             } else {
@@ -96,31 +106,109 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
             window.location.reload();
         }
     };
+
     const handleDelete = async (projectCode: number, id: number) => {
-                try {
-                    const response = await apiClient.delete(`/api/delete-rent-table/${projectCode}/${id}`);
-                    if (response.status === 200) {
-                        await Swal.fire({
-                            icon: "success",
-                            title: "Uğurlu!",
-                            text: "Məlumat silindi.",
-                        });
-                        window.location.reload();
-                    } else {
-                        await Swal.fire({
-                            icon: "error",
-                            title: "Xəta!",
-                            text: "Silinmə zamanı xəta baş verdi.",
-                        });
-                    }
-                } catch (error: any) {
-                    await Swal.fire({
-                        icon: "error",
-                        title: "Xəta!",
-                        text: "Sorğu alınmadı",
-                    });
-                }
+        try {
+            const response = await apiClient.delete(`/api/delete-rent-table/${projectCode}/${id}`);
+            if (response.status === 200) {
+                await Swal.fire({
+                    icon: "success",
+                    title: "Uğurlu!",
+                    text: "Məlumat silindi.",
+                });
+                window.location.reload();
+            } else {
+                await Swal.fire({
+                    icon: "error",
+                    title: "Xəta!",
+                    text: "Silinmə zamanı xəta baş verdi.",
+                });
+            }
+        } catch (error: any) {
+            await Swal.fire({
+                icon: "error",
+                title: "Xəta!",
+                text: "Sorğu alınmadı",
+            });
+        };
+    };
+
+    const handleEditClick = (rent: RentItem) => {
+        setEditingId(rent.id || null);
+        setEditForm({
+            rent_area: rent.rent_area,
+            unit_of_measure: rent.unit_of_measure,
+            unit_price: rent.unit_price,
+            quantity: rent.quantity,
+            duration: rent.duration,
+        });
+    };
+
+    const handleCancelEdit = () => {
+        setEditingId(null);
+        setEditForm({});
+    };
+
+    const handleEditChange = (field: keyof RentItem, value: string | number) => {
+        setEditForm((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    };
+
+    const handleSaveEdit = async () => {
+        if (!editingId) return;
+        try {
+            const payload = {
+                id: editingId,
+                rent_area: editForm.rent_area,
+                unit_of_measure: editForm.unit_of_measure,
+                unit_price: editForm.unit_price,
+                quantity: editForm.quantity,
+                duration: editForm.duration,
+            };
+            const response = await apiClient.patch(`/api/edit-rent-table/${projectCode}`, payload);
+            if (response.status === 200) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Uğurlu!",
+                    text: "Məlumat yeniləndi",
+                });
+                // Update local rents state with updated rent
+                setRents((prevRents) =>
+                    prevRents.map((r) =>
+                        r.id === editingId ? { ...r, ...response.data.data } : r
+                    )
+                );
+                setEditingId(null);
+                setEditForm({});
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Xəta!",
+                    text: "Yeniləmə zamanı xəta baş verdi",
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Xəta!",
+                text: "Sorğu alınmadı",
+            });
         }
+    };
+
+    if (!profileCompleted) {
+        return (
+            <div className="w-full flex flex-col justify-center items-center mt-[100px]">
+                <img src={WarningImage} alt="warning" className="w-[70px] mb-[20px]" />
+                <p style={{ fontSize: 25, marginBottom: 20 }}>Smeta yaratmaq üçün ilk öncə şəxsi məlumatlarınız doldurun və layihə yaradın.</p>
+                <Link to={"/project-offer"}>
+                    <Button>Layihə yaradın</Button>
+                </Link>
+            </div>
+        )
+    }
 
     return (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -170,47 +258,148 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                             >
                                 Təsdiq et
                             </TableCell>
+                            {(projectRole === 0 && !viewOnly) && (
+                                <TableCell
+                                    isHeader
+                                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                                >
+                                    Əməliyyatlar
+                                </TableCell>
+                            )}
                         </TableRow>
                     </TableHeader>
                     <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                        {rents.map((rent) => (
-                            <TableRow key={rent.id}>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {rent.rent_area}
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {rent.unit_of_measure}
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {rent.unit_price}
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {rent.quantity}
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {rent.duration}
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {rent.total_amount}
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
-                                        Təsdiq olunub
-                                    </p>
-                                </TableCell>
-                                {projectRole === 0 && !viewOnly ? (
+                        {rents.map((rent) => {
+                            const isEditing = rent.id === editingId;
+                            const calcTotal =
+                                (isEditing
+                                    ? (editForm.unit_price || 0) *
+                                    (editForm.quantity || 0) *
+                                    (editForm.duration || 0)
+                                    : rent.total_amount) || 0;
+
+                            return (
+                                <TableRow key={rent.id}>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <div
-                                            className="bg-red-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
-                                            onClick={() => handleDelete(rent.project_code, rent.id!)}
-                                            title="Sil"
-                                        >
-                                            <DeleteIcon className="text-white cursor-pointer" />
-                                        </div>
+                                        {isEditing ? (
+                                            <Input
+                                                type="text"
+                                                value={editForm.rent_area || ""}
+                                                onChange={(e) =>
+                                                    handleEditChange("rent_area", e.target.value)
+                                                }
+                                                placeholder="Ərazi"
+                                            />
+                                        ) : (
+                                            rent.rent_area
+                                        )}
                                     </TableCell>
-                                ) : null}
-                            </TableRow>
-                        ))}
+                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        {isEditing ? (
+                                            <Input
+                                                type="text"
+                                                value={editForm.unit_of_measure || ""}
+                                                onChange={(e) =>
+                                                    handleEditChange("unit_of_measure", e.target.value)
+                                                }
+                                                placeholder="Ölçü vahidi"
+                                            />
+                                        ) : (
+                                            rent.unit_of_measure
+                                        )}
+                                    </TableCell>
+                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        {isEditing ? (
+                                            <Input
+                                                type="number"
+                                                value={editForm.unit_price || 0}
+                                                onChange={(e) =>
+                                                    handleEditChange("unit_price", Number(e.target.value))
+                                                }
+                                                placeholder="Qiymət"
+                                            />
+                                        ) : (
+                                            rent.unit_price
+                                        )}
+                                    </TableCell>
+                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        {isEditing ? (
+                                            <Input
+                                                type="number"
+                                                value={editForm.quantity || 0}
+                                                onChange={(e) =>
+                                                    handleEditChange("quantity", Number(e.target.value))
+                                                }
+                                                placeholder="Miqdar"
+                                            />
+                                        ) : (
+                                            rent.quantity
+                                        )}
+                                    </TableCell>
+                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        {isEditing ? (
+                                            <Input
+                                                type="number"
+                                                value={editForm.duration || 0}
+                                                onChange={(e) =>
+                                                    handleEditChange("duration", Number(e.target.value))
+                                                }
+                                                placeholder="Müddət"
+                                            />
+                                        ) : (
+                                            rent.duration
+                                        )}
+                                    </TableCell>
+                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        {calcTotal}
+                                    </TableCell>
+                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
+                                            Təsdiq olunub
+                                        </p>
+                                    </TableCell>
+                                    {(projectRole === 0 && !viewOnly) && (
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 space-x-1">
+                                            {isEditing ? (
+                                                <>
+                                                    <button
+                                                        onClick={handleSaveEdit}
+                                                        title="Yadda saxla"
+                                                        className="bg-green-500 p-1 rounded text-white"
+                                                    >
+                                                        <SaveIcon />
+                                                    </button>
+                                                    <button
+                                                        onClick={handleCancelEdit}
+                                                        title="Ləğv et"
+                                                        className="bg-red-500 p-1 rounded text-white"
+                                                    >
+                                                        <CloseIcon />
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleEditClick(rent)}
+                                                        title="Redaktə et"
+                                                        className="bg-blue-500 p-1 rounded text-white"
+                                                    >
+                                                        <EditIcon />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(rent.project_code, rent.id!)}
+                                                        title="Sil"
+                                                        className="bg-red-500 p-1 rounded text-white"
+                                                    >
+                                                        <DeleteIcon />
+                                                    </button>
+                                                </>
+                                            )}
+                                        </TableCell>
+                                    )}
+                                </TableRow>
+                            );
+                        })}
                         {projectRole === 0 && !viewOnly ? (
                             <TableRow>
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -272,7 +461,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                         <TableRow>
                             <TableCell
                                 isHeader
-                                colSpan={5}
+                                colSpan={6}
                                 className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400"
                             >
                                 Cəm

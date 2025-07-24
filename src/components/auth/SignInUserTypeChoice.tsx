@@ -12,7 +12,7 @@ export default function SignInUserTypeChoice() {
     const dispatch = useDispatch();
     const location = useLocation();
     console.log(location.pathname);
-    
+
     const userType = useSelector((state: RootState) => state.auth.userType);
     console.log(userType);
     return (
@@ -25,7 +25,7 @@ export default function SignInUserTypeChoice() {
                 <div className="flex flex-col justify-center">
                     <Button className="mb-[40px]" onClick={() => { dispatch(setUserType(0)) }}>
                         <PersonIcon />
-                        İddiaçı
+                        Daxili qrant layihəsi
                     </Button>
                     <Button onClick={() => { dispatch(setUserType(1)) }}>
                         <SupervisorAccountIcon />
@@ -35,14 +35,14 @@ export default function SignInUserTypeChoice() {
                 <div className="mt-10 flex justify-center items-center">
                     {location.pathname === '/signin' ? (
                         <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
-                        Hesabınız yoxdur? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <Link
-                            to="/signup"
-                            className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
-                        >
-                            Qeydiyyat
-                        </Link>
-                    </p>
+                            Hesabınız yoxdur? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <Link
+                                to="/signup"
+                                className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                            >
+                                Qeydiyyat
+                            </Link>
+                        </p>
                     ) : (
                         null
                     )}

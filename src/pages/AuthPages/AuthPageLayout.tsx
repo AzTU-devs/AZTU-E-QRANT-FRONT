@@ -1,7 +1,7 @@
 import React from "react";
 import GridShape from "../../components/common/GridShape";
-import { Link } from "react-router";
-import Logo from "../../../public/e-qrant-logo.jpeg"
+import AztuLogoLight from "../../../public/aztu-logo-light.png";
+import GrantLogoLight from "../../../public/e-grant-logo-light.png";
 import ThemeTogglerTwo from "../../components/common/ThemeTogglerTwo";
 
 export default function AuthLayout({
@@ -18,10 +18,11 @@ export default function AuthLayout({
             {/* <!-- ===== Common Grid Shape Start ===== --> */}
             <GridShape />
             <div className="flex flex-col items-center max-w-xs">
-              <Link to="/" className="block mb-4">
-              <img src={Logo} alt="" />
-                <h1 className="text-[40px] text-center text-gray-400 dark:text-white/60">AzTU E-Qrant</h1>
-              </Link>
+              <div className="flex justify-center items-center">
+                <img src={AztuLogoLight} alt="AzTU" className="h-[90px] mr-[20px]" />
+                <img src={GrantLogoLight} alt="AzTU" className="h-[120px]" />
+              </div>
+              <h1 className="text-[40px] text-center text-gray-400 dark:text-white/60">AzTU Daxili Qrant Müsabiqəsi</h1>
             </div>
           </div>
         </div>

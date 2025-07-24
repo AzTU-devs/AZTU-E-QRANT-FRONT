@@ -9,27 +9,26 @@ import { Link, useNavigate } from "react-router";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { loginSuccess, setAcademicType, setFinKod } from "../../redux/slices/authSlice";
+import { loginSuccess, setFinKod, setUserType } from "../../redux/slices/authSlice";
 
 export default function SignInForm() {
   const [finKod, setFinKodInterally] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   console.log(finKod);
 
 
-  const { userType, academicType } = useSelector((state: RootState) => state.auth);
+  const { userType } = useSelector((state: RootState) => state.auth);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    console.log(userType, academicType, finKod, password);
-
     if (
       userType === null ||
-      academicType === null ||
+      // academicType === null ||
       finKod.length === 0 ||
       password.length === 0
     ) {
@@ -37,11 +36,12 @@ export default function SignInForm() {
     }
 
     try {
+      setLoading(true);
       const response = await apiClient.post(
         "/auth/signin",
         {
           user_type: userType,
-          academic_type: academicType,
+          // academic_type: academicType,
           fin_kod: finKod,
           password,
         },
@@ -65,14 +65,18 @@ export default function SignInForm() {
       }
     } catch (error) {
       Swal.fire("Xəta baş verdi", "Fin kod və ya şifrə yanlışdır", "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex flex-col flex-1">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
-        <div className="mb-[50px] text-gray-700 dark:text-gray-400 sm:text-start flex items-center" onClick={() => { dispatch(setAcademicType(null)) }}>
-          <ArrowBackIosIcon /> Əvvəl
+        <div className="mb-[50px] text-gray-700 dark:text-gray-400 sm:text-start flex items-center">
+          <div className="cursor-pointer" onClick={() => { dispatch(setUserType(null)) }}>
+            <ArrowBackIosIcon /> Əvvəl
+          </div>
         </div>
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
@@ -83,7 +87,7 @@ export default function SignInForm() {
               <Input
                 value={finKod}
                 placeholder="Fin Kod"
-                onChange={(e) => setFinKodInterally(e.target.value)} />
+                onChange={(e) => setFinKodInterally((e.target.value).toUpperCase())} />
               {/* If editable is required, you can update it from another step */}
             </div>
             <div>
@@ -110,8 +114,18 @@ export default function SignInForm() {
               </div>
             </div>
             <div>
-              <Button className="w-full" size="sm">
-                Daxil Ol
+              <Button
+                className="w-full"
+                size="sm"
+                disabled={
+                  loading ||
+                  !finKod.trim() ||
+                  !password.trim() ||
+                  userType === null
+                  // academicType === null
+                }
+              >
+                {loading ? "Giriş edilir..." : "Daxil Ol"}
               </Button>
             </div>
           </div>

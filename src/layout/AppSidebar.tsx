@@ -1,5 +1,3 @@
-import { useCallback, useState } from "react";
-import { Link, useLocation } from "react-router";
 import {
   BoxCubeIcon,
   ChevronDownIcon,
@@ -9,9 +7,17 @@ import {
   PlugInIcon,
   UserCircleIcon,
 } from "../icons";
-import { useSidebar } from "../context/SidebarContext";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import AddIcon from '@mui/icons-material/Add';
+import { useCallback, useState } from "react";
+import WorkIcon from '@mui/icons-material/Work';
+import { Link, useLocation } from "react-router";
+import PeopleIcon from '@mui/icons-material/People';
+import { useSidebar } from "../context/SidebarContext";
+import GrantLogoDark from "../../public/e-grant-logo-dark.png";
+import GrantLogoLight from "../../public/e-grant-logo-light.png";
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 
 type NavItem = {
   name: string;
@@ -26,13 +32,13 @@ const navItems: NavItem[] = [
     name: "Əsas",
     path: "/home",
   },
+  // {
+  //   icon: <UserCircleIcon />,
+  //   name: "Elanlar",
+  //   path: "/elanlar",
+  // },
   {
-    icon: <UserCircleIcon />,
-    name: "Elanlar",
-    path: "/elanlar",
-  },
-  {
-    icon: <UserCircleIcon />,
+    icon: <WorkIcon />,
     name: "Lahiyələr",
     path: "/projects",
   },
@@ -83,7 +89,7 @@ const AppSidebar: React.FC = () => {
     ...(projectRole === 0
       ? [
     	{
-          icon: <UserCircleIcon />,
+          icon: <PeopleIcon />,
           name: "Təsdiq gözləyən icraçılar",
           path: "/approve-waiting-users"
         },
@@ -92,6 +98,7 @@ const AppSidebar: React.FC = () => {
           name: "Lahiyə Detalları",
           subItems: [
             { name: "Layihənin təklifi", path: "/project-offer", pro: false },
+            { name: "Layihəm", path: "/my-project", pro: false },
             { name: "Layihə icraçıları", path: "/collaborators", pro: false },
           ],
         },
@@ -128,7 +135,18 @@ const AppSidebar: React.FC = () => {
           ],
         },
       ]
-      : []),
+      : projectRole === 2 ? [
+        {
+          icon: <PeopleOutlineIcon />,
+          name: "Ekspertlər",
+          path: "/experts"
+        },
+        {
+          icon: <AddIcon />,
+          name: "Yeni ekspert",
+          path: "/new-expert"
+        },
+      ] : []),
   ];
 
   const { isExpanded, isMobileOpen, isHovered } = useSidebar();
@@ -269,7 +287,18 @@ const AppSidebar: React.FC = () => {
           }`}
       >
         <Link to="/home">
-          <h2 className="text-gray-900 dark:text-white text-center w-full">E-Qrant</h2>
+          <>
+            <img
+              src={GrantLogoDark}
+              alt="Logo Dark"
+              className={`${isExpanded ? "h-[100px]" : "h-[40px]"} block dark:hidden transition-all duration-300`}
+            />
+            <img
+              src={GrantLogoLight}
+              alt="Logo Light"
+              className={`${isExpanded ? "h-[100px]" : "h-[40px]"} hidden dark:block transition-all duration-300`}
+            />
+          </>
         </Link>
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">

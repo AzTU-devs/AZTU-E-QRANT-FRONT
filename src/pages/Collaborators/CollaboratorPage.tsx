@@ -13,7 +13,7 @@ export default function CollaboratorPage() {
         title="AzTU E-Qrant"
         description="This is React.js Form Elements  Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
       />
-      <PageBreadcrumb pageTitle="Projects" />
+      <PageBreadcrumb pageTitle="Layihə icraçıları" />
       <Collaborators projectCode={projectCode} />
     </div>
   );

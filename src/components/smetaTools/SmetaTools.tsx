@@ -7,6 +7,8 @@ import {
     TableFooter
 } from "../ui/table";
 import Swal from 'sweetalert2';
+import { Link } from "react-router-dom";
+import Button from "../ui/button/Button";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { useState, useEffect } from "react";
@@ -15,6 +17,7 @@ import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
+import WarningImage from "../../../public/warning.png";
 
 export interface SubjectOfPurchase {
     id: number;
@@ -38,7 +41,7 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
     const [quantity, setQuantity] = useState("");
     const [subjects, setSubjects] = useState<SubjectOfPurchase[]>([]);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
-
+    const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
 
     console.log('fin_kod:', fin_kod);
@@ -88,7 +91,7 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
 
     const handleDeleteSubject = async (id: number) => {
         try {
-            await apiClient.delete(`/api/delete/smeta/subject/${id}`);
+            await apiClient.delete(`/api/delete/smeta/subject/${projectCode}/${id}`);
             await Swal.fire({
                 icon: 'success',
                 title: 'Silindi!',
@@ -118,7 +121,18 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
             setViewOnly(true);
         }
     }, [location.pathname])
-    console.log(location.pathname);
+
+    if (!profileCompleted) {
+        return (
+            <div className="w-full flex flex-col justify-center items-center mt-[100px]">
+                <img src={WarningImage} alt="warning" className="w-[70px] mb-[20px]" />
+                <p style={{ fontSize: 25, marginBottom: 20 }}>Smeta yaratmaq üçün ilk öncə şəxsi məlumatlarınız doldurun və layihə yaradın.</p>
+                <Link to={"/project-offer"}>
+                    <Button>Layihə yaradın</Button>
+                </Link>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -202,7 +216,9 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         <Input placeholder="Miqdar" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
                                     </TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">-</TableCell>
+                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        {+price * +quantity}
+                                    </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         <div className="bg-green-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]">
                                             <DoneIcon className="text-white cursor-pointer" onClick={handleSaveSubject} />

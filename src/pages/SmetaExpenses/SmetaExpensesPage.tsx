@@ -16,4 +16,4 @@ export default function SmetaExpensesPage() {
       <SmetaExpenses projectCode={projectCode} />
     </div>
   );
-}
+} 

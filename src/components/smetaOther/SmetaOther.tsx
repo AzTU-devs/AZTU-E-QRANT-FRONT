@@ -1,20 +1,26 @@
-import { useState, useEffect } from "react";
 import {
     Table,
     TableHeader,
     TableBody,
     TableRow,
-    TableCell, TableFooter
+    TableCell,
+    TableFooter,
 } from "../ui/table";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
+import Button from "../ui/button/Button";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
+import { useState, useEffect } from "react";
 import Input from "../form/input/InputField";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
 import DoneIcon from "@mui/icons-material/Done";
-import DeleteIcon from '@mui/icons-material/Delete';
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import CloseIcon from "@mui/icons-material/Close";
+import WarningImage from "../../../public/warning.png";
 
 interface OtherExpItem {
     id: number;
@@ -36,6 +42,7 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
     const [duration, setDuration] = useState(0);
     const totalAmount = unitPrice * quantity * duration;
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
+    const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
     const location = useLocation();
 
     const [viewOnly, setViewOnly] = useState<boolean>(false);
@@ -44,9 +51,7 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
         if (location.pathname.startsWith("/project-view/")) {
             setViewOnly(true);
         }
-    }, [location.pathname])
-    console.log(location.pathname);
-
+    }, [location.pathname]);
 
     useEffect(() => {
         async function fetchOtherExps() {
@@ -58,11 +63,11 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
             }
         }
         fetchOtherExps();
-    }, []);
+    }, [projectCode]);
 
     const handleSubmit = async () => {
         try {
-            const response = await apiClient.post('/api/other_exp', {
+            const response = await apiClient.post("/api/other_exp", {
                 project_code: projectCode,
                 expenses_name: expensesName,
                 unit_of_measure: unitOfMeasure,
@@ -74,24 +79,24 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
 
             if (response.status === 201) {
                 await Swal.fire({
-                    icon: 'success',
-                    title: 'Uğurlu!',
-                    text: response.data.message,
+                    icon: "success",
+                    title: "Uğurlu!",
+                    text: "Məlumat uğurla yadda saxlanıldı",
                 });
                 window.location.reload();
             } else {
                 await Swal.fire({
-                    icon: 'error',
-                    title: 'Xəta!',
+                    icon: "error",
+                    title: "Xəta!",
                     text: "Xəta baş verdi",
                 });
                 window.location.reload();
             }
         } catch (error: any) {
             await Swal.fire({
-                icon: 'error',
-                title: 'Xəta!',
-                text: 'Sorğu alınmadı',
+                icon: "error",
+                title: "Xəta!",
+                text: "Sorğu alınmadı",
             });
             window.location.reload();
         }
@@ -121,6 +126,94 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                 text: "Sorğu alınmadı",
             });
         }
+    };
+
+    // Editing state for one row at a time
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [editForm, setEditForm] = useState<Partial<OtherExpItem>>({});
+
+    const handleEditClick = (item: OtherExpItem) => {
+        setEditingId(item.id);
+        setEditForm({
+            expenses_name: item.expenses_name,
+            unit_of_measure: item.unit_of_measure,
+            unit_price: item.unit_price,
+            quantity: item.quantity,
+            duration: item.duration,
+        });
+    };
+
+    const handleCancelEdit = () => {
+        setEditingId(null);
+        setEditForm({});
+    };
+
+    const handleEditChange = (field: keyof OtherExpItem, value: string | number) => {
+        setEditForm((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    };
+
+    const handleSaveEdit = async () => {
+        if (!editingId) return;
+
+        try {
+            const payload = {
+                id: editingId,
+                project_code: projectCode,
+                expenses_name: editForm.expenses_name,
+                unit_of_measure: editForm.unit_of_measure,
+                unit_price: editForm.unit_price,
+                quantity: editForm.quantity,
+                duration: editForm.duration,
+                total_amount:
+                    (editForm.unit_price || 0) *
+                    (editForm.quantity || 0) *
+                    (editForm.duration || 0),
+            };
+            const response = await apiClient.patch(`/api/edit-other_exp-table/${editingId}`, payload);
+            if (response.status === 200) {
+                Swal.fire({
+                    icon: "success",
+                    title: "Uğurlu!",
+                    text: "Məlumat yeniləndi",
+                });
+                setOtherExps((prev) =>
+                    prev.map((item) =>
+                        item.id === editingId ? { ...item, ...response.data.data } : item
+                    )
+                );
+                setEditingId(null);
+                setEditForm({});
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Xəta!",
+                    text: "Yeniləmə zamanı xəta baş verdi",
+                });
+            }
+        } catch (error) {
+            Swal.fire({
+                icon: "error",
+                title: "Xəta!",
+                text: "Sorğu alınmadı",
+            });
+        }
+    };
+
+    if (!profileCompleted) {
+        return (
+            <div className="w-full flex flex-col justify-center items-center mt-[100px]">
+                <img src={WarningImage} alt="warning" className="w-[70px] mb-[20px]" />
+                <p style={{ fontSize: 25, marginBottom: 20 }}>
+                    Smeta yaratmaq üçün ilk öncə şəxsi məlumatlarınız doldurun və layihə yaradın.
+                </p>
+                <Link to={"/project-offer"}>
+                    <Button>Layihə yaradın</Button>
+                </Link>
+            </div>
+        );
     }
 
     return (
@@ -173,36 +266,151 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                 >
                                     Təsdiq et
                                 </TableCell>
+                                {(projectRole === 0 && !viewOnly) && (
+                                    <TableCell
+                                        isHeader
+                                        className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                                    >
+                                        Əməliyyatlar
+                                    </TableCell>
+                                )}
                             </TableRow>
                         </TableHeader>
                         <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                            {otherExps.map((item) => (
-                                <TableRow key={item.id}>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{item.expenses_name}</TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{item.unit_of_measure}</TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{item.unit_price}</TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{item.quantity}</TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{item.duration}</TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{item.total_amount}</TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
-                                            Təsdiq olunub
-                                        </p>
-                                    </TableCell>
-                                    {projectRole === 0 && !viewOnly ? (
+                            {otherExps.map((item) => {
+                                const isEditing = item.id === editingId;
+                                const calcTotal =
+                                    isEditing
+                                        ? (editForm.unit_price || 0) *
+                                        (editForm.quantity || 0) *
+                                        (editForm.duration || 0)
+                                        : item.total_amount;
+
+                                return (
+                                    <TableRow key={item.id}>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            <div
-                                                className="bg-red-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
-                                                onClick={() => {
-                                                    if (projectCode !== null) handleDelete(Number(projectCode), item.id);
-                                                }}
-                                            >
-                                                <DeleteIcon className="text-white cursor-pointer" />
-                                            </div>
+                                            {isEditing ? (
+                                                <Input
+                                                    type="text"
+                                                    value={editForm.expenses_name || ""}
+                                                    onChange={(e) =>
+                                                        handleEditChange("expenses_name", e.target.value)
+                                                    }
+                                                    placeholder="Xərc maddəsinin adı"
+                                                />
+                                            ) : (
+                                                item.expenses_name
+                                            )}
                                         </TableCell>
-                                    ) : null}
-                                </TableRow>
-                            ))}
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            {isEditing ? (
+                                                <Input
+                                                    type="text"
+                                                    value={editForm.unit_of_measure || ""}
+                                                    onChange={(e) =>
+                                                        handleEditChange("unit_of_measure", e.target.value)
+                                                    }
+                                                    placeholder="Ölçü vahidi"
+                                                />
+                                            ) : (
+                                                item.unit_of_measure
+                                            )}
+                                        </TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            {isEditing ? (
+                                                <Input
+                                                    type="number"
+                                                    value={editForm.unit_price || 0}
+                                                    onChange={(e) =>
+                                                        handleEditChange("unit_price", Number(e.target.value))
+                                                    }
+                                                    placeholder="Vahid qiyməti"
+                                                />
+                                            ) : (
+                                                item.unit_price
+                                            )}
+                                        </TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            {isEditing ? (
+                                                <Input
+                                                    type="number"
+                                                    value={editForm.quantity || 0}
+                                                    onChange={(e) =>
+                                                        handleEditChange("quantity", Number(e.target.value))
+                                                    }
+                                                    placeholder="Miqdar"
+                                                />
+                                            ) : (
+                                                item.quantity
+                                            )}
+                                        </TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            {isEditing ? (
+                                                <Input
+                                                    type="number"
+                                                    value={editForm.duration || 0}
+                                                    onChange={(e) =>
+                                                        handleEditChange("duration", Number(e.target.value))
+                                                    }
+                                                    placeholder="Müddət"
+                                                />
+                                            ) : (
+                                                item.duration
+                                            )}
+                                        </TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            {calcTotal}
+                                        </TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
+                                                Təsdiq olunub
+                                            </p>
+                                        </TableCell>
+                                        {(projectRole === 0 && !viewOnly) && (
+                                            <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 space-x-1">
+                                                {isEditing ? (
+                                                    <>
+                                                        <button
+                                                            onClick={handleSaveEdit}
+                                                            title="Yadda saxla"
+                                                            className="bg-green-500 p-1 rounded text-white"
+                                                        >
+                                                            <SaveIcon />
+                                                        </button>
+                                                        <button
+                                                            onClick={handleCancelEdit}
+                                                            title="Ləğv et"
+                                                            className="bg-red-500 p-1 rounded text-white"
+                                                        >
+                                                            <CloseIcon />
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <button
+                                                            onClick={() => handleEditClick(item)}
+                                                            title="Redaktə et"
+                                                            className="bg-blue-500 p-1 rounded text-white"
+                                                        >
+                                                            <EditIcon />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => {
+                                                                if (projectCode !== null)
+                                                                    handleDelete(Number(projectCode), item.id);
+                                                            }}
+                                                            title="Sil"
+                                                            className="bg-red-500 p-1 rounded text-white"
+                                                        >
+                                                            <DeleteIcon />
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </TableCell>
+                                        )}
+                                    </TableRow>
+                                );
+                            })}
                             {projectRole === 0 && !viewOnly ? (
                                 <TableRow>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -281,5 +489,5 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                 </div>
             </div>
         </>
-    )
+    );
 }

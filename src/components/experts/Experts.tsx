@@ -4,37 +4,34 @@ import {
     TableBody,
     TableRow,
     TableCell
-} from "../ui/table";
-import Swal from "sweetalert2";
+} from "../ui/table"
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
-import { RootState } from "../../redux/store";
-import DoneIcon from '@mui/icons-material/Done';
 import Profile from "../../../public/profile.webp";
 import NotFoundImage from "../../../public/not_found.png";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
-interface Collaborator {
+interface Expert {
+    id: number;
+    email: string;
     name: string;
     surname: string;
     father_name: string;
-    fin_kod: string;
-    projectRole: number;
-    image?: {
-        image: string | null;
-    } | null;
+    personal_id_serial_number: string;
+    work_place?: string | null;
+    duty?: string | null;
+    scientific_degree?: string | null;
+    phone_number?: string | null;
 }
 
-export default function ApproveWaitingUsers() {
-    const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
-    const projectCode = useSelector((state: RootState) => state.auth.projectCode);
+export default function Experts() {
+    const [collaborators, setCollaborators] = useState<Expert[]>([]);
 
     useEffect(() => {
         const fetchCollaborators = async () => {
             try {
-                const response = await apiClient.get(`/api/app-wait-collaborators/${projectCode}`);
+                const response = await apiClient.get(`/api/experts`);
                 setCollaborators(response.data.data);
             } catch (error) {
                 console.error("Failed to fetch collaborators:", error);
@@ -43,26 +40,15 @@ export default function ApproveWaitingUsers() {
         fetchCollaborators();
     }, []);
 
-    const handleApprove = async (finKod: string) => {
-        try {
-            const response = await apiClient.post(`/api/app-collaborator/${finKod}`);
+    console.log(collaborators);
+    
 
-            if (response.data.status === 200) {
-                Swal.fire("Uğurla təsdiqləndi!", "", "success");
-            } else {
-                Swal.fire("Xəta baş verdi!", "Təsdiqləmə mümkün olmadı", "error");
-            }
-        } catch (error) {
-            console.error("Error during approval:", error);
-            Swal.fire("Xəta baş verdi!", "Serverə qoşulmaq mümkün olmadı", "error");
-        }
-    };
 
     if (collaborators.length === 0) {
         return (
             <div className="w-full flex flex-col justify-center items-center">
                 <img src={NotFoundImage} alt="not-found" className="w-[400px]"/>
-                <p className="mt-[10px] text-[30px]" style={{color: "rgb(18, 32, 87)", fontWeight: 500}}>Təsdiq gözləyən icraçıları mövcud deyil.</p>
+                <p className="mt-[10px] text-[30px]" style={{color: "rgb(18, 32, 87)", fontWeight: 500}}>Layihə icraçıları mövcud deyil.</p>
             </div>
         )
     }
@@ -84,25 +70,31 @@ export default function ApproveWaitingUsers() {
                                     isHeader
                                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                 >
+                                    Email
+                                </TableCell>
+                                <TableCell
+                                    isHeader
+                                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                                >
+                                    Telefon
+                                </TableCell>
+                                <TableCell
+                                    isHeader
+                                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                                >
                                     Fin Kod
                                 </TableCell>
                                 <TableCell
                                     isHeader
                                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                 >
-                                    Layihə Rolu
+                                    Elmi Dərəcə
                                 </TableCell>
                                 <TableCell
                                     isHeader
                                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                 >
-                                    Baxış
-                                </TableCell>
-                                <TableCell
-                                    isHeader
-                                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                >
-                                    Təsdiqlə
+                                     Baxış
                                 </TableCell>
                             </TableRow>
                         </TableHeader>
@@ -112,45 +104,30 @@ export default function ApproveWaitingUsers() {
                                     <TableRow key={index}>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             <div className="flex items-center gap-3">
-                                                {collaborator?.image?.image ? (
 
-                                                    <img
-                                                        src={`data:image/jpeg;base64,${collaborator?.image?.image}`}
-                                                        alt={`${collaborator.name} ${collaborator.surname}`}
-                                                        className="w-8 h-8 rounded-full object-cover"
-                                                    />
-                                                ) : (
-                                                    <img
-                                                        src={Profile}
-                                                        alt="User"
-                                                        className="w-[fit-content] h-[fit-content] rounded-full object-cover border border-gray-300"
-                                                    />
-                                                )}
                                                 <span>{collaborator.name} {collaborator.surname} {collaborator.father_name}</span>
                                             </div>
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            {collaborator.fin_kod}
+                                            {collaborator.email}
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            Layihə İştirakçısı
+                                            {collaborator.phone_number}
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            <Link to={`/user-view/${collaborator.fin_kod}`}>
-                                                <VisibilityIcon
-                                                    style={{ width: 35, height: 35 }}
-                                                    className="cursor-pointer bg-blue-100 text-blue-600 rounded p-1 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-700 transition-colors duration-200"
-                                                />
-                                            </Link>
+                                            {collaborator.personal_id_serial_number}
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            <div className="bg-green-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]">
-                                                <DoneIcon
-                                                    className="text-white cursor-pointer"
-                                                    onClick={() => handleApprove(collaborator.fin_kod)}
-                                                />
-                                            </div>
+                                            {collaborator.scientific_degree}
                                         </TableCell>
+                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        <Link to={`/user-view/${collaborator.personal_id_serial_number}`}>
+                                            <VisibilityIcon
+                                                style={{ width: 35, height: 35 }}
+                                                className="cursor-pointer bg-blue-100 text-blue-600 rounded p-1 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-700 transition-colors duration-200"
+                                            />
+                                        </Link>
+                                    </TableCell>
                                     </TableRow>
                                 )
                             })}
