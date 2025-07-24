@@ -10,6 +10,7 @@ interface AuthState {
   projectCode: Number | null;
   profileCompleted: Number | null;
   showLoginToast: Boolean;
+  isCollaborator: Boolean | null;
 }
 
 const initialState: AuthState = {
@@ -21,7 +22,8 @@ const initialState: AuthState = {
   isAuthenticated: false,
   projectCode: null,
   profileCompleted: null,
-  showLoginToast: false
+  showLoginToast: false,
+  isCollaborator: null
 };
 
 const authSlice = createSlice({
@@ -46,6 +48,7 @@ const authSlice = createSlice({
           fin_kod: string;
           project_role: number;
           user_type: number;
+          is_collaborator: boolean;
         };
         projectCode: number;
         profileCompleted: number;
@@ -60,6 +63,7 @@ const authSlice = createSlice({
       state.projectCode = action.payload.projectCode;
       state.profileCompleted = action.payload.profileCompleted;
       state.showLoginToast = true;
+      state.isCollaborator = action.payload.user.is_collaborator;
     },
     clearLoginToast: (state) => {
       state.showLoginToast = false;
@@ -68,6 +72,7 @@ const authSlice = createSlice({
     clearLoginSteps: (state) => {
       state.userType = null;
       state.showLoginToast = false;
+      state.isCollaborator = false;
       // state.academicType = null;
     },
   },

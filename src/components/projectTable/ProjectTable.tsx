@@ -21,6 +21,7 @@ export default function ProjectTable() {
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
     const [loading, setLoading] = useState(true);
+    const isCollaborator = useSelector((state: RootState) => state.auth.isCollaborator);
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -157,7 +158,7 @@ export default function ProjectTable() {
                                         {project.project_name}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        {project.user ? `${project.user.name} ${project.user.surname}` : ""}
+                                        {project.user ? `${project.user.name} ${project.user.surname}` : "Mövcud deyil"}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         {project.members?.length || 0}
@@ -184,7 +185,7 @@ export default function ProjectTable() {
                                     {projectRole === 1 ? (
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             {fin_kod && (
-                                                <Button onClick={() => handleBeCollaborator(fin_kod, project.project_code)}>
+                                                <Button onClick={() => handleBeCollaborator(fin_kod, project.project_code)} disabled={!project.approved || !isCollaborator}>
                                                     İştirakçı Ol
                                                 </Button>
                                             )}
