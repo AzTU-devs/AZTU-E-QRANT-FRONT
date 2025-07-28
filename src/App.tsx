@@ -7,6 +7,7 @@ import SignUp from "./pages/AuthPages/SignUp";
 import { useNavigate } from "react-router-dom";
 import UserProfiles from "./pages/UserProfiles";
 import NotFound from "./pages/OtherPage/NotFound";
+import Experts from "./components/experts/Experts";
 import { Provider, useSelector } from "react-redux";
 import SetExpert from "./components/setExpert/SetExpert";
 import NewExpert from "./components/newExpert/NewExpert";
@@ -30,7 +31,7 @@ import SmetaServicesPage from "./pages/SmetaServices/SmetaServicesPage";
 import SmetaExpensesPage from "./pages/SmetaExpenses/SmetaExpensesPage";
 import ProjectDetailsPage from "./pages/ProjectDetailsPage/ProjectDetailsPage";
 import ApproveWaitingCollaboratorsPage from "./pages/ApproveWaitingCollaboratorsPage/ApproveWaitingCollaboratorsPage";
-import Experts from "./components/experts/Experts";
+import CollboratorProject from "./components/collaboratorProject/CollboratorProject";
 
 export default function App() {
   return (
@@ -55,18 +56,9 @@ function isTokenExpired(token: string): boolean {
 }
 
 function AppWithRouterWrapper() {
-  const finKod = useSelector((state: RootState) => state.auth.fin_kod);
-  const userType = useSelector((state: RootState) => state.auth.userType);
-  // const academicType = useSelector((state: RootState) => state.auth.academicType);
-  // console.log(userType, academicType);
-  console.log(finKod);
-  const projectRole = useSelector((state: RootState) => state.auth.projectRole);
-  console.log(projectRole);
-  const projectCode = useSelector((state: RootState) => state.auth.projectCode);
-  console.log(projectCode);
   const token = useSelector((state: RootState) => state.auth.token);
-  console.log(token);
-
+  const userType = useSelector((state: RootState) => state.auth.userType);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,6 +93,7 @@ function AppWithRouterWrapper() {
             <Route path="/set-expert" element={<SetExpert />} />
             <Route path="/new-expert" element={<NewExpert />} />
             <Route path="/experts" element={<Experts />} />
+            <Route path="/collaborator-project" element={<CollboratorProject />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/signin" />} />

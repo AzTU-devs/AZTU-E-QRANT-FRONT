@@ -16,9 +16,10 @@ import Input from "../form/input/InputField";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
 import DoneIcon from '@mui/icons-material/Done';
-import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import WarningImage from "../../../public/warning.png";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface ServiceItem {
     id: number;
@@ -38,6 +39,9 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
     const [quantity, setQuantity] = useState<number | ''>(0);
     const [services, setServices] = useState<ServiceItem[]>([]);
     const [editingId, setEditingId] = useState<number | null>(null);
+    const [loading, setLoading] = useState(true);
+    const pathname = useLocation().pathname;
+
     const [editInputs, setEditInputs] = useState<{
         services_name: string;
         unit_of_measure: string;
@@ -51,7 +55,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
     });
 
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
-    const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
 
     const location = useLocation();
     const [viewOnly, setViewOnly] = useState<boolean>(false);
@@ -68,6 +71,8 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
             setServices(response.data);
         } catch (error) {
             console.error("Failed to fetch services", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -186,7 +191,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
         }
     };
 
-    if (!profileCompleted) {
+    if (!projectCode) {
         return (
             <div className="w-full flex flex-col justify-center items-center mt-[100px]">
                 <img src={WarningImage} alt="warning" className="w-[70px] mb-[20px]" />
@@ -196,6 +201,14 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                 </Link>
             </div>
         )
+    }
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center p-10">
+                <CircularProgress />
+            </div>
+        );
     }
 
     const totalAmount = services.reduce((sum, item) => sum + item.total_amount, 0);
@@ -243,7 +256,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                 >
                                     Tesdiq et
                                 </TableCell>
-                                {projectRole === 0 && !viewOnly ? (
+                                {projectRole === 0 && !viewOnly && pathname === "/project-smeta-services" ? (
                                     <TableCell
                                         isHeader
                                         className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -302,7 +315,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                         {service.total_amount.toFixed(2)}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
+                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block" style={{textAlign: "center"}}>
                                             Təsdiq olunub
                                         </p>
                                     </TableCell>
@@ -316,7 +329,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                                 >
                                                     <DoneIcon className="text-white cursor-pointer" />
                                                 </div>
-                                            ) : (
+                                            ) :  pathname === "/project-smeta-services" ?(
                                                 <>
                                                     <div
                                                         className="bg-blue-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px] mr-2"
@@ -333,12 +346,12 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                                         <DeleteIcon className="text-white cursor-pointer" />
                                                     </div>
                                                 </>
-                                            )}
+                                            ) : null}
                                         </TableCell>
                                     ) : null}
                                 </TableRow>
                             ))}
-                            {projectRole === 0 && !viewOnly ? (
+                            {projectRole === 0 && !viewOnly && pathname === "/project-smeta-services" ? (
                                 <TableRow>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         <Input

@@ -88,7 +88,7 @@ const AppSidebar: React.FC = () => {
     ...navItems,
     ...(projectRole === 0
       ? [
-    	{
+        {
           icon: <PeopleIcon />,
           name: "Təsdiq gözləyən icraçılar",
           path: "/approve-waiting-users"
@@ -99,7 +99,7 @@ const AppSidebar: React.FC = () => {
           subItems: [
             { name: "Layihənin təklifi", path: "/project-offer", pro: false },
             { name: "Layihəm", path: "/my-project", pro: false },
-            { name: "Layihə icraçıları", path: "/collaborators", pro: false },
+            { name: "Layihə komandası", path: "/collaborators", pro: false },
           ],
         },
         {
@@ -146,7 +146,14 @@ const AppSidebar: React.FC = () => {
           name: "Yeni ekspert",
           path: "/new-expert"
         },
-      ] : []),
+      ] : projectRole === 1 ? [
+        {
+          icon: <WorkIcon />,
+          name: "İcraçı olduğum layihə",
+          path: "/collaborator-project"
+        },
+      ]
+        : []),
   ];
 
   const { isExpanded, isMobileOpen, isHovered } = useSidebar();

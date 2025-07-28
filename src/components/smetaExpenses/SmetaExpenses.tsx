@@ -16,11 +16,12 @@ import apiClient from "../../util/apiClient";
 import Input from "../form/input/InputField";
 import { RootState } from "../../redux/store";
 import DoneIcon from "@mui/icons-material/Done";
-import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
-import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 import WarningImage from "../../../public/warning.png";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface RentItem {
     id?: number;
@@ -42,10 +43,10 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
     const [duration, setDuration] = useState(0);
     const totalAmount = unitPrice * quantity * duration;
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
-    const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
+    const [loading, setLoading] = useState(true);
+    const pathname = useLocation().pathname;
 
     const [editingId, setEditingId] = useState<number | null>(null);
-    // Temp state for edited fields of the currently edited row
     const [editForm, setEditForm] = useState<Partial<RentItem>>({});
 
     useEffect(() => {
@@ -55,6 +56,8 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                 setRents(response.data);
             } catch (error) {
                 console.error("Failed to fetch rents", error);
+            } finally {
+                setLoading(false);
             }
         }
         fetchRents();
@@ -198,7 +201,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
         }
     };
 
-    if (!profileCompleted) {
+    if (!projectCode) {
         return (
             <div className="w-full flex flex-col justify-center items-center mt-[100px]">
                 <img src={WarningImage} alt="warning" className="w-[70px] mb-[20px]" />
@@ -208,6 +211,13 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                 </Link>
             </div>
         )
+    }
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center p-10">
+                <CircularProgress />
+            </div>
+        );
     }
 
     return (
@@ -258,7 +268,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                             >
                                 Təsdiq et
                             </TableCell>
-                            {(projectRole === 0 && !viewOnly) && (
+                            {(projectRole === 0 && !viewOnly && pathname === "/project-smeta-expences") && (
                                 <TableCell
                                     isHeader
                                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -354,13 +364,13 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                         {calcTotal}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
+                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block" style={{textAlign: "center"}}>
                                             Təsdiq olunub
                                         </p>
                                     </TableCell>
                                     {(projectRole === 0 && !viewOnly) && (
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 space-x-1">
-                                            {isEditing ? (
+                                            {isEditing && pathname === "/project-smeta-expences" ? (
                                                 <>
                                                     <button
                                                         onClick={handleSaveEdit}
@@ -377,7 +387,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                         <CloseIcon />
                                                     </button>
                                                 </>
-                                            ) : (
+                                            ) : pathname === "/project-smeta-expences" ?(
                                                 <>
                                                     <button
                                                         onClick={() => handleEditClick(rent)}
@@ -394,13 +404,13 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                         <DeleteIcon />
                                                     </button>
                                                 </>
-                                            )}
+                                            ) : null}
                                         </TableCell>
                                     )}
                                 </TableRow>
                             );
                         })}
-                        {projectRole === 0 && !viewOnly ? (
+                        {projectRole === 0 && !viewOnly && pathname === "/project-smeta-expences" ? (
                             <TableRow>
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     <Input

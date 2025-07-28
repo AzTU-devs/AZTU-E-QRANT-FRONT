@@ -39,6 +39,15 @@ const authSlice = createSlice({
     setFinKod: (state, action: PayloadAction<string>) => {
       state.fin_kod = action.payload;
     },
+    setGlobalProjectCode: (state, action: PayloadAction<number>) => {
+      state.projectCode = action.payload;
+    },
+    setGlobalProfilCompleted: (state, action: PayloadAction<number>) => {
+      state.profileCompleted = action.payload;
+    },
+    setGlobalIsCollaborator: (state, action: PayloadAction<boolean>) => {
+      state.isCollaborator = action.payload;
+    },
     loginSuccess: (
       state,
       action: PayloadAction<{
@@ -48,8 +57,8 @@ const authSlice = createSlice({
           fin_kod: string;
           project_role: number;
           user_type: number;
-          is_collaborator: boolean;
         };
+        is_collaborator: boolean;
         projectCode: number;
         profileCompleted: number;
       }>
@@ -63,7 +72,7 @@ const authSlice = createSlice({
       state.projectCode = action.payload.projectCode;
       state.profileCompleted = action.payload.profileCompleted;
       state.showLoginToast = true;
-      state.isCollaborator = action.payload.user.is_collaborator;
+      state.isCollaborator = action.payload.is_collaborator;
     },
     clearLoginToast: (state) => {
       state.showLoginToast = false;
@@ -72,7 +81,7 @@ const authSlice = createSlice({
     clearLoginSteps: (state) => {
       state.userType = null;
       state.showLoginToast = false;
-      state.isCollaborator = false;
+      state.isCollaborator = false
       // state.academicType = null;
     },
   },
@@ -85,6 +94,9 @@ export const {
   loginSuccess,
   clearLoginSteps,
   logout,
-  clearLoginToast
+  clearLoginToast,
+  setGlobalProjectCode,
+  setGlobalProfilCompleted,
+  setGlobalIsCollaborator
 } = authSlice.actions;
 export default authSlice.reducer;

@@ -10,6 +10,7 @@ import * as XLSX from "xlsx";
 import Swal from "sweetalert2";
 import { saveAs } from "file-saver";
 import Button from "../ui/button/Button";
+import { useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import Input from "../form/input/InputField";
 import apiClient from "../../util/apiClient";
@@ -34,8 +35,8 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
     const [loading, setLoading] = useState(true);
     const [taxEdit, setTaxEdit] = useState(false);
     const [socialEdit, setSocialEdit] = useState(false);
-    // const [maxAmountError, setMaxAmountError] = useState(false);
-    console.log(projectCode);
+    const pathname = useLocation().pathname;
+
     const [mainSmeta, setMainSmeta] = useState<MainSmeta>({
         total_other_smeta: 0,
         total_rent_smeta: 0,
@@ -61,13 +62,6 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
         };
         fetchProjects();
     }, []);
-    // // Calculate total smeta sum
-    // const totalSmetaSum =
-    //   (mainSmeta.total_other_smeta || 0) +
-    //   (mainSmeta.total_rent_smeta || 0) +
-    //   (mainSmeta.total_salary_smeta || 0) +
-    //   (mainSmeta.total_services_smeta || 0) +
-    //   (mainSmeta.total_tools_smeta || 0);
 
     const handleSmetaUpdate = async (column: string, value: string | number) => {
         try {
@@ -109,51 +103,35 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
         const rows = [
             [
                 "1. Layihə rəhbərinin və icraçıların xidmət haqları",
-                mainSmeta.total_salary_smeta ?? 0,
-                ".",
-                "."
+                mainSmeta.total_salary_smeta ?? 0
             ],
             [
                 "2. Layihə üzrə vergilər və digər məcburi  ödənişlər",
-                mainSmeta.total_tax,
-                ".",
-                "."
+                mainSmeta.total_tax
             ],
             [
                 "3. Dövlət Sosial Müdafiə Fonduna ayırmalar",
-                mainSmeta.total_defense_fund,
-                ".",
-                "."
+                mainSmeta.total_defense_fund
             ],
             [
                 "4. Avadanlıq, cihaz, qurğu və mal-materialların satınalınması*",
-                mainSmeta.total_tools_smeta,
-                ".",
-                "."
+                mainSmeta.total_tools_smeta
             ],
             [
                 "5. İşlərin və xidmətlərin satınalınması",
-                mainSmeta.total_services_smeta ?? 0,
-                ".",
-                "."
+                mainSmeta.total_services_smeta ?? 0
             ],
             [
                 "İcarə",
-                mainSmeta.total_rent_smeta ?? 0,
-                ".",
-                "."
+                mainSmeta.total_rent_smeta ?? 0
             ],
             [
                 "Digər birbaşa xərclər",
-                mainSmeta.total_other_smeta ?? 0,
-                ".",
-                "."
+                mainSmeta.total_other_smeta ?? 0
             ],
             [
                 "Cəm",
-                mainSmeta.total_main_amount,
-                0,
-                0
+                mainSmeta.total_main_amount
             ],
         ];
         const wsData = [headers, ...rows];
@@ -173,14 +151,6 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
         );
     }
 
-    // if (maxAmountError) {
-    //     return (
-    //         <div>
-    //             <p>Siz maksimum smeta deyerini asmisiniz layihe smetalarinda deyisiklik edin.</p>
-    //         </div>
-    //     )
-    // }
-
     return (
         <>
             {mainSmeta.max_amount_error ? (
@@ -189,9 +159,11 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                     <p>Layihənizin smeta dəyəri müəyyən edilmiş maksimum məbləği (30,000 AZN) keçmişdir. Zəhmət olmasa, smetalarınızda müvafiq düzəlişlər edin.</p>
                 </div>
             ) : null}
-            <div className="my-[10px]">
-                <Button onClick={exportToExcel}>Excelə ixrac et</Button>
-            </div>
+            {pathname === "/main-smeta" ? (
+                <div className="my-[10px]">
+                    <Button onClick={exportToExcel}>Excelə ixrac et</Button>
+                </div>
+            ) : null}
             <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
                 <div className="max-w-full overflow-x-auto">
                     <Table>
@@ -212,24 +184,14 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                     Layihə üzrə cəmi
 
                                 </TableCell>
-                                <TableCell
-                                    isHeader
-                                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                >
-                                    birinci il üçün
-                                </TableCell>
-                                <TableCell
-                                    isHeader
-                                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                >
-                                    Ikinci il üçün
-                                </TableCell>
-                                <TableCell
-                                    isHeader
-                                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                                >
-                                    Düzəliş et
-                                </TableCell>
+                                {pathname === "/main-smeta" ? (
+                                    <TableCell
+                                        isHeader
+                                        className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                                    >
+                                        Düzəliş et
+                                    </TableCell>
+                                ) : null}
                             </TableRow>
                         </TableHeader>
                         <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
@@ -240,19 +202,14 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     {mainSmeta.total_salary_smeta}
                                 </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
+
                             </TableRow>
                             <TableRow >
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     2. Layihə üzrə vergilər və digər məcburi  ödənişlər
                                 </TableCell>
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {taxEdit ? (
+                                    {taxEdit && pathname === "/main-smeta" ? (
                                         <div className="flex items-center gap-2">
                                             <Input
                                                 placeholder="Vergi"
@@ -280,12 +237,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                         </div>
                                     )}
                                 </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
+
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     {taxEdit ? (
                                         <div
@@ -298,7 +250,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                         >
                                             <DoneIcon className="text-white" />
                                         </div>
-                                    ) : (
+                                    ) : pathname === "/main-smeta" ? (
                                         <div style={{
                                             borderRadius: 10,
                                             backgroundColor: "rgb(67, 88, 251)",
@@ -315,7 +267,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                         }>
                                             <EditIcon style={{ color: "#fff" }} />
                                         </div>
-                                    )}
+                                    ) : null}
                                 </TableCell>
                             </TableRow>
                             <TableRow >
@@ -351,12 +303,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                         </div>
                                     )}
                                 </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
+
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     {socialEdit ? (
                                         <div
@@ -369,7 +316,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                         >
                                             <DoneIcon className="text-white" />
                                         </div>
-                                    ) : (
+                                    ) : pathname === "/main-smeta" ? (
                                         <div style={{
                                             borderRadius: 10,
                                             backgroundColor: "rgb(67, 88, 251)",
@@ -386,7 +333,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                         }>
                                             <EditIcon style={{ color: "#fff" }} />
                                         </div>
-                                    )}
+                                    ) : null}
                                 </TableCell>
                             </TableRow>
                             <TableRow >
@@ -396,12 +343,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     {mainSmeta.total_tools_smeta}
                                 </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
+
                             </TableRow>
                             <TableRow >
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -410,12 +352,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     {mainSmeta.total_services_smeta}
                                 </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
+
                             </TableRow>
                             <TableRow >
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -424,12 +361,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     {mainSmeta.total_rent_smeta}
                                 </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
+
                             </TableRow>
                             <TableRow >
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -438,12 +370,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     {mainSmeta.total_other_smeta}
                                 </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    .
-                                </TableCell>
+
                             </TableRow>
                         </TableBody>
                         <TableFooter className="border-t border-gray-700 divide-y divide-gray-100 dark:divide-white/[0.05]">
@@ -459,18 +386,6 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                     className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400"
                                 >
                                     {mainSmeta.total_main_amount}
-                                </TableCell>
-                                <TableCell
-                                    isHeader
-                                    className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400"
-                                >
-                                    0
-                                </TableCell>
-                                <TableCell
-                                    isHeader
-                                    className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400"
-                                >
-                                    0
                                 </TableCell>
                             </TableRow>
                         </TableFooter>

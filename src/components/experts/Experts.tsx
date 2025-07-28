@@ -8,9 +8,8 @@ import {
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
-import Profile from "../../../public/profile.webp";
-import NotFoundImage from "../../../public/not_found.png";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface Expert {
     id: number;
@@ -27,6 +26,7 @@ interface Expert {
 
 export default function Experts() {
     const [collaborators, setCollaborators] = useState<Expert[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchCollaborators = async () => {
@@ -35,22 +35,19 @@ export default function Experts() {
                 setCollaborators(response.data.data);
             } catch (error) {
                 console.error("Failed to fetch collaborators:", error);
+            } finally {
+                setLoading(false)
             }
         };
         fetchCollaborators();
     }, []);
 
-    console.log(collaborators);
-    
-
-
-    if (collaborators.length === 0) {
+    if (loading) {
         return (
-            <div className="w-full flex flex-col justify-center items-center">
-                <img src={NotFoundImage} alt="not-found" className="w-[400px]"/>
-                <p className="mt-[10px] text-[30px]" style={{color: "rgb(18, 32, 87)", fontWeight: 500}}>Layihə icraçıları mövcud deyil.</p>
+            <div className="flex justify-center items-center p-10">
+                <CircularProgress />
             </div>
-        )
+        );
     }
 
     return (
@@ -94,11 +91,18 @@ export default function Experts() {
                                     isHeader
                                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                 >
-                                     Baxış
+                                    Baxış
                                 </TableCell>
                             </TableRow>
                         </TableHeader>
                         <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+                            {collaborators.length === 0 ?(
+                                <TableRow className="p-5">
+                                    <TableCell colSpan={5} className="p-5 flex justify-center items-center">
+                                        Ekspert mövcud deyil
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {collaborators.map((collaborator, index) => {
                                 return (
                                     <TableRow key={index}>
@@ -120,14 +124,14 @@ export default function Experts() {
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             {collaborator.scientific_degree}
                                         </TableCell>
-                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Link to={`/user-view/${collaborator.personal_id_serial_number}`}>
-                                            <VisibilityIcon
-                                                style={{ width: 35, height: 35 }}
-                                                className="cursor-pointer bg-blue-100 text-blue-600 rounded p-1 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-700 transition-colors duration-200"
-                                            />
-                                        </Link>
-                                    </TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <Link to={`/user-view/${collaborator.personal_id_serial_number}`}>
+                                                <VisibilityIcon
+                                                    style={{ width: 35, height: 35 }}
+                                                    className="cursor-pointer bg-blue-100 text-blue-600 rounded p-1 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-700 transition-colors duration-200"
+                                                />
+                                            </Link>
+                                        </TableCell>
                                     </TableRow>
                                 )
                             })}

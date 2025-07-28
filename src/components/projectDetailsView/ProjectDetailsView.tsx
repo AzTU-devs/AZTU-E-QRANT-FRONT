@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
 import NotFound from "../../../public/404-error.png";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface Project {
     project_name?: string;
@@ -25,6 +26,7 @@ interface Project {
 }
 
 export default function ProjectDetailsView({ projectCode }: { projectCode: Number | null }) {
+    const [loading, setLoading] = useState(true);
 
     const [project, setProject] = useState<Project>({
         project_name: "",
@@ -49,10 +51,20 @@ export default function ProjectDetailsView({ projectCode }: { projectCode: Numbe
                 setProject(response.data.data);
             } catch (error) {
                 console.error("Failed to fetch projects:", error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchProjects();
     }, []);
+
+    if (loading) {
+            return (
+                <div className="flex justify-center items-center p-10">
+                    <CircularProgress />
+                </div>
+            );
+        }
 
     return (
         <>

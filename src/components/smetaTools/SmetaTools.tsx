@@ -18,6 +18,7 @@ import { RootState } from "../../redux/store";
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
 import WarningImage from "../../../public/warning.png";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export interface SubjectOfPurchase {
     id: number;
@@ -41,8 +42,9 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
     const [quantity, setQuantity] = useState("");
     const [subjects, setSubjects] = useState<SubjectOfPurchase[]>([]);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
-    const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
+    const [loading, setLoading] = useState(true);
+    const pathname = useLocation().pathname;
 
     console.log('fin_kod:', fin_kod);
     console.log('projectCode:', projectCode);
@@ -54,6 +56,8 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
                 setSubjects(response.data.data);
             } catch (error) {
                 console.error("Error fetching subjects:", error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchSubjects();
@@ -122,7 +126,7 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
         }
     }, [location.pathname])
 
-    if (!profileCompleted) {
+    if (!projectCode) {
         return (
             <div className="w-full flex flex-col justify-center items-center mt-[100px]">
                 <img src={WarningImage} alt="warning" className="w-[70px] mb-[20px]" />
@@ -132,6 +136,14 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
                 </Link>
             </div>
         )
+    };
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center p-10">
+                <CircularProgress />
+            </div>
+        );
     }
 
     return (
@@ -189,11 +201,11 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{subject.quantity}</TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{subject.total_amount}</TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
+                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block" style={{ textAlign: "center" }}>
                                             Təsdiq olunub
                                         </p>
                                     </TableCell>
-                                    {projectRole === 0 && !viewOnly ? (
+                                    {projectRole === 0 && !viewOnly && pathname === "/project-smeta-tools" ? (
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             <div className="bg-red-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]">
                                                 <DeleteIcon className="text-white cursor-pointer" onClick={() => handleDeleteSubject(subject.id)} />
@@ -202,7 +214,7 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
                                     ) : null}
                                 </TableRow>
                             ))}
-                            {projectRole === 0 && !viewOnly ? (
+                            {projectRole === 0 && !viewOnly && pathname === "/project-smeta-tools" ? (
                                 <TableRow>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         <Input placeholder="Avadanlıq" value={equipmentName} onChange={(e) => setEquipmentName(e.target.value)} />

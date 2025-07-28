@@ -13,7 +13,7 @@ import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
 import DoneIcon from '@mui/icons-material/Done';
 import Profile from "../../../public/profile.webp";
-import NotFoundImage from "../../../public/not_found.png";
+import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 interface Collaborator {
@@ -58,14 +58,20 @@ export default function ApproveWaitingUsers() {
         }
     };
 
-    if (collaborators.length === 0) {
-        return (
-            <div className="w-full flex flex-col justify-center items-center">
-                <img src={NotFoundImage} alt="not-found" className="w-[400px]"/>
-                <p className="mt-[10px] text-[30px]" style={{color: "rgb(18, 32, 87)", fontWeight: 500}}>Təsdiq gözləyən icraçıları mövcud deyil.</p>
-            </div>
-        )
-    }
+    const handleReject = async (finKod: string) => {
+        try {
+            const response = await apiClient.delete(`/api/reject-collaborator/${finKod}`);
+
+            if (response.data.status === 200) {
+                Swal.fire("Uğurla ləğv edildi!", "", "success");
+            } else {
+                Swal.fire("Xəta baş verdi!", "Təsdiqləmə mümkün olmadı", "error");
+            }
+        } catch (error) {
+            console.error("Error during approval:", error);
+            Swal.fire("Xəta baş verdi!", "Serverə qoşulmaq mümkün olmadı", "error");
+        };
+    };
 
     return (
         <>
@@ -104,9 +110,22 @@ export default function ApproveWaitingUsers() {
                                 >
                                     Təsdiqlə
                                 </TableCell>
+                                <TableCell
+                                    isHeader
+                                    className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                                >
+                                    Ləğv et
+                                </TableCell>
                             </TableRow>
                         </TableHeader>
                         <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+                            {collaborators.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="text-center py-4 text-gray-500">
+                                        Məlumat yoxdur
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {collaborators.map((collaborator, index) => {
                                 return (
                                     <TableRow key={index}>
@@ -148,6 +167,14 @@ export default function ApproveWaitingUsers() {
                                                 <DoneIcon
                                                     className="text-white cursor-pointer"
                                                     onClick={() => handleApprove(collaborator.fin_kod)}
+                                                />
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <div className="bg-red-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]">
+                                                <DeleteIcon
+                                                    className="text-white cursor-pointer"
+                                                    onClick={() => handleReject(collaborator.fin_kod)}
                                                 />
                                             </div>
                                         </TableCell>

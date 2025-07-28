@@ -28,7 +28,6 @@ export default function SignUpForm() {
   };
 
   const userType = useSelector((state: RootState) => state.auth.userType);
-// const academicType = useSelector((state: RootState) => state.auth.academicType);
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -86,12 +85,13 @@ const handleSubmit = async (e: React.FormEvent) => {
                       Fin kod<span className="text-error-500">*</span>
                     </Label>
                     <Input
+                    maxLength={7}
                       type="text"
                       id="fname"
                       name="fname"
                       placeholder="Fin kod"
                       value={finKod}
-                      onChange={(e) => setFinKod(e.target.value)}
+                      onChange={(e) => setFinKod((e.target.value).toUpperCase())}
                     />
                   </div>
                 </div>

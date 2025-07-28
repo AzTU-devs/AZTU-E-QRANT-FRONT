@@ -12,15 +12,17 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
-import NotFoundImage from "../../../public/not_found.png";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CircularProgress from '@mui/material/CircularProgress';
+import { setGlobalIsCollaborator } from "../../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 export default function ProjectTable() {
+    const disptach = useDispatch();
+    const [loading, setLoading] = useState(true);
     const [projects, setProjects] = useState<any[]>([]);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
-    const [loading, setLoading] = useState(true);
     const isCollaborator = useSelector((state: RootState) => state.auth.isCollaborator);
 
     useEffect(() => {
@@ -44,12 +46,17 @@ export default function ProjectTable() {
                 fin_kod,
                 project_code
             });
-            console.log(response.data);
-            Swal.fire({
-                icon: 'success',
-                title: 'İştirakçı olaraq əlavə olundunuz!',
-                confirmButtonText: 'OK'
-            });
+            if (response.data.status === 201) {
+                disptach(setGlobalIsCollaborator(true));
+                Swal.fire({
+                    icon: 'success',
+                    title: 'İştirakçı olaraq əlavə olundunuz!',
+                    text: "Təsdiq edildikdən sonra aktiv icraçı statusu əldə edəcəksiniz!",
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                Swal.fire('Xəta!', 'Serverlə əlaqə zamanı xəta baş verdi.', 'error');
+            }
 
         } catch (error: any) {
             if (error.response?.status === 403) {
@@ -84,15 +91,9 @@ export default function ProjectTable() {
                 <CircularProgress />
             </div>
         );
-    }
-    if (projects.length === 0) {
-        return (
-            <div className="w-full flex flex-col justify-center items-center">
-                <img src={NotFoundImage} alt="not-found" className="w-[400px]" />
-                <p className="mt-[10px] text-[30px]" style={{ color: "rgb(18, 32, 87)", fontWeight: 500 }}>Layihə mövcud deyil.</p>
-            </div>
-        )
-    }
+    };
+
+    console.log(isCollaborator);    
 
     return (
         <>
@@ -126,12 +127,12 @@ export default function ProjectTable() {
                                 >
                                     Layihə statusu
                                 </TableCell>
-                                <TableCell
+                                {/* <TableCell
                                     isHeader
                                     className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                                 >
                                     Baxış
-                                </TableCell>
+                                </TableCell> */}
                                 {projectRole === 1 ? (
                                     <TableCell
                                         isHeader
@@ -152,13 +153,20 @@ export default function ProjectTable() {
                         </TableHeader>
                         {/* Table Body */}
                         <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+                            {projects.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="text-center py-4 text-gray-500">
+                                        Məlumat yoxdur
+                                    </TableCell>
+                                </TableRow>
+                            ) : null}
                             {projects.map((project, index) => (
                                 <TableRow key={index}>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         {project.project_name}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        {project.user ? `${project.user.name} ${project.user.surname}` : "Mövcud deyil"}
+                                        {project.user.name && project.user.surname ? `${project.user.name} ${project.user.surname}` : "Mövcud deyil"}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         {project.members?.length || 0}
@@ -174,18 +182,20 @@ export default function ProjectTable() {
                                             </p>
                                         )}
                                     </TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Link to={`/project-view/${project.project_code}`}>
-                                            <VisibilityIcon
-                                                style={{ width: 35, height: 35 }}
-                                                className="cursor-pointer bg-blue-100 text-blue-600 rounded p-1 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-700 transition-colors duration-200"
-                                            />
-                                        </Link>
-                                    </TableCell>
+                                    {projectRole === 2 ? (
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                            <Link to={`/project-view/${project.project_code}`}>
+                                                <VisibilityIcon
+                                                    style={{ width: 35, height: 35 }}
+                                                    className="cursor-pointer bg-blue-100 text-blue-600 rounded p-1 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-700 transition-colors duration-200"
+                                                />
+                                            </Link>
+                                        </TableCell>
+                                    ) : null}
                                     {projectRole === 1 ? (
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             {fin_kod && (
-                                                <Button onClick={() => handleBeCollaborator(fin_kod, project.project_code)} disabled={!project.approved || !isCollaborator}>
+                                                <Button onClick={() => handleBeCollaborator(fin_kod, project.project_code)} disabled={!project.approved || !!isCollaborator}>
                                                     İştirakçı Ol
                                                 </Button>
                                             )}
@@ -194,7 +204,7 @@ export default function ProjectTable() {
                                     {projectRole === 2 ? (
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             {
-                                                <Link to={"/set-expert"} state={project}>
+                                                <Link to={"/set-expert"} state={{project}}>
                                                     <Button>
                                                         Ekspert təyin et
                                                     </Button>

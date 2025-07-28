@@ -16,11 +16,12 @@ import Input from "../form/input/InputField";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
 import DoneIcon from "@mui/icons-material/Done";
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 import WarningImage from "../../../public/warning.png";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface OtherExpItem {
     id: number;
@@ -42,8 +43,9 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
     const [duration, setDuration] = useState(0);
     const totalAmount = unitPrice * quantity * duration;
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
-    const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
     const location = useLocation();
+    const [loading, setLoading] = useState(true);
+    const pathname = useLocation().pathname;
 
     const [viewOnly, setViewOnly] = useState<boolean>(false);
 
@@ -60,6 +62,8 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                 setOtherExps(response.data);
             } catch (error) {
                 console.error("Failed to fetch other expenses", error);
+            } finally {
+                setLoading(false);
             }
         }
         fetchOtherExps();
@@ -155,6 +159,14 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
         }));
     };
 
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center p-10">
+                <CircularProgress />
+            </div>
+        );
+    }
+
     const handleSaveEdit = async () => {
         if (!editingId) return;
 
@@ -202,7 +214,7 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
         }
     };
 
-    if (!profileCompleted) {
+    if (!projectCode) {
         return (
             <div className="w-full flex flex-col justify-center items-center mt-[100px]">
                 <img src={WarningImage} alt="warning" className="w-[70px] mb-[20px]" />
@@ -266,7 +278,7 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                 >
                                     Təsdiq et
                                 </TableCell>
-                                {(projectRole === 0 && !viewOnly) && (
+                                {(projectRole === 0 && !viewOnly && pathname === "/project-smeta-other-expences") && (
                                     <TableCell
                                         isHeader
                                         className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -362,7 +374,7 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                             {calcTotal}
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
+                                            <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block" style={{textAlign: "center"}}>
                                                 Təsdiq olunub
                                             </p>
                                         </TableCell>
@@ -385,7 +397,7 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                             <CloseIcon />
                                                         </button>
                                                     </>
-                                                ) : (
+                                                ) : pathname === "/project-smeta-other-expences" ?(
                                                     <>
                                                         <button
                                                             onClick={() => handleEditClick(item)}
@@ -405,13 +417,13 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                             <DeleteIcon />
                                                         </button>
                                                     </>
-                                                )}
+                                                ) : null}
                                             </TableCell>
                                         )}
                                     </TableRow>
                                 );
                             })}
-                            {projectRole === 0 && !viewOnly ? (
+                            {projectRole === 0 && !viewOnly && pathname === "/project-smeta-other-expences" ? (
                                 <TableRow>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         <Input

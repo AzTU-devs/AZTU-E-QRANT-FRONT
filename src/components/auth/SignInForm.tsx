@@ -54,13 +54,14 @@ export default function SignInForm() {
         const authData = response.data.data.auth;
         const projectCode = response.data.data.project_code;
         const profileCompleted = response.data.data.profile_completed;
+        const is_collaborator = response.data.data.is_collaborator;
         const token = response.data.token;
         const projectRole = response.data.data.auth.project_role;
         console.log("project role", projectRole);
 
         dispatch(setFinKod(finKod));
-        dispatch(loginSuccess({ token, user: authData, projectCode, profileCompleted }));
-        {projectRole === 0 ? navigate("/project-offer") : navigate("/")}
+        dispatch(loginSuccess({ token, user: authData, is_collaborator, projectCode, profileCompleted }));
+        { projectRole === 0 ? navigate("/project-offer") : navigate("/") }
         navigate("/home");
       }
     } catch (error) {
@@ -85,6 +86,7 @@ export default function SignInForm() {
                 Fin kod <span className="text-error-500">*</span>
               </Label>
               <Input
+                maxLength={7}
                 value={finKod}
                 placeholder="Fin Kod"
                 onChange={(e) => setFinKodInterally((e.target.value).toUpperCase())} />

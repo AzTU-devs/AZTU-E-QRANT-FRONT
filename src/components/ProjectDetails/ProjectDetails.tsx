@@ -4,12 +4,14 @@ import Label from '../form/Label';
 import Select from '../form/Select';
 import Button from '../ui/button/Button';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import Input from '../form/input/InputField';
 import apiClient from '../../util/apiClient';
 import TextArea from '../form/input/TextArea';
 import { RootState } from '../../redux/store';
 import CircularProgress from '@mui/material/CircularProgress';
+import { setGlobalProjectCode } from '../../redux/slices/authSlice';
 
 export default function ProjectDetails() {
     const [projectName, setProjectName] = useState("");
@@ -29,6 +31,9 @@ export default function ProjectDetails() {
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
     const [loading, setLoading] = useState(false);
+    const [projectApproved, setProjectApproved] = useState<boolean | null>(null);
+    const [submitted, setSubmitted] = useState<boolean | null>(null);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (fin_kod) {
@@ -36,6 +41,7 @@ export default function ProjectDetails() {
                 try {
                     setLoading(true);
                     const response = await apiClient.get(`/api/project/${finKod}`);
+                    console.log(response);
                     setProjectName(response.data.data.project_name);
                     setProjectGoal(response.data.data.project_purpose);
                     setProjectAnnotation(response.data.data.project_annotation);
@@ -50,6 +56,8 @@ export default function ProjectDetails() {
                     setCollaboratorLimit(response.data.data.collaborator_limit);
                     setMaxSmetaExpense(response.data.data.max_smeta_amount);
                     setPrioritet(response.data.data.priotet || "");
+                    setProjectApproved(response.data.data.approved);
+                    setSubmitted(response.data.data.submitted);
                 } catch (error: any) {
                     console.error('Error fetching project by fin_kod:', error);
                 } finally {
@@ -68,7 +76,7 @@ export default function ProjectDetails() {
             });
 
             if (response.status === 200) {
-                console.log(response.data.message);
+                dispatch(setGlobalProjectCode(+projectCode));
                 Swal.fire('Uğur!', 'Layihə uğurla təsdiqləndi.', 'success');
             }
         } catch (error: any) {
@@ -82,13 +90,36 @@ export default function ProjectDetails() {
                     cancelButtonText: 'Bağla'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = '/user-details';
+                        window.location.href = '/user-details/:fin_kod';
                     }
                 });
             } else {
                 Swal.fire('Xəta!', 'Serverlə əlaqə zamanı xəta baş verdi.', 'error');
             }
         }
+    };
+
+    const handleSubmitProject = async () => {
+        Swal.fire({
+            title: 'Əminsiniz?',
+            text: 'Layihəni təqdim etmək istədiyinizdən əminsiniz?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Bəli, təqdim et',
+            cancelButtonText: 'Xeyr'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    const response = await apiClient.post('/api/submit-project', { project_code: projectCode });
+                    if (response.status === 200) {
+                        Swal.fire('Uğur!', 'Layihə uğurla təqdim olundu.', 'success');
+                    }
+                } catch (error) {
+                    console.error('Error submitting project:', error);
+                    Swal.fire('Xəta!', 'Layihəni təqdim edərkən xəta baş verdi.', 'error');
+                }
+            }
+        });
     };
 
     async function postProjectField(fieldName: string, fieldValue: string) {
@@ -138,8 +169,6 @@ export default function ProjectDetails() {
         );
     };
 
-    console.log(prioritet);
-    
 
     return (
         <div>
@@ -147,29 +176,35 @@ export default function ProjectDetails() {
                 <div style={{
                     width: "calc((100% / 2) - 10px)"
                 }}>
-                    <Label className='mb-[10px]'>Layihənin icraçı sayı</Label>
+                    <Label className='mb-[10px]'>Layihənin icraçı sayı (maksimum 7)</Label>
                     <Input
                         type='number'
                         value={collaboratorLimit ? collaboratorLimit : 0}
+                        max={7}
                         placeholder='Burada: Layihənin məqsədi ifadə edilir. \n Layihədə həllinə çalışılan problem (məsələ) təsvir olunur. \n Problemin elmi-tədqiqatın inkişafı üçün aktual olduğu əsaslandırılır'
                         onChange={(e) => {
-                            setCollaboratorLimit(+e.target.value);
-                            postProjectField('collaborator_limit', String(+e.target.value))
+                            const value = Math.min(+e.target.value, 7);
+                            setCollaboratorLimit(value);
+                            postProjectField('collaborator_limit', String(value));
                         }}
+                        disabled={!!submitted}
                     />
                 </div>
                 <div style={{
                     width: "calc((100% / 2) - 10px)"
                 }}>
-                    <Label className='mb-[10px]'>Layihənin maksimum smeta xərci</Label>
+                    <Label className='mb-[10px]'>Layihənin maksimum smeta xərci (maksimum 30000 AZN)</Label>
                     <Input
                         type='number'
                         value={maxSmetaExpense ? maxSmetaExpense : 0}
+                        max={30000}
                         placeholder='Burada: Layihənin məqsədi ifadə edilir. \n Layihədə həllinə çalışılan problem (məsələ) təsvir olunur. \n Problemin elmi-tədqiqatın inkişafı üçün aktual olduğu əsaslandırılır'
                         onChange={(e) => {
-                            setMaxSmetaExpense(+e.target.value);
-                            postProjectField('max_smeta_amount', String(+e.target.value));
+                            const value = Math.min(+e.target.value, 30000);
+                            setMaxSmetaExpense(value);
+                            postProjectField('max_smeta_amount', String(value));
                         }}
+                        disabled={!!submitted}
                     />
                 </div>
             </div>
@@ -187,13 +222,14 @@ export default function ProjectDetails() {
                                 postProjectField('priotet', value || "");
                             }}
                             className='w-[100%]'
+                            disabled={!!submitted}
                         />
                     </div>
                 </div>
             </div>
             <div className='flex justify-between items-start'>
                 <div className='w-[100%]'>
-                    <Label className='mb-[10px]'>Layihınin adı</Label>
+                    <Label className='mb-[10px]'>Layihənin adı</Label>
                     <div className='w-[100%]'>
                         <TextArea
                             value={projectName}
@@ -204,6 +240,7 @@ export default function ProjectDetails() {
                             }}
                             rows={6}
                             className='w-[100%]'
+                            disabled={!!submitted}
                         />
                     </div>
                 </div>
@@ -218,6 +255,7 @@ export default function ProjectDetails() {
                         postProjectField('project_purpose', value)
                     }}
                     rows={6}
+                    disabled={!!submitted}
                 />
             </div>
             <div className='mt-[20px]'>
@@ -230,6 +268,7 @@ export default function ProjectDetails() {
                         postProjectField('project_annotation', value)
                     }}
                     rows={6}
+                    disabled={!!submitted}
                 />
             </div>
             <div className='mt-[20px]'>
@@ -242,6 +281,7 @@ export default function ProjectDetails() {
                         postProjectField('project_key_words', value)
                     }}
                     rows={6}
+                    disabled={!!submitted}
                 />
             </div>
             <div className='mt-[20px]'>
@@ -254,6 +294,8 @@ export default function ProjectDetails() {
                         postProjectField('project_scientific_idea', value)
                     }}
                     rows={6}
+                    disabled={!!submitted}
+
                 />
             </div>
             <div className='mt-[20px]'>
@@ -266,9 +308,11 @@ export default function ProjectDetails() {
                         postProjectField('project_structure', value)
                     }}
                     rows={6}
+                    disabled={!!submitted}
+
                 />
             </div>
-            <div>
+            <div className='mt-[20px]'>
                 <Label className='mb-[10px]'>Layihə elmi kollektivinin xarakterizə edilməsi</Label>
                 <TextArea
                     value={projectCharacterize}
@@ -278,6 +322,8 @@ export default function ProjectDetails() {
                         postProjectField('team_characterization', value)
                     }}
                     rows={6}
+                    disabled={!!submitted}
+
                 />
             </div>
             <div className='mt-[20px]'>
@@ -290,6 +336,8 @@ export default function ProjectDetails() {
                         postProjectField('project_monitoring', value)
                     }}
                     rows={6}
+                    disabled={!!submitted}
+
                 />
             </div>
             <div className='mt-[20px]'>
@@ -302,6 +350,8 @@ export default function ProjectDetails() {
                         postProjectField('project_assessment', value)
                     }}
                     rows={6}
+                    disabled={!!submitted}
+
                 />
             </div>
             <div className='mt-[20px]'>
@@ -314,12 +364,20 @@ export default function ProjectDetails() {
                         postProjectField('project_requirements', value)
                     }}
                     rows={6}
+                    disabled={!!submitted}
                 />
             </div>
             {projectRole === 0 ? (
                 <div className='mt-[20px] flex justify-end items-end'>
                     <Button onClick={handleApprove}>
                         Təsdiq et
+                    </Button>
+                </div>
+            ) : null}
+            {projectRole === 0 || projectRole === 2 ? (
+                <div className='mt-[20px] flex justify-end items-end'>
+                    <Button onClick={handleSubmitProject} disabled={!projectApproved}>
+                        Layihəni təqdim et
                     </Button>
                 </div>
             ) : null}

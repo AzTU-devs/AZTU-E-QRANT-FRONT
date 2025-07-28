@@ -16,8 +16,9 @@ import Input from "../form/input/InputField";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
 import DoneIcon from '@mui/icons-material/Done';
-import WarningImage from "../../../public/warning.png";
 import EditIcon from '@mui/icons-material/Edit';
+import WarningImage from "../../../public/warning.png";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface SalaryData {
     id: number;
@@ -49,10 +50,14 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
     const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
     const [ownerInputs, setOwnerInputs] = useState({ salary: "", months: "" });
     const [collabInputs, setCollabInputs] = useState<{ [finKod: string]: { salary: string, months: string } }>({});
+    const [salaryPerMonth, setSalaryPerMonth] = useState<number>();
+    const [months, setMonths] = useState<number>();
     const [editingRow, setEditingRow] = useState<string | null>(null); // "owner" for owner row or fin_kod for collaborators
-    const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
     const location = useLocation();
     const [viewOnly, setViewOnly] = useState<boolean>(false);
+    const projectCodeRedux = useSelector((state: RootState) => state.auth.projectCode);
+    const [loading, setLoading] = useState(true);
+    const pathname = useLocation().pathname;
 
     useEffect(() => {
         if (location.pathname.startsWith("/project-view/")) {
@@ -87,11 +92,44 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
 
             } catch (error) {
                 console.error("Failed to fetch salary data:", error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchSalaries();
     }, [projectCode]);
 
+    const handleNewSalary = async (
+        finKod: string,
+        months: string,
+        salary_per_month: string
+    ) => {
+        try {
+            console.log(salaryPerMonth, months);
+            
+            const response = await apiClient.post("/api/create-salary-table", {
+                salary_per_month: Number(salary_per_month),
+                months: Number(months),
+                fin_kod: finKod,
+                project_code: projectCodeRedux
+            });
+            if (response.data.status === 201) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Yeniləndi!',
+                    text: 'Xidmət haqqı uğurla əlavə edildi',
+                    confirmButtonText: 'OK',
+                });
+            }
+        } catch (err) {
+            return Swal.fire({
+                icon: 'error',
+                title: 'Xəta!',
+                text: 'Məlumatı saxlamaq mümkün olmadı',
+                confirmButtonText: 'Bağla',
+            });
+        }
+    }
     const handleUpdateSalary = async (
         fin_kod: string,
         salary: string,
@@ -119,9 +157,8 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                 confirmButtonText: 'OK',
             });
 
-            setEditingRow(null);
+            window.location.reload();
 
-            // Refresh data after update
             const response = await apiClient.get(`/api/salary/smeta/${projectCode}`);
             setOwner(response.data.project_owner);
             setCollaborators(response.data.collaborators);
@@ -141,7 +178,7 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
         return sum + (collaborator.salary?.total_salary || 0);
     }, 0);
 
-    if (!profileCompleted) {
+    if (!projectCode) {
         return (
             <div className="w-full flex flex-col justify-center items-center mt-[100px]">
                 <img src={WarningImage} alt="warning" className="w-[70px] mb-[20px]" />
@@ -149,6 +186,14 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                 <Link to={"/project-offer"}>
                     <Button>Layihə yaradın</Button>
                 </Link>
+            </div>
+        )
+    }
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center p-10">
+                <CircularProgress />
             </div>
         )
     }
@@ -190,7 +235,7 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                 >
                                     Layihə üzrə ümumi xidmət haqqı
                                 </TableCell>
-                                {!viewOnly ? (
+                                {!viewOnly && pathname === "/project-smeta-salary" ? (
                                     <TableCell
                                         isHeader
                                         className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -217,9 +262,14 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                             onChange={(e) => setOwnerInputs({ ...ownerInputs, salary: e.target.value })}
                                             autoFocus
                                         />
-                                    ) : (
-                                        owner?.salary?.salary_per_month || ""
-                                    )}
+                                    ) : !owner?.salary?.salary_per_month ? (
+                                         <Input
+                                            placeholder="Xidmət haqqı"
+                                            value={salaryPerMonth}
+                                            onChange={(e) => setSalaryPerMonth(+e.target.value)}
+                                            autoFocus
+                                        />
+                                    ) : owner?.salary?.salary_per_month}
                                 </TableCell>
                                 <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                     {editingRow === "owner" && !viewOnly ? (
@@ -228,40 +278,54 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                             value={ownerInputs.months}
                                             onChange={(e) => setOwnerInputs({ ...ownerInputs, months: e.target.value })}
                                         />
-                                    ) : (
-                                        owner?.salary?.months || ""
-                                    )}
+                                    ) : !owner?.salary?.months ?(
+                                        <Input
+                                            placeholder="Müddət"
+                                            value={months}
+                                            onChange={(e) => setMonths(+e.target.value)}
+                                        />
+                                    ) : owner?.salary?.months}
                                 </TableCell>
-                                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                    {owner?.salary?.total_salary || ""}
-                                </TableCell>
-                                {!viewOnly ? (
+                                { owner?.salary ? (
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        {editingRow === "owner" ? (
+                                    {owner?.salary?.total_salary || owner?.salary?.salary_per_month * owner?.salary?.months}
+                                </TableCell>
+                                ) : null}
+                                {!viewOnly && owner?.salary ? (
+                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        {editingRow === "owner" || !owner?.salary ? (
                                             <div
                                                 className="bg-green-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
-                                                title="Yadda saxla"
+                                                title={owner?.salary ? "Yadda saxla" : "Yenisini yarat"}
                                                 onClick={() => handleUpdateSalary(owner?.fin_kod || "", ownerInputs.salary, ownerInputs.months)}
                                             >
                                                 <DoneIcon className="text-white cursor-pointer" />
                                             </div>
-                                        ) : (
+                                        ) : pathname === "/project-smeta-salary" ? (
                                             <div
                                                 className="bg-blue-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
                                                 title="Redaktə et"
                                                 onClick={() => {
-                                                    if (owner?.salary) {
-                                                        setOwnerInputs({
-                                                            salary: owner.salary.salary_per_month.toString(),
-                                                            months: owner.salary.months.toString(),
-                                                        });
-                                                    }
+                                                    setOwnerInputs({
+                                                        salary: owner?.salary?.salary_per_month?.toString() || "",
+                                                        months: owner?.salary?.months?.toString() || "",
+                                                    });
                                                     setEditingRow("owner");
                                                 }}
                                             >
                                                 <EditIcon className="text-white cursor-pointer" />
                                             </div>
-                                        )}
+                                        ) : null}
+                                    </TableCell>
+                                ) : !owner?.salary ? (
+                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                                        <div
+                                                className="bg-green-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
+                                                title={owner?.salary ? "Yadda saxla" : "Yenisini yarat"}
+                                                onClick={() => handleNewSalary(owner?.fin_kod || "", ownerInputs.salary, ownerInputs.months)}
+                                            >
+                                                <DoneIcon className="text-white cursor-pointer" />
+                                            </div>
                                     </TableCell>
                                 ) : null}
                             </TableRow>
@@ -293,8 +357,25 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                                     }
                                                     autoFocus
                                                 />
+                                            ) : collaborator.salary?.salary_per_month ? (
+                                                <p>
+                                                    {collaborator?.salary?.salary_per_month}
+                                                </p>
                                             ) : (
-                                                collaborator.salary?.salary_per_month || ""
+                                                <Input
+                                                    placeholder="Xidmət haqqı"
+                                                    value={collabInputs[finKod]?.salary || ""}
+                                                    onChange={(e) =>
+                                                        setCollabInputs({
+                                                            ...collabInputs,
+                                                            [finKod]: {
+                                                                ...collabInputs[finKod],
+                                                                salary: e.target.value,
+                                                            }
+                                                        })
+                                                    }
+                                                    autoFocus
+                                                />
                                             )}
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -312,30 +393,48 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                                         })
                                                     }
                                                 />
+                                            ) : collaborator.salary?.months ? (
+                                                <p>{collaborator.salary.months}</p>
                                             ) : (
-                                                collaborator.salary?.months || ""
+                                                <Input
+                                                    placeholder="Müddət"
+                                                    value={collabInputs[finKod]?.months || ""}
+                                                    onChange={(e) =>
+                                                        setCollabInputs({
+                                                            ...collabInputs,
+                                                            [finKod]: {
+                                                                ...collabInputs[finKod],
+                                                                months: e.target.value,
+                                                            }
+                                                        })
+                                                    }
+                                                />
                                             )}
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            {collaborator.salary?.total_salary || ""}
+                                            {Number(collaborator.salary?.total_salary) || ""}
                                         </TableCell>
                                         {!viewOnly ? (
                                             <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                                {isEditing ? (
+                                                {(isEditing || !collaborator.salary) && pathname === "/project-smeta-salary" ? (
                                                     <div
                                                         className="bg-green-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
-                                                        title="Yadda saxla"
-                                                        onClick={() =>
-                                                            handleUpdateSalary(
-                                                                finKod,
-                                                                collabInputs[finKod]?.salary || "",
-                                                                collabInputs[finKod]?.months || ""
-                                                            )
-                                                        }
+                                                        title={collaborator.salary ? "Yadda saxla" : "Yenisini yarat"}
+                                                        onClick={() => {
+                                                            if (collaborator.salary) {
+                                                                handleUpdateSalary(
+                                                                    collaborator.fin_kod || "",
+                                                                    collabInputs[finKod]?.salary || "",
+                                                                    collabInputs[finKod]?.months || ""
+                                                                );
+                                                            } else {
+                                                                handleNewSalary(collaborator.fin_kod || "", collabInputs[finKod]?.months || "", collabInputs[finKod]?.months || "");
+                                                            }
+                                                        }}
                                                     >
                                                         <DoneIcon className="text-white cursor-pointer" />
                                                     </div>
-                                                ) : (
+                                                ) : pathname === "/project-smeta-salary" ? (
                                                     <div
                                                         className="bg-blue-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
                                                         title="Redaktə et"
@@ -343,8 +442,8 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                                             setCollabInputs({
                                                                 ...collabInputs,
                                                                 [finKod]: {
-                                                                    salary: collaborator.salary?.salary_per_month.toString() || "",
-                                                                    months: collaborator.salary?.months.toString() || "",
+                                                                    salary: collaborator.salary?.salary_per_month?.toString() || "",
+                                                                    months: collaborator.salary?.months?.toString() || "",
                                                                 }
                                                             });
                                                             setEditingRow(finKod);
@@ -352,7 +451,7 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                                     >
                                                         <EditIcon className="text-white cursor-pointer" />
                                                     </div>
-                                                )}
+                                                ) : null}
                                             </TableCell>
                                         ) : null}
                                     </TableRow>

@@ -2,6 +2,7 @@ import Swal from "sweetalert2";
 import Label from "../form/Label";
 import Select from "../form/Select";
 import Button from "../ui/button/Button";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
@@ -9,9 +10,11 @@ import DatePicker from "../form/date-picker";
 import Input from "../form/input/InputField";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
+import FileInput from "../form/input/FileInput";
 import Profile from "../../../public/profile.webp";
 import PhoneInput from "../form/group-input/PhoneInput";
 import CircularProgress from "@mui/material/CircularProgress";
+import { setGlobalProfilCompleted } from "../../redux/slices/authSlice";
 
 interface UserDetailsFormData {
     name: string;
@@ -43,6 +46,7 @@ interface UserDetailsFormData {
 }
 
 export default function UserDetails({ fin_kod }: { fin_kod: string | undefined | null }) {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const options = [
         { value: "0", label: "Kişi" },
@@ -76,7 +80,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
         personal_mobile_number: "",
         work_phone: "",
         personal_email: "",
-        work_email: ""
+        work_email: "",
     });
     const handleSelectChange = (value: string) => {
         setFormData({
@@ -120,7 +124,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
             "living_location", "citizenship", "work_place", "department", "duty", "main_education",
             "additonal_education", "scientific_degree", "scientific_name",
             "scientific_name_date",
-            "personal_email",
+            "personal_email", "born_date"
         ];
 
         const emptyFields = requiredFields.filter(field => {
@@ -145,7 +149,6 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
             return;
         }
 
-        // If all fields are filled, submit the form
         try {
             const data = new FormData();
             Object.entries(formData).forEach(([key, value]) => {
@@ -156,6 +159,9 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                 data.append("image", image);
             }
 
+            console.log(data);
+
+
             await apiClient.post("/api/approve/profile", data);
 
             Swal.fire({
@@ -163,6 +169,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                 title: "Profil uğurla göndərildi!",
                 confirmButtonText: "OK"
             });
+            dispatch(setGlobalProfilCompleted(1));
 
             navigate("/home");
         } catch (error: unknown) {
@@ -254,7 +261,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             <img
                                                 src={`data:image/jpeg;base64,${user.image}`}
                                                 alt="User"
-                                                className="w-32 h-32 rounded-full object-cover border border-gray-300"
+                                                className="w-[100%] h-[100%] rounded-full object-cover border border-gray-300"
                                             />
                                         </div>
                                     ) : (
@@ -262,7 +269,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             <img
                                                 src={Profile}
                                                 alt="User"
-                                                className="w-[fit-content] h-[fit-content] rounded-full object-cover border border-gray-300"
+                                                className="w-[100%] h-[100%] rounded-full object-cover border border-gray-300"
                                             />
                                         </div>
                                     )}
@@ -337,7 +344,9 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Doğum tarixi
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {user?.born_date || ""}
+                                            {user?.born_date
+                                                ? new Date(user.born_date).toISOString().split('T')[0].replace(/-/g, '/')
+                                                : ""}
                                         </p>
                                     </div>
                                     <div>
@@ -411,7 +420,9 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Elmi dərəcənin tarixi
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {user?.scientific_date || ""}
+                                            {user?.scientific_date
+                                                ? new Date(user.scientific_date).toISOString().split('T')[0].replace(/-/g, '/')
+                                                : ""}
                                         </p>
                                     </div>
                                     <div>
@@ -427,7 +438,9 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Elmi adın verilmə tarixi
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {user?.scientific_name_date || ""}
+                                            {user?.scientific_name_date
+                                                ? new Date(user.scientific_name_date).toISOString().split('T')[0].replace(/-/g, '/')
+                                                : ""}
                                         </p>
                                     </div>
 
@@ -549,6 +562,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                 <div className="col-span-2 lg:col-span-1">
                                     <Label>Şəxsiyyət vəsiqəsinin seriyası</Label>
                                     <Input
+                                        maxLength={10}
                                         type="text"
                                         name="personal_id_number"
                                         value={formData.personal_id_number}
@@ -742,7 +756,8 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
 
                                 <div className="col-span-2 lg:col-span-1">
                                     <Label>Şəkil yüklə</Label>
-                                    <input type="file" accept="image/*" onChange={handleImageChange} />
+                                    {/* <input type="file" accept="image/*" onChange={handleImageChange} /> */}
+                                    <FileInput className="custom-class" onChange={handleImageChange} />
                                 </div>
                             </div>
                             <Button className="mt-10">
