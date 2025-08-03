@@ -45,6 +45,8 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
+    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
+    const isAfterDeadline = new Date() > new Date(deadline);
 
     console.log('fin_kod:', fin_kod);
     console.log('projectCode:', projectCode);
@@ -217,16 +219,16 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
                             {projectRole === 0 && !viewOnly && pathname === "/project-smeta-tools" ? (
                                 <TableRow>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Input placeholder="Avadanlıq" value={equipmentName} onChange={(e) => setEquipmentName(e.target.value)} />
+                                        <Input placeholder="Avadanlıq" value={equipmentName} onChange={(e) => setEquipmentName(e.target.value)} disabled={isAfterDeadline}/>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Input placeholder="Ölçü vahidi" value={unit} onChange={(e) => setUnit(e.target.value)} />
+                                        <Input placeholder="Ölçü vahidi" value={unit} onChange={(e) => setUnit(e.target.value)} disabled={isAfterDeadline}/>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Input placeholder="Qiymət" value={price} onChange={(e) => setPrice(e.target.value)} />
+                                        <Input placeholder="Qiymət" value={price} onChange={(e) => setPrice(e.target.value)} disabled={isAfterDeadline}/>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Input placeholder="Miqdar" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+                                        <Input placeholder="Miqdar" value={quantity} onChange={(e) => setQuantity(e.target.value)} disabled={isAfterDeadline}/>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         {+price * +quantity}

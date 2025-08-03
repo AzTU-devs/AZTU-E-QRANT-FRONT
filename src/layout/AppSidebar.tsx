@@ -18,6 +18,7 @@ import { useSidebar } from "../context/SidebarContext";
 import GrantLogoDark from "../../public/e-grant-logo-dark.png";
 import GrantLogoLight from "../../public/e-grant-logo-light.png";
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
 type NavItem = {
   name: string;
@@ -145,6 +146,16 @@ const AppSidebar: React.FC = () => {
           icon: <AddIcon />,
           name: "Yeni ekspert",
           path: "/new-expert"
+        },
+        {
+          icon: <PeopleOutlineIcon />,
+          name: "Təsdiq gözləyən istifadəçilər",
+          path: "/approve-waiting-auth-users"
+        },
+        {
+          icon: <BookmarkBorderIcon />,
+          name: "Prioritetlər",
+          path: "/prioritets"
         },
       ] : projectRole === 1 ? [
         {

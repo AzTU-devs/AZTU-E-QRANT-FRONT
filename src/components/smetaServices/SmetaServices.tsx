@@ -41,6 +41,8 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
     const [editingId, setEditingId] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
+    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
+    const isAfterDeadline = new Date() > new Date(deadline);
 
     const [editInputs, setEditInputs] = useState<{
         services_name: string;
@@ -274,6 +276,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             <Input
                                                 value={editInputs.services_name}
                                                 onChange={(e) => handleEditChange("services_name", e.target.value)}
+                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             service.services_name
@@ -283,6 +286,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                         {editingId === service.id && !viewOnly ? (
                                             <Input
                                                 value={editInputs.unit_of_measure}
+                                                disabled={isAfterDeadline}
                                                 onChange={(e) => handleEditChange("unit_of_measure", e.target.value)}
                                             />
                                         ) : (
@@ -294,6 +298,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             <Input
                                                 type="number"
                                                 value={editInputs.price}
+                                                disabled={isAfterDeadline}
                                                 onChange={(e) => handleEditChange("price", e.target.value)}
                                             />
                                         ) : (
@@ -305,6 +310,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             <Input
                                                 type="number"
                                                 value={editInputs.quantity}
+                                                disabled={isAfterDeadline}
                                                 onChange={(e) => handleEditChange("quantity", e.target.value)}
                                             />
                                         ) : (
@@ -315,7 +321,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                         {service.total_amount.toFixed(2)}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block" style={{textAlign: "center"}}>
+                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block" style={{ textAlign: "center" }}>
                                             Təsdiq olunub
                                         </p>
                                     </TableCell>
@@ -329,7 +335,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                                 >
                                                     <DoneIcon className="text-white cursor-pointer" />
                                                 </div>
-                                            ) :  pathname === "/project-smeta-services" ?(
+                                            ) : pathname === "/project-smeta-services" ? (
                                                 <>
                                                     <div
                                                         className="bg-blue-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px] mr-2"
@@ -359,6 +365,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             value={servicesName}
                                             onChange={(e) => setServicesName(e.target.value)}
                                             className="w-full bg-transparent border-b border-gray-300 focus:outline-none"
+                                            disabled={isAfterDeadline}
                                             placeholder="İş və xidmətlərin adları*"
                                         />
                                     </TableCell>
@@ -368,6 +375,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             value={unitOfMeasure}
                                             onChange={(e) => setUnitOfMeasure(e.target.value)}
                                             className="w-full bg-transparent border-b border-gray-300 focus:outline-none"
+                                            disabled={isAfterDeadline}
                                             placeholder="Ölçü vahidi"
                                         />
                                     </TableCell>
@@ -381,6 +389,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                                 setPrice(val === '' ? '' : parseFloat(val));
                                             }}
                                             className="w-full bg-transparent border-b border-gray-300 focus:outline-none"
+                                            disabled={isAfterDeadline}
                                             placeholder="Vahidin qiyməti (manat)"
                                         />
                                     </TableCell>
@@ -393,6 +402,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                                 const val = e.target.value;
                                                 setQuantity(val === '' ? '' : parseFloat(val));
                                             }}
+                                            disabled={isAfterDeadline}
                                             className="w-full bg-transparent border-b border-gray-300 focus:outline-none"
                                             placeholder="Miqdar"
                                         />

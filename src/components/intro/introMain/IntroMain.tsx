@@ -31,11 +31,11 @@ export default function IntroMain() {
 
     return (
         <>
-            <main className='w-full p-[30px] flex flex-col justify-start items-start p-[50px]'>
-                <section className='w-full flex flex-col justify-start items-center w-[100%]'>
+            <main className='w-full px-4 sm:px-8 md:px-16 lg:px-20 py-8 flex flex-col justify-center items-center'>
+                <section className='w-full max-w-6xl flex flex-col justify-start items-center px-4 sm:px-0'>
                     <h1
                         style={{
-                            fontSize: 30,
+                            fontSize: '1.875rem', // 30px
                             color: "rgb(20, 30, 79)",
                             marginBottom: 30,
                         }}
@@ -46,278 +46,272 @@ export default function IntroMain() {
                             variants={container}
                             initial="hidden"
                             animate="visible"
+                            className="flex flex-wrap justify-center"
                         >
                             {letters.map((char, index) => (
-                                <motion.span key={index} variants={child}>
+                                <motion.span
+                                    key={index}
+                                    variants={child}
+                                    aria-hidden={char === ' '}
+                                >
                                     {char === ' ' ? '\u00A0' : char}
                                 </motion.span>
                             ))}
                         </motion.div>
                     </h1>
-                    <h2 className="text-center self-center" style={{
-                        fontWeight: 500,
-                        fontSize: 20,
-                        color: "rgb(20, 30, 79)",
-                        marginBottom: 10
-                    }}>
+                    <h2
+                        className="text-center self-center text-lg sm:text-xl font-medium"
+                        style={{
+                            color: "rgb(20, 30, 79)",
+                            marginBottom: 10
+                        }}
+                    >
                         Azərbaycan Texniki Universiteti (AzTU) elmi-tədqiqat işlərinin və innovasiyaların dəstəklənməsi və inkişafı  üçün qrant müsabiqəsi elan edir.
                     </h2>
-                    <p style={{
-                        fontSize: 15,
-                        textAlign: "left",
-                        width: "100%",
-                        color: "rgba(0, 0, 0, 0.6)"
-                    }}>
+                    <p
+                        style={{
+                            fontSize: '0.875rem', // 14px
+                            textAlign: "left",
+                            maxWidth: '100%',
+                            color: "rgba(0, 0, 0, 0.6)",
+                            lineHeight: 1.6,
+                        }}
+                        className="max-w-full sm:max-w-[90%]"
+                    >
                         Qrant müsabiqəsi çərçivəsində AzTU-da çalışan professor-müəllim heyətinin, doktorantlar və magistrlər
                         elmi-tədqiqat layihələri qəbul olunur. Qrant müsabiqəsi AzTU-da aparılan sənaye və praktik əhəmiyyətli
                         elmi-tədqiqat işlərinin, ixtiraların və yeni texnoloji işləmələrin sayını artırmaq üçün nəzərdə tutulub.
                         Qrant müsabiqəsində əsas məqsəd AzTU-nun daxili imkanları hesabına müsabiqə əsasında ayrılan maliyyə vəsaiti
                         hesabına tədqiqat ekosisteminin formalaşdırılması elmi səviyyəni yüksəltmək və yeganə meyar olan tədqiqatın
                         elmi əhəmiyyətini rəhbər tutaraq alimlərin özləri tərəfindən təklif olunan mövzular üzrə tədqiqatları dəstəkləməkdir.
-                        Layihələrin maliyyə həcmi maksimum dəyəri 30000 (iyirmi min) AZN-dək və icra müddəti 6 - 12 ay qədərdir.
+                        Layihələrin maliyyə həcmi maksimum dəyəri 30000 (otuz min) AZN-dək və icra müddəti 6 - 12 ay qədərdir.
                     </p>
                 </section>
-                <section className='w-full flex flex-col justify-start items-start' style={{ width: "90%" }}>
-                    <h2 className="text-center self-center" style={{
-                        fontWeight: 500,
-                        fontSize: 20,
-                        color: "rgb(20, 30, 79)",
-                        marginBottom: 10,
-                        marginTop: 20
-                    }}>
+
+                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
+                    <h2
+                        className="text-center self-center font-medium text-lg sm:text-xl text-primary-900 mb-2"
+                        style={{ color: "rgb(20, 30, 79)" }}
+                    >
                         Müsabiqədə kimlər iştirak edə bilər:
                     </h2>
-                    <p style={{
-                        fontSize: 15,
-                        textAlign: "left",
-                        width: "90%",
-                        color: "rgba(0, 0, 0, 0.6)"
-                    }}>
-                        Müsabiqədə yalnız AzTU-da çalışan əməkdaşlar, doktorantlar və magistrlərdən ibarət maksimum
-                        &nbsp; <span style={{ fontWeight: 700 }}>7</span> &nbsp;
+                    <p
+                        style={{
+                            fontSize: '0.875rem',
+                            textAlign: "left",
+                            color: "rgba(0, 0, 0, 0.6)"
+                        }}
+                        className="max-w-full sm:max-w-[90%]"
+                    >
+                        Müsabiqədə yalnız AzTU-da çalışan əməkdaşlar, doktorantlar və magistrlərdən ibarət maksimum&nbsp;
+                        <span className="font-bold">7</span>&nbsp;
                         nəfər müvəqqəti işçi qrup şəklində iştirak edə bilərlər.
                         Hər bir iştirakçı layihə rəhbəri tərəfindən layihə sistemə təqdim edildikdən sonra sistemə&nbsp;
                         <Link to={"/signin"}>
-                            <span style={{ fontWeight: 700, textDecoration: "underline" }}>
-                                daxil
-                            </span>&nbsp;
+                            <span className="font-bold underline">daxil</span>&nbsp;
                         </Link>
                         olaraq “icraçı (layihə komandasının üzvü)” kimi sorğu göndərməlidir. Sorğusu təsdiqlənməyən şəxslər layihədə iştirak edə bilməzlər.
                     </p>
-                    <h2 className="text-center self-center" style={{
-                        fontWeight: 500,
-                        fontSize: 20,
-                        color: "rgb(20, 30, 79)",
-                        marginBottom: 20,
-                        marginTop: 20
-                    }}>
+
+                    <h2
+                        className="text-center self-center font-medium text-lg sm:text-xl mt-8 mb-5"
+                        style={{ color: "rgb(20, 30, 79)" }}
+                    >
                         Müraciət üçün son tarix:
                     </h2>
-                    <div className='flex justify-center items-start w-full'>
+
+                    <div className='flex flex-col sm:flex-row justify-center items-start w-full gap-6'>
                         <ul
-                            className='flex flex-col justify-start items-start w-full'
+                            className='list-decimal pl-5 sm:w-1/2'
                             style={{
-                                fontSize: 15,
+                                fontSize: '0.875rem',
                                 textAlign: "start",
-                                width: "100%",
                                 color: "rgba(0, 0, 0, 0.6)",
-                            }}>
-                            <li style={{ maxWidth: "100%", marginBottom: 5 }}>
-                                Layihə təkliflərin təqdim olunması üçün son tarix <span style={{ fontWeight: 700 }}>30.09.2025</span>-ci il.
+                                lineHeight: 1.5,
+                            }}
+                        >
+                            <li className='mb-2'>
+                                Layihə təkliflərin təqdim olunması üçün son tarix <span className="font-bold">30.10.2025</span>-ci il.
                             </li>
-                            <li style={{ maxWidth: "100%" }}>
-                                Layihə təklifləri <span style={{ fontWeight: 700 }}>AzTU</span>-nun saytında elan olunan &nbsp;
-                                <Link to={"/"}>
-                                    <span style={{ fontWeight: 700, textDecoration: "underline", cursor: "pointer" }}>elektron platforma</span>
+                            <li>
+                                Layihə təklifləri <span className="font-bold">AzTU</span>-nun saytında elan olunan&nbsp;
+                                <Link to={"/signin"}>
+                                    <span className="font-bold underline cursor-pointer">elektron platforma</span>
                                 </Link>
                                 &nbsp; üzərindən qəbul edilir.
                             </li>
                         </ul>
                         <ul
-                            className='flex flex-col justify-start items-start w-full'
+                            className='list-disc pl-5 sm:w-1/2'
                             style={{
-                                fontSize: 15,
+                                fontSize: '0.875rem',
                                 textAlign: "start",
-                                width: "100%",
                                 color: "rgba(0, 0, 0, 0.6)",
-                            }}>
-                            <li style={{ maxWidth: "100%", marginBottom: 5 }}>
+                                lineHeight: 1.5,
+                            }}
+                        >
+                            <li className='mb-2'>
                                 Layihə təklifi forması və əlavələr (formalar) electron platformada daxil edilməklə
-                                bərabər elektron formada (pdf formatda) &nbsp;<span style={{ fontWeight: 700 }}>qrant@aztu.edu.az</span>&nbsp;elektron-poçt ünvanına göndərməlidir.
+                                bərabər elektron formada (pdf formatda) &nbsp;<span className="font-bold">qrant@aztu.edu.az</span>&nbsp;elektron-poçt ünvanına göndərməlidir.
                             </li>
-                            <li style={{ maxWidth: "100%" }}>
-                                Bütün layihələr, bir qayda olaraq&nbsp;<span style={{ fontWeight: 700 }}>2</span>&nbsp;
-                                nüsxədə,&nbsp;<span style={{ fontWeight: 700 }}>Azərbaycan dilində</span>&nbsp;,&nbsp;
-                                <span style={{ fontWeight: 700 }}>&nbsp;elektron formada</span> (PDF formatda) təqdim edilməlidir.
+                            <li>
+                                Bütün layihələr, bir qayda olaraq&nbsp;<span className="font-bold">2</span>&nbsp;
+                                nüsxədə,&nbsp;<span className="font-bold">Azərbaycan dilində</span>&nbsp;,&nbsp;
+                                <span className="font-bold">&nbsp;elektron formada</span> (PDF formatda) təqdim edilməlidir.
                             </li>
                         </ul>
                     </div>
                 </section>
-                <section className='w-full flex flex-col justify-start items-start' style={{ width: "90%" }}>
-                    <h2 className="text-center self-center" style={{
-                        fontWeight: 500,
-                        fontSize: 20,
-                        color: "rgb(20, 30, 79)",
-                        marginBottom: 10,
-                        marginTop: 20
-                    }}>
+
+                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
+                    <h2
+                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
+                        style={{ color: "rgb(20, 30, 79)" }}
+                    >
                         Layihə təkliifləri aşağıdakı prioritet istiqamətlərə uyğun olmalıdır:
                     </h2>
-                    <div className='flex justify-between items-center w-full'>
+                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
                         <ol
-                            className='flex flex-col justify-start items-start w-[50%] list-decimal'
+                            className='list-decimal pl-5 sm:w-1/2'
                             style={{
-                                fontSize: 15,
+                                fontSize: '0.875rem',
                                 textAlign: "start",
-                                width: "100%",
                                 color: "rgba(0, 0, 0, 0.6)",
-                            }}>
-                            <li style={{ maxWidth: "100%", marginBottom: 10 }}>
-                                Rəqəmsal texnologiylaraın sahələr üzrə tətbiqi;
-                            </li>
-                            <li style={{ maxWidth: "100%", marginBottom: 10 }}>
-                                Müdafiə sənayesi təyinatlı texnoloji işləmələr
-                            </li>
-                            <li style={{ maxWidth: "100%", marginBottom: 10 }}>
-                                Yeni materiallar və texnologiyalar
-                            </li>
+                                lineHeight: 1.5,
+                            }}
+                        >
+                            <li className='mb-2'>Rəqəmsal texnologiylaraın sahələr üzrə tətbiqi;</li>
+                            <li className='mb-2'>Müdafiə sənayesi təyinatlı texnoloji işləmələr</li>
+                            <li className='mb-2'>Yeni materiallar və texnologiyalar</li>
                         </ol>
                         <ol
-                            className='flex flex-col justify-start items-start w-[50%] list-decimal'
+                            className='list-decimal pl-5 sm:w-1/2'
+                            start={4}
                             style={{
-                                fontSize: 15,
+                                fontSize: '0.875rem',
                                 textAlign: "start",
-                                width: "100%",
                                 color: "rgba(0, 0, 0, 0.6)",
+                                lineHeight: 1.5,
                             }}
-                            start={4}>
-                            <li style={{ maxWidth: "80%", marginBottom: 5 }}>
-                                Yaşıl enerji, ətraf mühit və davamlı inkişaf məsələləri
-                            </li>
-                            <li style={{ maxWidth: "80%", marginBottom: 5 }}>
-                                Tətbiqi əhəmiyyətli, yeni qurğu, cihaz layihələndirmələri
-                            </li>
+                        >
+                            <li className='mb-2'>Yaşıl enerji, ətraf mühit və davamlı inkişaf məsələləri</li>
+                            <li className='mb-2'>Tətbiqi əhəmiyyətli, yeni qurğu, cihaz layihələndirmələri</li>
                         </ol>
                     </div>
-                    <p style={{
-                        width: '100%',
-                        fontStyle: "italic",
-                        fontWeight: 500,
-                        marginTop: 10,
-                        textAlign: "center"
-                    }}>
+                    <p
+                        className="italic font-medium mt-3 text-center"
+                        style={{ width: '100%' }}
+                    >
                         Hər bir prioritet istiqamət üzrə minimum bir layihənin qalib olması nəzərdə tutulur.
                     </p>
                 </section>
-                <section className='w-full flex flex-col justify-start items-start' style={{ width: "90%" }}>
-                    <h2 className="text-center self-center" style={{
-                        fontWeight: 500,
-                        fontSize: 20,
-                        color: "rgb(20, 30, 79)",
-                        marginBottom: 20,
-                        marginTop: 20
-                    }}>
+
+                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
+                    <h2
+                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
+                        style={{ color: "rgb(20, 30, 79)" }}
+                    >
                         Müsabiqəyə təqdim olunan layihələr aşağıdakı tələblərə cavab verməlidir:
                     </h2>
-                    <div className='flex justify-between items-start w-full'>
+                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
                         <ul
-                            className='flex flex-col justify-start items-start w-full list-disc'
+                            className='list-disc pl-5 sm:w-1/2'
                             style={{
-                                fontSize: 15,
+                                fontSize: '0.875rem',
                                 textAlign: "start",
-                                width: "100%",
                                 color: "rgba(0, 0, 0, 0.6)",
-                            }}>
-                            <li style={{ maxWidth: "100%", marginBottom: 10 }}>
-                                Layihə sənədlərinin (ərizə, layihə təklifi, xərclər smetası, icra planı) tələb olunan formalara uyğunluğu;
-                            </li>
-                            <li style={{ maxWidth: "100%", marginBottom: 10 }}>
-                                Layihədə təklif olunan işlər hər hansı qrant və digər mənbələrdən maliyyələşdirilən layihələrin predmeti olmamalıdır;
-                            </li>
-                            <li style={{ maxWidth: "100%", marginBottom: 10 }}>
-                                Layihə büdcəsinin&nbsp;<span style={{ fontWeight: 700 }}>30 000 AZN</span>-dən çox olmaması;
-                            </li>
+                                lineHeight: 1.5,
+                            }}
+                        >
+                            <li className='mb-2'>Layihə sənədlərinin (ərizə, layihə təklifi, xərclər smetası, icra planı) tələb olunan formalara uyğunluğu;</li>
+                            <li className='mb-2'>Layihədə təklif olunan işlər hər hansı qrant və digər mənbələrdən maliyyələşdirilən layihələrin predmeti olmamalıdır;</li>
+                            <li className='mb-2'>Layihə büdcəsinin&nbsp;<span className="font-bold">30 000 AZN</span>-dən çox olmaması;</li>
                         </ul>
                         <ul
-                            className='flex flex-col justify-center items-start w-[50%] list-disc'
+                            className='list-disc pl-5 sm:w-1/2'
                             style={{
-                                fontSize: 15,
+                                fontSize: '0.875rem',
                                 textAlign: "start",
-                                width: "100%",
                                 color: "rgba(0, 0, 0, 0.6)",
-                            }}>
-                            <li style={{ maxWidth: "100%", marginBottom: 10 }}>
-                                Hər bir iddiaçı müsabiqədə yalnız&nbsp;<span style={{ fontWeight: 700 }}>bir</span>&nbsp;layihədə iştirakçısı ola bilər;
-                            </li>
-                            <li style={{ maxWidth: "100%", marginBottom: 10 }}>
-                                İştirakçıların daha əvvəl icra etdikləri layihələrin səmərəliliyi;
-                            </li>
+                                lineHeight: 1.5,
+                            }}
+                        >
+                            <li className='mb-2'>Hər bir iddiaçı müsabiqədə yalnız&nbsp;<span className="font-bold">bir</span>&nbsp;layihədə iştirakçısı ola bilər;</li>
+                            <li className='mb-2'>İştirakçıların daha əvvəl icra etdikləri layihələrin səmərəliliyi;</li>
                         </ul>
                     </div>
-                    <p style={{
-                        width: "100%",
-                        fontStyle: "italic",
-                        fontWeight: 500,
-                        marginTop: 10,
-                        textAlign: "center"
-                    }}>
-                        Müsabiqənin nəticələri elan olunan tarixdən&nbsp;<span style={{ fontWeight: 700 }}>2 ay</span>&nbsp;sonra açıqlanacaqdır;
+                    <p
+                        className="italic font-medium mt-3 text-center"
+                        style={{ width: "100%" }}
+                    >
+                        Müsabiqənin nəticələri elan olunan tarixdən&nbsp;<span className="font-bold">2 ay</span>&nbsp;sonra açıqlanacaqdır;
                     </p>
                 </section>
-                <section className='w-full flex flex-col justify-start items-start' style={{ width: "90%" }}>
-                    <h2 className="text-center self-center" style={{
-                        fontWeight: 500,
-                        fontSize: 20,
-                        color: "rgb(20, 30, 79)",
-                        marginBottom: 10,
-                        marginTop: 20
-                    }}>
-                        AZTU daxili qrantını almaq məqsədilə müsabiqədə iştirak üçün&nbsp;<span style={{ fontWeight: 700, textDecoration: "underline" }}>
-                            <Link to={"/singin"}>
+
+                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
+                    <h2
+                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
+                        style={{ color: "rgb(20, 30, 79)" }}
+                    >
+                        AZTU daxili qrantını almaq məqsədilə müsabiqədə iştirak üçün&nbsp;
+                        <span className="font-bold underline">
+                            <Link to={"/signin"}>
                                 ƏRİZƏ
                             </Link>
                         </span>&nbsp;ilə müraciət olunur.
                     </h2>
-                    <div className='flex justify-between items-start w-full'>
+                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
                         <ul
-                            className='flex flex-col justify-start items-start w-[50%] list-disc'
+                            className='list-disc pl-5 sm:w-1/2'
                             style={{
-                                fontSize: 15,
+                                fontSize: '0.875rem',
                                 textAlign: "start",
-                                width: "100%",
                                 color: "rgba(0, 0, 0, 0.6)",
-                            }}>
-                            <li style={{ maxWidth: "80%", marginBottom: 5 }}>
-                                <span style={{ fontWeight: 700 }}>Ərizədə aşağıdakı məlumatlar əks olunmalıdır:</span>
-                                <ul className='ml-[20px] list-disc flex flex-col justify-start w-full'>
-                                    <li>layihənin elmi istiqaməti və qarşıya qoyulan problem üzrə qısa icmal;</li>
-                                    <li>layihənin məqsədi, qarşıya qoyulan məsələləri, aktuallığının əsaslandırılması;</li>
-                                    <li>layihənin məzmununu tam əks etdirən açar sözlər;</li>
-                                    <li>layihənin elmi ideyası;</li>
-                                    <li>layihədən gözlənilən nəticələr, onların elmi və təcrübi əhəmiyyəti.</li>
-                                </ul>
+                            }}
+                        >
+                            <li className='mb-2 font-bold'>
+                                Ərizədə aşağıdakı məlumatlar əks olunmalıdır:
+                            </li>
+                            <li className='ml-5 list-disc'>
+                                layihənin elmi istiqaməti və qarşıya qoyulan problem üzrə qısa icmal;
+                            </li>
+                            <li className='ml-5 list-disc'>
+                                layihənin məqsədi, qarşıya qoyulan məsələləri, aktuallığının əsaslandırılması;
+                            </li>
+                            <li className='ml-5 list-disc'>
+                                layihənin məzmununu tam əks etdirən açar sözlər;
+                            </li>
+                            <li className='ml-5 list-disc'>
+                                layihənin elmi ideyası;
+                            </li>
+                            <li className='ml-5 list-disc'>
+                                layihədən gözlənilən nəticələr, onların elmi və təcrübi əhəmiyyəti.
                             </li>
                         </ul>
                         <ul
-                            className='flex flex-col justify-between items-start w-[50%] list-disc'
+                            className='list-disc pl-5 sm:w-1/2'
                             style={{
-                                fontSize: 15,
+                                fontSize: '0.875rem',
                                 textAlign: "start",
-                                width: "100%",
                                 color: "rgba(0, 0, 0, 0.6)",
-                            }}>
-                            <li style={{ maxWidth: "80%" }}>
-                                <span style={{ fontWeight: 700 }}>Ərizəyə aşağıdakı sənədlər əlavə olunur:</span>
-                                <ul className='ml-[20px] list-disc flex flex-col justify-start w-full'>
-                                    <li>layihə üzrə tədqiqatın detallı təqvim planı;</li>
-                                    <li>iddiaçılar haqqında ətraflı məlumat;</li>
-                                    <li>qrant layihəsi üzrə xərclərin əsaslandırılmış smetası.</li>
-                                </ul>
+                            }}
+                        >
+                            <li className='mb-2 font-bold'>
+                                Ərizəyə aşağıdakı sənədlər əlavə olunur:
+                            </li>
+                            <li className='ml-5 list-disc'>
+                                layihə üzrə tədqiqatın detallı təqvim planı;
+                            </li>
+                            <li className='ml-5 list-disc'>
+                                iddiaçılar haqqında ətraflı məlumat;
+                            </li>
+                            <li className='ml-5 list-disc'>
+                                qrant layihəsi üzrə xərclərin əsaslandırılmış smetası.
                             </li>
                         </ul>
                     </div>
                 </section>
             </main>
         </>
-    )
+    );
 }

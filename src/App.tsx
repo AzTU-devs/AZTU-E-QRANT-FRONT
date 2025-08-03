@@ -1,10 +1,8 @@
-import { useEffect } from "react";
 import Home from "./pages/Dashboard/Home";
 import AppLayout from "./layout/AppLayout";
 import Intro from "./components/intro/Intro";
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
-import { useNavigate } from "react-router-dom";
 import UserProfiles from "./pages/UserProfiles";
 import NotFound from "./pages/OtherPage/NotFound";
 import Experts from "./components/experts/Experts";
@@ -24,14 +22,16 @@ import MyProjectPage from "./pages/MyProjectPage/MyProjectPage";
 import UserDetailsPage from "./pages/UserDetails/UserDetailsPage";
 import SmetaSalaryPage from "./pages/SmetaSalary/SmetaSalaryPage";
 import ProjectViewPage from "./pages/ProjectView/ProjectViewPage";
+import PrioritetsPage from "./pages/PrioritetsPage/PrioritetsPage";
 import ProjectTablePage from "./pages/ProjectTable/ProjectTablePage";
 import UserTypeChoicePage from "./pages/AuthPages/UserTypeChoicePage";
 import CollaboratorPage from "./pages/Collaborators/CollaboratorPage";
 import SmetaServicesPage from "./pages/SmetaServices/SmetaServicesPage";
 import SmetaExpensesPage from "./pages/SmetaExpenses/SmetaExpensesPage";
 import ProjectDetailsPage from "./pages/ProjectDetailsPage/ProjectDetailsPage";
-import ApproveWaitingCollaboratorsPage from "./pages/ApproveWaitingCollaboratorsPage/ApproveWaitingCollaboratorsPage";
 import CollboratorProject from "./components/collaboratorProject/CollboratorProject";
+import ApproveWaitingUsersPage from "./pages/ApproveWaitingUsersPage/ApproveWaitingUsersPage";
+import ApproveWaitingCollaboratorsPage from "./pages/ApproveWaitingCollaboratorsPage/ApproveWaitingCollaboratorsPage";
 
 export default function App() {
   return (
@@ -58,14 +58,6 @@ function isTokenExpired(token: string): boolean {
 function AppWithRouterWrapper() {
   const token = useSelector((state: RootState) => state.auth.token);
   const userType = useSelector((state: RootState) => state.auth.userType);
-  
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (token && isTokenExpired(token)) {
-      navigate("/signin");
-    }
-  }, [token, navigate]);
 
   return (
     <>
@@ -90,9 +82,11 @@ function AppWithRouterWrapper() {
             <Route path="/user-view/:fin_kod" element={<UserViewPage />} />
             <Route path="/my-project" element={<MyProjectPage />} />
             <Route path="/approve-waiting-users" element={<ApproveWaitingCollaboratorsPage />} />
+            <Route path="/approve-waiting-auth-users" element={<ApproveWaitingUsersPage />} />
             <Route path="/set-expert" element={<SetExpert />} />
             <Route path="/new-expert" element={<NewExpert />} />
             <Route path="/experts" element={<Experts />} />
+            <Route path="/prioritets" element={<PrioritetsPage />} />
             <Route path="/collaborator-project" element={<CollboratorProject />} />
           </Route>
         ) : (

@@ -26,7 +26,7 @@ export default function ProjectDetails() {
     const [projectScientificIdea, setProjectScientificIdea] = useState("");
     const [projectCode, setProjectCode] = useState("");
     const [prioritet, setPrioritet] = useState("");
-    const [collaboratorLimit, setCollaboratorLimit] = useState<number | null>(null);
+    const [collaboratorLimit, setCollaboratorLimit] = useState<number | null>(7);
     const [maxSmetaExpense, setMaxSmetaExpense] = useState<number | null>(30000);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
@@ -34,6 +34,8 @@ export default function ProjectDetails() {
     const [projectApproved, setProjectApproved] = useState<boolean | null>(null);
     const [submitted, setSubmitted] = useState<boolean | null>(null);
     const dispatch = useDispatch();
+    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
+    const isAfterDeadline = new Date() > new Date(deadline);
 
     useEffect(() => {
         if (fin_kod) {
@@ -187,7 +189,7 @@ export default function ProjectDetails() {
                             setCollaboratorLimit(value);
                             postProjectField('collaborator_limit', String(value));
                         }}
-                        disabled={!!submitted}
+                        disabled={!!submitted || isAfterDeadline}
                     />
                 </div>
                 <div style={{
@@ -204,7 +206,7 @@ export default function ProjectDetails() {
                             setMaxSmetaExpense(value);
                             postProjectField('max_smeta_amount', String(value));
                         }}
-                        disabled={!!submitted}
+                        disabled={!!submitted || isAfterDeadline}
                     />
                 </div>
             </div>
@@ -222,7 +224,7 @@ export default function ProjectDetails() {
                                 postProjectField('priotet', value || "");
                             }}
                             className='w-[100%]'
-                            disabled={!!submitted}
+                            disabled={!!submitted || isAfterDeadline}
                         />
                     </div>
                 </div>
@@ -240,7 +242,7 @@ export default function ProjectDetails() {
                             }}
                             rows={6}
                             className='w-[100%]'
-                            disabled={!!submitted}
+                            disabled={!!submitted || isAfterDeadline}
                         />
                     </div>
                 </div>
@@ -255,7 +257,7 @@ export default function ProjectDetails() {
                         postProjectField('project_purpose', value)
                     }}
                     rows={6}
-                    disabled={!!submitted}
+                    disabled={!!submitted || isAfterDeadline}
                 />
             </div>
             <div className='mt-[20px]'>
@@ -268,7 +270,7 @@ export default function ProjectDetails() {
                         postProjectField('project_annotation', value)
                     }}
                     rows={6}
-                    disabled={!!submitted}
+                    disabled={!!submitted || isAfterDeadline}
                 />
             </div>
             <div className='mt-[20px]'>
@@ -281,7 +283,7 @@ export default function ProjectDetails() {
                         postProjectField('project_key_words', value)
                     }}
                     rows={6}
-                    disabled={!!submitted}
+                    disabled={!!submitted || isAfterDeadline}
                 />
             </div>
             <div className='mt-[20px]'>
@@ -294,7 +296,7 @@ export default function ProjectDetails() {
                         postProjectField('project_scientific_idea', value)
                     }}
                     rows={6}
-                    disabled={!!submitted}
+                    disabled={!!submitted || isAfterDeadline}
 
                 />
             </div>
@@ -308,7 +310,7 @@ export default function ProjectDetails() {
                         postProjectField('project_structure', value)
                     }}
                     rows={6}
-                    disabled={!!submitted}
+                    disabled={!!submitted || isAfterDeadline}
 
                 />
             </div>
@@ -322,7 +324,7 @@ export default function ProjectDetails() {
                         postProjectField('team_characterization', value)
                     }}
                     rows={6}
-                    disabled={!!submitted}
+                    disabled={!!submitted || isAfterDeadline}
 
                 />
             </div>
@@ -336,7 +338,7 @@ export default function ProjectDetails() {
                         postProjectField('project_monitoring', value)
                     }}
                     rows={6}
-                    disabled={!!submitted}
+                    disabled={!!submitted || isAfterDeadline}
 
                 />
             </div>
@@ -350,7 +352,7 @@ export default function ProjectDetails() {
                         postProjectField('project_assessment', value)
                     }}
                     rows={6}
-                    disabled={!!submitted}
+                    disabled={!!submitted || isAfterDeadline}
 
                 />
             </div>
@@ -364,7 +366,7 @@ export default function ProjectDetails() {
                         postProjectField('project_requirements', value)
                     }}
                     rows={6}
-                    disabled={!!submitted}
+                    disabled={!!submitted || isAfterDeadline}
                 />
             </div>
             {projectRole === 0 ? (

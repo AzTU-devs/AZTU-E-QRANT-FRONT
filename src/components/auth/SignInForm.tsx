@@ -41,7 +41,6 @@ export default function SignInForm() {
         "/auth/signin",
         {
           user_type: userType,
-          // academic_type: academicType,
           fin_kod: finKod,
           password,
         },
@@ -124,7 +123,6 @@ export default function SignInForm() {
                   !finKod.trim() ||
                   !password.trim() ||
                   userType === null
-                  // academicType === null
                 }
               >
                 {loading ? "Giriş edilir..." : "Daxil Ol"}

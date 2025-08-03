@@ -6,33 +6,21 @@ import GrantLogo from "../../../../public/e-grant-logo-light.png";
 export default function IntroHeader() {
     return (
         <header
-            className="flex flex-row justify-between items-center flex-wrap gap-4"
-            style={{
-                borderBottom: "1px solid rgb(0, 0, 0, 0.1)",
-                paddingInline: 20,
-                paddingBlock: 10,
-                backgroundColor: "rgb(20, 30, 79)"
-            }}>
-            <div className="flex flex-row flex-wrap justify-center items-center gap-4 mb-2">
-                <a href="https://aztu.edu.az/az" target="_blank">
-                    <img src={AzTULogo} alt="AzTU" className="w-[100px] mr-0 md:mr-[20px] mb-2 md:mb-0" />
+            className="flex items-center justify-between px-4 py-3 border-b border-black/10 bg-[rgb(20,30,79)]"
+        >
+            <div className="flex items-center gap-4">
+                <a href="https://aztu.edu.az/az" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+                    <img src={AzTULogo} alt="AzTU" className="w-[100px]" />
                 </a>
                 <img src={GrantLogo} alt="Grant" className="w-[100px]" />
             </div>
-            <div className='flex justify-center items-center'>
-                <ul className='flex justify-between items-center'>
-                    <li style={{ fontSize: 20, fontWeight: 500, marginInline: 20, color: "#fff", cursor: "pointer" }}>
-                        <a href="https://aztu.edu.az/az" target='_blank'>AzTU</a>
-                    </li>
-                    <li style={{ fontSize: 20, fontWeight: 500, marginInline: 20, color: "#fff", cursor: "pointer" }}>Müsabiqə</li>
-                </ul>
-            </div>
+
             <Link to={"/signin"}>
-                <div className='flex justify-center items-center cursor-pointer'>
-                    <p style={{ color: "#fff", marginRight: 10 }} className='hidden md:block'>Daxili qrant müsabiqəsi</p>
+                <div className='flex items-center cursor-pointer whitespace-nowrap'>
+                    <p className='hidden md:block text-white mr-2'>Daxili qrant müsabiqəsi</p>
                     <LoginIcon style={{ fontSize: 35, color: "#fff" }} />
                 </div>
             </Link>
         </header>
-    )
+    );
 }

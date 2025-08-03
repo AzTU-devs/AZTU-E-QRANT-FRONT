@@ -45,7 +45,8 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
-
+    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
+    const isAfterDeadline = new Date() > new Date(deadline);
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editForm, setEditForm] = useState<Partial<RentItem>>({});
 
@@ -299,6 +300,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("rent_area", e.target.value)
                                                 }
                                                 placeholder="Ərazi"
+                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.rent_area
@@ -313,6 +315,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("unit_of_measure", e.target.value)
                                                 }
                                                 placeholder="Ölçü vahidi"
+                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.unit_of_measure
@@ -327,6 +330,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("unit_price", Number(e.target.value))
                                                 }
                                                 placeholder="Qiymət"
+                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.unit_price
@@ -341,6 +345,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("quantity", Number(e.target.value))
                                                 }
                                                 placeholder="Miqdar"
+                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.quantity
@@ -355,6 +360,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("duration", Number(e.target.value))
                                                 }
                                                 placeholder="Müddət"
+                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.duration
@@ -364,7 +370,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                         {calcTotal}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block" style={{textAlign: "center"}}>
+                                        <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block" style={{ textAlign: "center" }}>
                                             Təsdiq olunub
                                         </p>
                                     </TableCell>
@@ -376,6 +382,8 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                         onClick={handleSaveEdit}
                                                         title="Yadda saxla"
                                                         className="bg-green-500 p-1 rounded text-white"
+                                                        disabled={isAfterDeadline}
+
                                                     >
                                                         <SaveIcon />
                                                     </button>
@@ -383,15 +391,18 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                         onClick={handleCancelEdit}
                                                         title="Ləğv et"
                                                         className="bg-red-500 p-1 rounded text-white"
+                                                        disabled={isAfterDeadline}
+
                                                     >
                                                         <CloseIcon />
                                                     </button>
                                                 </>
-                                            ) : pathname === "/project-smeta-expences" ?(
+                                            ) : pathname === "/project-smeta-expences" ? (
                                                 <>
                                                     <button
                                                         onClick={() => handleEditClick(rent)}
                                                         title="Redaktə et"
+                                                        disabled={isAfterDeadline}
                                                         className="bg-blue-500 p-1 rounded text-white"
                                                     >
                                                         <EditIcon />
@@ -400,6 +411,8 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                         onClick={() => handleDelete(rent.project_code, rent.id!)}
                                                         title="Sil"
                                                         className="bg-red-500 p-1 rounded text-white"
+                                                        disabled={isAfterDeadline}
+
                                                     >
                                                         <DeleteIcon />
                                                     </button>
