@@ -305,19 +305,19 @@ const AppSidebar: React.FC = () => {
           }`}
       >
         <Link to="/home">
-          <>
-            <img
-              src={GrantLogoDark}
-              alt="Logo Dark"
-              className={`${isExpanded ? "h-[100px]" : "h-[40px]"} block dark:hidden transition-all duration-300`}
-            />
-            <img
-              src={GrantLogoLight}
-              alt="Logo Light"
-              className={`${isExpanded ? "h-[100px]" : "h-[40px]"} hidden dark:block transition-all duration-300`}
-            />
-          </>
-        </Link>
+  <>
+    <img
+      src={GrantLogoLight} // ✅ Light mode
+      alt="Logo Light"
+      className={`${isExpanded ? "h-[100px]" : "h-[40px]"} hidden dark:block transition-all duration-300`}
+    />
+    <img
+      src={GrantLogoDark} // ✅ Dark mode
+      alt="Logo Dark"
+      className={`${isExpanded ? "h-[100px]" : "h-[40px]"} block dark:hidden transition-all duration-300`}
+    />
+  </>
+</Link>
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
         <nav className="mb-6">

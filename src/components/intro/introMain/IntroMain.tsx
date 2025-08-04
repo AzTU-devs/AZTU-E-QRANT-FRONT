@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { motion, Variants } from 'framer-motion';
 
 export default function IntroMain() {

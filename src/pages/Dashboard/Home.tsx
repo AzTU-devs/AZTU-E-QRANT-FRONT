@@ -1,4 +1,4 @@
-  import { Link } from 'react-router-dom';
+ import { Link } from 'react-router-dom';
   import { useSelector } from 'react-redux';
   import { RootState } from '../../redux/store';
   import WorkIcon from '@mui/icons-material/Work';
@@ -25,24 +25,24 @@
             <img
               src={AztuLogoLight}
               alt=""
-              className="hidden dark:block w-auto h-25 mr-[30px]"
+              className="hidden dark:block w-auto h-16 md:h-24 mr-[30px]"
             />
             <img
               src={AztuLogoDark}
               alt=""
-              className="block dark:hidden w-auto h-25 mr-[30px]"
+              className="block dark:hidden w-auto h-16 md:h-24 mr-[30px]"
             />
             {/* Light mode image */}
             <img
               src={GrantLogoLight}
               alt="Grant Logo Light"
-              className="hidden dark:block w-auto h-35"
+              className="hidden dark:block w-auto h-20 md:h-32"
             />
             {/* Dark mode image */}
             <img
               src={GrantLogoDark}
               alt="Grant Logo Dark"
-              className="block dark:hidden w-auto h-35"
+              className="block dark:hidden w-auto h-20 md:h-32"
             />
           </div>
 
@@ -59,12 +59,9 @@
             məhsuldarlığı artırmaq məqsədi daşıyır.
           </p>
         </div>
-        <div className="mt-[50px] flex justify-between items-center">
-          <Link to={`/projects`}
-            style={{
-              width: role === 1 ? "calc((100% / 2) - 10px)" : "calc((100% / 3) - 10px)"
-            }}>
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 cursor-pointer">
+        <div className="mt-[50px] px-4 py-4 flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
+          <Link to={`/projects`} className={`w-full md:w-[calc((100% / ${role === 1 ? 2 : 3}) - 10px)]`}>
+            <div className={`rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 cursor-pointer`}>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
                 <WorkIcon className="text-gray-800 size-6 dark:text-white/90" />
               </div>
@@ -78,11 +75,8 @@
               </div>
             </div>
           </Link>
-          <Link to={`/user-details/${finKod}`}
-            style={{
-              width: role === 1 ? "calc((100% / 2) - 10px)" : "calc((100% / 3) - 10px)"
-            }}>
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 cursor-pointer">
+          <Link to={`/user-details/${finKod}`} className={`w-full md:w-[calc((100% / ${role === 1 ? 2 : 3}) - 10px)]`}>
+            <div className={`rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 cursor-pointer`}>
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
                 <AccountCircleIcon className="text-gray-800 size-6 dark:text-white/90" />
               </div>
@@ -97,10 +91,7 @@
             </div>
           </Link>
           {role === 0 ? (
-            <Link to={"/project-offer"}
-            style={{
-                width: "calc((100% / 3) - 10px)"
-              }}>
+            <Link to={"/project-offer"} className="w-full md:w-[calc((100% / 3) - 10px)]">
               <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 cursor-pointer">
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
                 <SchoolIcon className="text-gray-800 size-6 dark:text-white/90" />
@@ -117,9 +108,9 @@
             </Link>
           ) : null}
         </div>
-        <div className="mt-[20px] flex justify-between items-center">
+        <div className="mt-[20px] px-4 py-4 flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
           {role === 1 ? (
-            <Link to={"/collaborator-project"} style={{ width: "calc((100% / 2) - 10px)" }}>
+            <Link to={"/collaborator-project"} className="w-full md:w-[calc((100% / 2) - 10px)]">
             <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6 cursor-pointer">
               <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl dark:bg-gray-800">
                 <WorkIcon className="text-gray-800 size-6 dark:text-white/90" />
