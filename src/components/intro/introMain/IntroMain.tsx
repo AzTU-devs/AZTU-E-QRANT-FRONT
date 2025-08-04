@@ -66,11 +66,11 @@ export default function IntroMain() {
                             marginBottom: 10
                         }}
                     >
-                        Azərbaycan Texniki Universiteti (AzTU) elmi-tədqiqat işlərinin və innovasiyaların dəstəklənməsi və inkişafı  üçün qrant müsabiqəsi elan edir.
+                        Azərbaycan Texniki Universiteti (AzTU) elmi-tədqiqat işlərinin və innovasiyaların dəstəklənməsi və inkişafı məqsədilə daxili qrant müsabiqəsi elan edir.
                     </h2>
-                    <p
+                    {/* <p
                         style={{
-                            fontSize: '0.875rem', // 14px
+                            fontSize: '0.875rem',
                             textAlign: "left",
                             maxWidth: '100%',
                             color: "rgba(0, 0, 0, 0.6)",
@@ -85,7 +85,7 @@ export default function IntroMain() {
                         hesabına tədqiqat ekosisteminin formalaşdırılması elmi səviyyəni yüksəltmək və yeganə meyar olan tədqiqatın
                         elmi əhəmiyyətini rəhbər tutaraq alimlərin özləri tərəfindən təklif olunan mövzular üzrə tədqiqatları dəstəkləməkdir.
                         Layihələrin maliyyə həcmi maksimum dəyəri 30000 (otuz min) AZN-dək və icra müddəti 6 - 12 ay qədərdir.
-                    </p>
+                    </p> */}
                 </section>
 
                 <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
@@ -93,7 +93,7 @@ export default function IntroMain() {
                         className="text-center self-center font-medium text-lg sm:text-xl text-primary-900 mb-2"
                         style={{ color: "rgb(20, 30, 79)" }}
                     >
-                        Müsabiqədə kimlər iştirak edə bilər:
+                        Müsabiqənin məqsədi
                     </h2>
                     <p
                         style={{
@@ -103,26 +103,26 @@ export default function IntroMain() {
                         }}
                         className="max-w-full sm:max-w-[90%]"
                     >
-                        Müsabiqədə yalnız AzTU-da çalışan əməkdaşlar, doktorantlar və magistrlərdən ibarət maksimum&nbsp;
-                        <span className="font-bold">7</span>&nbsp;
-                        nəfər müvəqqəti işçi qrup şəklində iştirak edə bilərlər.
-                        Hər bir iştirakçı layihə rəhbəri tərəfindən layihə sistemə təqdim edildikdən sonra sistemə&nbsp;
-                        <Link to={"/signin"}>
-                            <span className="font-bold underline">daxil</span>&nbsp;
-                        </Link>
-                        olaraq “icraçı (layihə komandasının üzvü)” kimi sorğu göndərməlidir. Sorğusu təsdiqlənməyən şəxslər layihədə iştirak edə bilməzlər.
+                        <ul className='list-disc'>
+                            <li>AzTU və tərəfdaş institutların (İnformasiya Texnologiyaları İnstitutu və İdarəetmə Sistemləri İnstitutu) sənaye və praktik əhəmiyyətli elmi-tədqiqat işlərinə, ixtiralarına və yeni texnoloji işləmələrinə dəstək vermək;
+                            </li>
+                            <li>Universitetin elmi-tədqiqat ekosistemini gücləndirmək, innovativ ideyaların reallaşmasına dəstək vermək;
+                            </li>
+                            <li>Elmi-tədqiqat potensialını yüksəltmək, professor-müəllim heyətinin, doktorant və magistrlərin tədqiqat işlərinə motivasiyasını artırmaq.
+                            </li>
+                        </ul>
                     </p>
 
                     <h2
                         className="text-center self-center font-medium text-lg sm:text-xl mt-8 mb-5"
                         style={{ color: "rgb(20, 30, 79)" }}
                     >
-                        Müraciət üçün son tarix:
+                        Müsabiqədə kimlər iştirak edə bilər
                     </h2>
 
-                    <div className='flex flex-col sm:flex-row justify-center items-start w-full gap-6'>
+                    <div className='flex sm:flex-row justify-between items-start w-full gap-6'>
                         <ul
-                            className='list-decimal pl-5 sm:w-1/2'
+                            className='list-decimal pl-5 flex justify-between items-center w-full'
                             style={{
                                 fontSize: '0.875rem',
                                 textAlign: "start",
@@ -131,33 +131,10 @@ export default function IntroMain() {
                             }}
                         >
                             <li className='mb-2'>
-                                Layihə təkliflərin təqdim olunması üçün son tarix <span className="font-bold">30.10.2025</span>-ci il.
+                                AzTU-nun professor-müəllim heyəti, doktorantları və magistrləri.
                             </li>
                             <li>
-                                Layihə təklifləri <span className="font-bold">AzTU</span>-nun saytında elan olunan&nbsp;
-                                <Link to={"/signin"}>
-                                    <span className="font-bold underline cursor-pointer">elektron platforma</span>
-                                </Link>
-                                &nbsp; üzərindən qəbul edilir.
-                            </li>
-                        </ul>
-                        <ul
-                            className='list-disc pl-5 sm:w-1/2'
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "start",
-                                color: "rgba(0, 0, 0, 0.6)",
-                                lineHeight: 1.5,
-                            }}
-                        >
-                            <li className='mb-2'>
-                                Layihə təklifi forması və əlavələr (formalar) electron platformada daxil edilməklə
-                                bərabər elektron formada (pdf formatda) &nbsp;<span className="font-bold">qrant@aztu.edu.az</span>&nbsp;elektron-poçt ünvanına göndərməlidir.
-                            </li>
-                            <li>
-                                Bütün layihələr, bir qayda olaraq&nbsp;<span className="font-bold">2</span>&nbsp;
-                                nüsxədə,&nbsp;<span className="font-bold">Azərbaycan dilində</span>&nbsp;,&nbsp;
-                                <span className="font-bold">&nbsp;elektron formada</span> (PDF formatda) təqdim edilməlidir.
+                                İnformasiya Texnologiyaları İnstitutu və İdarəetmə Sistemləri İnstitutunun əməkdaşları.
                             </li>
                         </ul>
                     </div>
@@ -168,8 +145,18 @@ export default function IntroMain() {
                         className="text-center self-center font-medium text-lg sm:text-xl mb-2"
                         style={{ color: "rgb(20, 30, 79)" }}
                     >
-                        Layihə təkliifləri aşağıdakı prioritet istiqamətlərə uyğun olmalıdır:
+                        Müsabiqənin prioritet istiqamətləri
                     </h2>
+                    <p style={{
+                        fontSize: '0.875rem',
+                        textAlign: "left",
+                        color: "rgba(0, 0, 0, 0.6)",
+                        marginBottom: "10px"
+                    }}
+                        className="max-w-full sm:max-w-[90%]">
+                        Müsabiqə çərçivəsində təqdim edilən layihələr aşağıdakı sahələr üzrə aparılan sənaye, praktik və innovativ elmi-tədqiqat işləri, ixtiralar və yeni texnoloji işləmələrlə bağlı olmalıdır:
+
+                    </p>
                     <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
                         <ol
                             className='list-decimal pl-5 sm:w-1/2'
@@ -180,7 +167,7 @@ export default function IntroMain() {
                                 lineHeight: 1.5,
                             }}
                         >
-                            <li className='mb-2'>Rəqəmsal texnologiylaraın sahələr üzrə tətbiqi;</li>
+                            <li className='mb-2'>Rəqəmsal texnologiyaların elmi-nəzəri və tətbiqi problemləri</li>
                             <li className='mb-2'>Müdafiə sənayesi təyinatlı texnoloji işləmələr</li>
                             <li className='mb-2'>Yeni materiallar və texnologiyalar</li>
                         </ol>
@@ -195,7 +182,7 @@ export default function IntroMain() {
                             }}
                         >
                             <li className='mb-2'>Yaşıl enerji, ətraf mühit və davamlı inkişaf məsələləri</li>
-                            <li className='mb-2'>Tətbiqi əhəmiyyətli, yeni qurğu, cihaz layihələndirmələri</li>
+                            <li className='mb-2'>Tətbiqi əhəmiyyətli yeni qurğu və cihaz layihələndirmələri</li>
                         </ol>
                     </div>
                     <p
@@ -211,7 +198,7 @@ export default function IntroMain() {
                         className="text-center self-center font-medium text-lg sm:text-xl mb-2"
                         style={{ color: "rgb(20, 30, 79)" }}
                     >
-                        Müsabiqəyə təqdim olunan layihələr aşağıdakı tələblərə cavab verməlidir:
+                        Maliyyə vəsaiti və müddət:
                     </h2>
                     <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
                         <ul
@@ -223,29 +210,11 @@ export default function IntroMain() {
                                 lineHeight: 1.5,
                             }}
                         >
-                            <li className='mb-2'>Layihə sənədlərinin (ərizə, layihə təklifi, xərclər smetası, icra planı) tələb olunan formalara uyğunluğu;</li>
-                            <li className='mb-2'>Layihədə təklif olunan işlər hər hansı qrant və digər mənbələrdən maliyyələşdirilən layihələrin predmeti olmamalıdır;</li>
-                            <li className='mb-2'>Layihə büdcəsinin&nbsp;<span className="font-bold">30 000 AZN</span>-dən çox olmaması;</li>
-                        </ul>
-                        <ul
-                            className='list-disc pl-5 sm:w-1/2'
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "start",
-                                color: "rgba(0, 0, 0, 0.6)",
-                                lineHeight: 1.5,
-                            }}
-                        >
-                            <li className='mb-2'>Hər bir iddiaçı müsabiqədə yalnız&nbsp;<span className="font-bold">bir</span>&nbsp;layihədə iştirakçısı ola bilər;</li>
-                            <li className='mb-2'>İştirakçıların daha əvvəl icra etdikləri layihələrin səmərəliliyi;</li>
+                            <li className='mb-2'>Hər bir layihə üçün ayrılacaq maliyyənin miqdarı: maksimum 30 000 (otuz min) AZN;</li>
+                            <li className='mb-2'> Layihələrin icra müddəti: 6-12 ay;</li>
+                            <li className='mb-2'>Qrant müsabiqəsi üçün nəzərdə tutulam ümumi məbləğ: 300 000 (üç yüz min) AZN.</li>
                         </ul>
                     </div>
-                    <p
-                        className="italic font-medium mt-3 text-center"
-                        style={{ width: "100%" }}
-                    >
-                        Müsabiqənin nəticələri elan olunan tarixdən&nbsp;<span className="font-bold">2 ay</span>&nbsp;sonra açıqlanacaqdır;
-                    </p>
                 </section>
 
                 <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
@@ -253,62 +222,112 @@ export default function IntroMain() {
                         className="text-center self-center font-medium text-lg sm:text-xl mb-2"
                         style={{ color: "rgb(20, 30, 79)" }}
                     >
-                        AZTU daxili qrantını almaq məqsədilə müsabiqədə iştirak üçün&nbsp;
-                        <span className="font-bold underline">
-                            <Link to={"/signin"}>
-                                ƏRİZƏ
-                            </Link>
-                        </span>&nbsp;ilə müraciət olunur.
+                        Cari müsabiqənin keçirilməsinin əsas prinsipləri
                     </h2>
                     <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
-                        <ul
-                            className='list-disc pl-5 sm:w-1/2'
+                        <ol
+                            className='list-decimal pl-5 sm:w-1/2'
                             style={{
                                 fontSize: '0.875rem',
                                 textAlign: "start",
                                 color: "rgba(0, 0, 0, 0.6)",
                             }}
                         >
-                            <li className='mb-2 font-bold'>
-                                Ərizədə aşağıdakı məlumatlar əks olunmalıdır:
+                            <li className='ml-5'>
+                                Müsabiqəyə professor-müəllim heyəti, tədqiqatçı-alimlər və gənc tədqiqatçılar müraciət edə bilərlər.
                             </li>
-                            <li className='ml-5 list-disc'>
-                                layihənin elmi istiqaməti və qarşıya qoyulan problem üzrə qısa icmal;
+                            <li className='ml-5 list-decimal'>
+                                Qrant müsabiqəsi yalnız AzTU, İnformasiya Texnologiyaları İnstitutu və İdarəetmə Sistemləri İnstitutunun alimlərindən təşkil olunmuş elmi yaradıcı kollektivlər tərəfindən təqdim edilmiş layihələr üçün nəzərdə tutulur.
+
                             </li>
-                            <li className='ml-5 list-disc'>
-                                layihənin məqsədi, qarşıya qoyulan məsələləri, aktuallığının əsaslandırılması;
+                            <li className='ml-5 list-decimal'>
+                                Birgə qrant layihəsi ilə müsabiqədə iştirak etmək istəyən AzTU və institutların alimləri sənədlərin təqdim edilməsindən əvvəl müzakirələr apararaq, qrant layihəsinin mövzusunu, şərtlərini və digər müvafiq məsələləri qarşılıqlı şəkildə razılaşdırmalıdırlar.
+
                             </li>
-                            <li className='ml-5 list-disc'>
-                                layihənin məzmununu tam əks etdirən açar sözlər;
+                            <li className='ml-5 list-decimal'>
+                                Müsabiqəyə alimlərdən təşkil olunmuş kiçik saylı (7 nəfərədək, layihə rəhbəri və icraçılar daxil olmaqla) müvəqqəti yaradıcı kollektivlər tərəfindən həyata keçiriləcək fundamental və tətbiqi xarakterli elmi-tədqiqat layihələri qəbul olunur.
+
                             </li>
-                            <li className='ml-5 list-disc'>
-                                layihənin elmi ideyası;
+                            <li className='ml-5 list-decimal'>
+                                Layihə rəhbəri və icraçılar kifayət qədər təcrübəli, beynəlxalq əlaqələrə malik, nüfuzlu elmi nəşrlərdə dərc olunmuş məqalələri olan alimlər olmalıdır.
                             </li>
-                            <li className='ml-5 list-disc'>
-                                layihədən gözlənilən nəticələr, onların elmi və təcrübi əhəmiyyəti.
-                            </li>
-                        </ul>
-                        <ul
-                            className='list-disc pl-5 sm:w-1/2'
+                        </ol>
+                        <ol
+                            className='list-decimal pl-5 sm:w-1/2'
+                            start={6}
                             style={{
                                 fontSize: '0.875rem',
                                 textAlign: "start",
                                 color: "rgba(0, 0, 0, 0.6)",
                             }}
                         >
-                            <li className='mb-2 font-bold'>
-                                Ərizəyə aşağıdakı sənədlər əlavə olunur:
+                            <li className='ml-5'>
+                                Elmi-tədqiqat qurumlarının planları üzrə mövzunun layihədə təkrarlanmasına yol verilmir.
                             </li>
-                            <li className='ml-5 list-disc'>
-                                layihə üzrə tədqiqatın detallı təqvim planı;
+                            <li className='ml-5 list-decimal'>
+                                Digər fond və qurumlar tərəfindən maliyyələşdirilən mövzular üzrə layihələr müsabiqəyə qəbul olunmur.
                             </li>
-                            <li className='ml-5 list-disc'>
-                                iddiaçılar haqqında ətraflı məlumat;
+                            <li className='ml-5 list-decimal'>
+                                Cari müsabiqədə hər bir şəxs yalnız bir layihə üzrə qrant iddiaçısı ola bilər (rəhbər və ya icraçı qismində).
                             </li>
-                            <li className='ml-5 list-disc'>
-                                qrant layihəsi üzrə xərclərin əsaslandırılmış smetası.
+                            <li className='ml-5 list-decimal'>
+                                Müsabiqəyə təqdim olunmuş layihələr qaydalara uyğun olaraq texniki və elmi ekspertiza mərhələlərindən keçirilir. Bu zaman tərəflərin çarpaz elmi ekspertizası da nəzərdə tutulur.
                             </li>
-                        </ul>
+                            <li className='ml-5 list-decimal'>
+                                Qrant layihəsi çərçivəsində elmi məqsədlər üçün tələb olunan əsas vəsaitlər (elmi cihazlar, avadanlıq və qurğular, ləvazimat və qeyri-maddi aktivlər və s.), iş və xidmətlər layihənin ümumi büdcəsinin 30%-dən (vergi və rüsumlar daxil olmaqla), ezamiyyətlər isə 10%-dən artıq ola bilməz.
+                            </li>
+                        </ol>
+                    </div>
+                </section>
+                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
+                    <h2
+                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
+                        style={{ color: "rgb(20, 30, 79)" }}
+                    >
+                        Müraciət qaydası və vaxtı
+                    </h2>
+                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
+                        <p
+                            style={{
+                                fontSize: '0.875rem',
+                                textAlign: "left",
+                                maxWidth: '100%',
+                                color: "rgba(0, 0, 0, 0.6)",
+                                lineHeight: 1.6,
+                            }}
+                            className="max-w-full sm:max-w-[90%]"
+                        >
+                            Layihə təklifləri <span style={{ fontWeight: 600 }}>30 oktyabr 2025-ci il</span> tarixinədək AzTU-nun rəsmi &nbsp;
+                            <a href="http://e-grant.aztu.edu.az/signin" style={{ fontWeight: 600 }}>qrant portalı http://e-grant.aztu.edu.az/</a> &nbsp;
+                            vasitəsilə qəbul ediləcək.
+                            <br />
+                            Müraciətlər yalnız bu portal üzərindən həyata keçiriləcək. Qəbul edilmiş layihələr komissiya tərəfindən qiymətləndirildikdən sonra nəticələr elan olunacaq.
+                        </p>
+                    </div>
+                </section>
+                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
+                    <h2
+                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
+                        style={{ color: "rgb(20, 30, 79)" }}
+                    >
+                        Əlaqə
+                    </h2>
+                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
+                        <p
+                            style={{
+                                fontSize: '0.875rem',
+                                textAlign: "left",
+                                maxWidth: '100%',
+                                color: "rgba(0, 0, 0, 0.6)",
+                                lineHeight: 1.6,
+                            }}
+                            className="max-w-full sm:max-w-[90%]"
+                        >
+                            Əlavə məlumat üçün AzTU Tədqiqat və İnkişaf Departamenti ilə əlaqə saxlaya bilərsiniz: <br />
+                            Telefon: <span style={{ fontWeight: 600 }}>(+994 12) 538-33-83</span><br />
+                            Email: <a href="mailto:grant@aztu.edu.az"><span style={{ fontWeight: 600 }}>grant@aztu.edu.az</span></a><br />
+                            Ünvan: Azərbaycan Texniki Universiteti, Bakı, Azərbaycan<br />
+                        </p>
                     </div>
                 </section>
             </main>
