@@ -297,7 +297,7 @@ export default function IntroMain() {
                             className="max-w-full sm:max-w-[90%]"
                         >
                             Layihə təklifləri <span style={{ fontWeight: 600 }}>30 oktyabr 2025-ci il</span> tarixinədək AzTU-nun rəsmi &nbsp;
-                            <a href="http://e-grant.aztu.edu.az/signin" style={{ fontWeight: 600 }}>qrant portalı http://e-grant.aztu.edu.az/</a> &nbsp;
+                            <a href="http://e-grant.aztu.edu.az/signin" style={{ fontWeight: 600, color: "rgb(20, 30, 79)" }}>qrant portalı http://e-grant.aztu.edu.az/</a> &nbsp;
                             vasitəsilə qəbul ediləcək.
                             <br />
                             Müraciətlər yalnız bu portal üzərindən həyata keçiriləcək. Qəbul edilmiş layihələr komissiya tərəfindən qiymətləndirildikdən sonra nəticələr elan olunacaq.
@@ -323,8 +323,8 @@ export default function IntroMain() {
                             className="max-w-full sm:max-w-[90%]"
                         >
                             Əlavə məlumat üçün AzTU Tədqiqat və İnkişaf Departamenti ilə əlaqə saxlaya bilərsiniz: <br />
-                            Telefon: <span style={{ fontWeight: 600 }}>(+994 12) 538-33-83</span><br />
-                            Email: <a href="mailto:grant@aztu.edu.az"><span style={{ fontWeight: 600 }}>grant@aztu.edu.az</span></a><br />
+                            Telefon: <a href="telto:+994125383383"><span style={{ fontWeight: 600, color: "rgb(20, 30, 79)" }}>(+994 12) 538-33-83</span></a><br />
+                            Email: <a href="mailto:grant@aztu.edu.az"><span style={{ fontWeight: 600, color: "rgb(20, 30, 79)" }}>grant@aztu.edu.az</span></a><br />
                             Ünvan: Azərbaycan Texniki Universiteti, Bakı, Azərbaycan<br />
                         </p>
                     </div>

@@ -43,6 +43,7 @@ interface UserDetailsFormData {
     personal_email: string;
     work_email: string;
     image?: string;
+    institution_code?: string;
 }
 
 export default function UserDetails({ fin_kod }: { fin_kod: string | undefined | null }) {
@@ -54,6 +55,8 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
     ];
 
     const profileCompleted = useSelector((state: RootState) => state.auth.profileCompleted);
+
+    const [instituteName, setInstituteName] = useState("");
 
     const [formData, setFormData] = useState<UserDetailsFormData>({
         name: "",
@@ -239,6 +242,26 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
             work_email: prev.personal_email
         }));
     }, [formData.personal_email]);
+    useEffect(() => {
+        if (!user?.institution_code) return; // wait until user has institution_code
+
+        const getInstitution = async () => {
+            try {
+                const response = await apiClient.get(`/api/institution/${user.institution_code}`);
+                console.log(response);
+                if (response.data.status === 200) {
+                    setInstituteName(response.data.data);
+                } else if (response.data.status === 404) {
+                    setInstituteName("NOT FOUND");
+                }
+            } catch (error) {
+                console.error("Failed to fetch institution:", error);
+                setInstituteName("NOT FOUND");
+            }
+        };
+
+        getInstitution();
+    }, [user?.institution_code]);
 
     if (loading) {
         return (
@@ -247,6 +270,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
             </div>
         );
     };
+
 
     return (
         <>
@@ -295,7 +319,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Ad
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {user?.name || ""}
+                                            {user?.name}
                                         </p>
                                     </div>
 
@@ -320,7 +344,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Fin kod
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {userFinKod}
+                                            {user?.fin_kod}
                                         </p>
                                     </div>
                                     <div>
@@ -336,7 +360,11 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Cinsiyyət
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {user?.sex === "0" ? "Kişi" : "Qadın"}
+                                            {user?.sex !== undefined && user?.sex !== null
+                                                ? user.sex === "0"
+                                                    ? "Kişi"
+                                                    : "Qadın"
+                                                : ""}
                                         </p>
                                     </div>
                                     <div>
@@ -487,6 +515,14 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             {user?.work_email || ""}
                                         </p>
                                     </div>
+                                    <div>
+                                        <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                                            Müəssisə
+                                        </p>
+                                        <p className="text-sm font-medium text-gray-800 dark:text-white/90">
+                                            {instituteName ? instituteName : "sikdir"}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -502,35 +538,60 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                             <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-3">
                                 <div className="col-span-2 lg:col-span-1">
                                     <Label>Ad</Label>
-                                    <Input
+                                    {user?.name ? (
+                                        <Input
+                                            type="text"
+                                            name="name"
+                                            value={user?.name}
+                                            readOnly
+                                        />
+                                    ) : <Input
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
-                                    />
+                                    />}
                                 </div>
 
                                 <div className="col-span-2 lg:col-span-1">
                                     <Label>Soyad</Label>
-                                    <Input
-                                        type="text"
-                                        name="surname"
-                                        value={formData.surname}
-                                        onChange={handleChange}
-                                        required
-                                    />
+                                    {user?.surname ? (
+                                        <Input
+                                            type="text"
+                                            name="surname"
+                                            value={user?.surname}
+                                            readOnly
+                                        />
+                                    ) : (
+                                        <Input
+                                            type="text"
+                                            name="surname"
+                                            value={formData.surname}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    )}
                                 </div>
 
                                 <div className="col-span-2 lg:col-span-1">
                                     <Label>Ata adı</Label>
-                                    <Input
-                                        type="text"
-                                        name="father_name"
-                                        value={formData.father_name}
-                                        required
-                                        onChange={handleChange}
-                                    />
+                                    {user?.father_name ? (
+                                        <Input
+                                            type="text"
+                                            name="father_name"
+                                            value={user?.father_name}
+                                            readOnly
+                                        />
+                                    ) : (
+                                        <Input
+                                            type="text"
+                                            name="father_name"
+                                            value={formData.father_name}
+                                            required
+                                            onChange={handleChange}
+                                        />
+                                    )}
                                 </div>
 
                                 <div className="col-span-2 lg:col-span-1">

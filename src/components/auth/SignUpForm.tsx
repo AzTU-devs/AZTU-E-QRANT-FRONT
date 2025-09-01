@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Label from "../form/Label";
 import { Link } from "react-router";
 import Select from "../form/Select";
@@ -21,25 +21,58 @@ export default function SignUpForm() {
     { value: "1", label: "Layihə icraçısı" },
   ];
 
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [, setError] = useState("");
+  const [email, setEmail] = useState("");
   const [finKod, setFinKod] = useState("");
+  const [surname, setSurname] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [fatherName, setFatherName] = useState("");
+  const [insOptions, setInstOptions] = useState([]);
+  const [institutions, setInstitutions] = useState([]);
+  const [selectedInst, setSelectedInst] = useState("");
   const [inputFocussed, setInputFocussed] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
   const handleSelectChange = (value: string) => {
     setRole(value);
   };
 
+  useEffect(() => {
+    const fetchInstitutions = async () => {
+      try {
+        const response = await apiClient.get('/api/institutions');
+        setInstitutions(response.data.data);
+        const transformedOptions = response.data.data.map((institution: any) => ({
+          value: institution.institution_code.toString(),
+          label: institution.institution_name,
+        }));
+        setInstOptions(transformedOptions);
+      } catch (err) {
+        setError('Failed to fetch institutions');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInstitutions();
+  }, []);
+
+  console.log(institutions);
+
+  const instSelectChange = (value: string) => {
+    setSelectedInst(value);
+  }
+
   const userType = useSelector((state: RootState) => state.auth.userType);
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!finKod || !email || !password || !confirmPassword || !role) {
+    if (!finKod || !email || !password || !confirmPassword || !role || !name || !surname || !fatherName || !selectedInst) {
       Swal.fire("Xəta", "Zəhmət olmasa bütün sahələri doldurun!", "error");
       return;
     }
@@ -53,7 +86,11 @@ export default function SignUpForm() {
       password,
       user_type: userType,
       project_role: role,
-      email: email
+      email: email,
+      name: name,
+      surname: surname,
+      father_name: fatherName,
+      institution_code: selectedInst
     });
 
 
@@ -67,7 +104,11 @@ export default function SignUpForm() {
           password,
           user_type: userType,
           project_role: Number(role),
-          email: email
+          email: email,
+          name: name,
+          surname: surname,
+          father_name: fatherName,
+          institution_code: selectedInst
         });
 
         console.log(response);
@@ -98,6 +139,50 @@ export default function SignUpForm() {
           <div>
             <form onSubmit={handleSubmit}>
               <div className="space-y-5">
+                <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+                  {/* <!-- Fin Kod 1 --> */}
+                  <div className="sm:col-span-1">
+                    <Label>
+                      Ad<span className="text-error-500">*</span>
+                    </Label>
+                    <Input
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Ad"
+                      value={name}
+                      onChange={(e) => setName((e.target.value))}
+                    />
+                  </div>
+
+                  {/* <!-- Fin Kod 2 --> */}
+                  <div className="sm:col-span-1">
+                    <Label>
+                      Soyad<span className="text-error-500">*</span>
+                    </Label>
+                    <Input
+                      type="text"
+                      id="surname"
+                      name="surname"
+                      placeholder="Soyad"
+                      value={surname}
+                      onChange={(e) => setSurname((e.target.value))}
+                    />
+                  </div>
+                  <div className="sm:col-span-1">
+                    <Label>
+                      Ata adı<span className="text-error-500">*</span>
+                    </Label>
+                    <Input
+                      type="text"
+                      id="father_name"
+                      name="father_name"
+                      placeholder="Ata adı"
+                      value={fatherName}
+                      onChange={(e) => setFatherName((e.target.value))}
+                    />
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   {/* <!-- Fin Kod --> */}
                   <div className="sm:col-span-2">
@@ -132,7 +217,18 @@ export default function SignUpForm() {
                     />
                   </div>
                 </div>
-                {/* <!-- Email --> */}
+                <div className="relative mt-5">
+                  <Label>
+                    Müəssisə <span className="text-error-500">*</span>
+                  </Label>
+                  <Select
+                    options={insOptions}
+                    placeholder="Müəssisə seçin"
+                    onChange={instSelectChange}
+                    className="dark:bg-dark-900"
+                  />
+                </div>
+                {/* <!-- Password --> */}
                 <div>
                   <Label>
                     Şifrə <span className="text-error-500">*</span>

@@ -330,7 +330,7 @@ const AppSidebar: React.FC = () => {
                   }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Menu"
+                  "Əsas keçidlər"
                 ) : (
                   <HorizontaLDots className="size-6" />
                 )}
