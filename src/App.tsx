@@ -32,6 +32,10 @@ import ProjectDetailsPage from "./pages/ProjectDetailsPage/ProjectDetailsPage";
 import CollboratorProject from "./components/collaboratorProject/CollboratorProject";
 import ApproveWaitingUsersPage from "./pages/ApproveWaitingUsersPage/ApproveWaitingUsersPage";
 import ApproveWaitingCollaboratorsPage from "./pages/ApproveWaitingCollaboratorsPage/ApproveWaitingCollaboratorsPage";
+import ResetPasswordPage from "./pages/AuthPages/ResetPasswordPage";
+import OtpVerification from "./components/auth/OtpVerification";
+import OtpVerificationPage from "./pages/AuthPages/OtpVerification";
+import NewPasswordPage from "./pages/AuthPages/NewPassworPage";
 
 export default function App() {
   return (
@@ -121,6 +125,9 @@ function AppWithRouterWrapper() {
               )
           }
         />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/otp-verification/:finKod" element={<OtpVerificationPage />} />
+        <Route path="/reset-password/:token" element={<NewPasswordPage />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
