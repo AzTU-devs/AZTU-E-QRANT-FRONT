@@ -34,8 +34,6 @@ export default function ProjectDetails() {
     const [projectApproved, setProjectApproved] = useState<boolean | null>(null);
     const [submitted, setSubmitted] = useState<boolean | null>(null);
     const dispatch = useDispatch();
-    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
-    const isAfterDeadline = new Date() > new Date(deadline);
 
     useEffect(() => {
         if (fin_kod) {
@@ -71,6 +69,28 @@ export default function ProjectDetails() {
     }, [fin_kod]);
 
     const handleApprove = async () => {
+        if (
+            !(projectName?.trim()) ||
+            !(projectGoal?.trim()) ||
+            !(projectAnnotation?.trim()) ||
+            !(projectKeyWords?.trim()) ||
+            !(projectScientificIdea?.trim()) ||
+            !(projectStructure?.trim()) ||
+            !(projectCharacterize?.trim()) ||
+            !(projectMonitoring?.trim()) ||
+            !(projectEvaluation?.trim()) ||
+            !(projectRequirements?.trim()) ||
+            !(prioritet?.trim())
+        ) {
+            await Swal.fire({
+                icon: 'warning',
+                title: 'Diqqət!',
+                text: 'Layihəni təsdiqləmək üçün bütün xanalari doldurun.',
+                confirmButtonText: 'Bağla'
+            });
+            return;
+        }
+
         try {
             const response = await apiClient.post('/api/approve_project', {
                 fin_kod,
@@ -189,7 +209,7 @@ export default function ProjectDetails() {
                             setCollaboratorLimit(value);
                             postProjectField('collaborator_limit', String(value));
                         }}
-                        disabled={!!submitted || isAfterDeadline}
+                        disabled={!!submitted}
                     />
                 </div>
                 <div style={{
@@ -206,7 +226,7 @@ export default function ProjectDetails() {
                             setMaxSmetaExpense(value);
                             postProjectField('max_smeta_amount', String(value));
                         }}
-                        disabled={!!submitted || isAfterDeadline}
+                        disabled={!!submitted}
                     />
                 </div>
             </div>
@@ -224,7 +244,7 @@ export default function ProjectDetails() {
                                 postProjectField('priotet', value || "");
                             }}
                             className='w-[100%]'
-                            disabled={!!submitted || isAfterDeadline}
+                            disabled={!!submitted}
                         />
                     </div>
                 </div>
@@ -235,59 +255,59 @@ export default function ProjectDetails() {
                     <div className='w-[100%]'>
                         <TextArea
                             value={projectName}
-                            placeholder='Burada layihənin adı qısa aydın və layihənin məzmununu dolğun şəklində əks etdirilir'
+                            placeholder='Layihənin adı qısa aydın və layihənin məzmununu dolğun şəklində əks etdirməlidir'
                             onChange={(value) => {
                                 setProjectName(value)
                                 postProjectField('project_name', value)
                             }}
                             rows={6}
                             className='w-[100%]'
-                            disabled={!!submitted || isAfterDeadline}
+                            disabled={!!submitted}
                         />
                     </div>
                 </div>
             </div>
             <div className='mt-[20px]'>
-                <Label className='mb-[10px]'>Layihənin məqsədi</Label>
+                <Label className='mb-[10px]'>Layihənin məqsədi, qarşıya qoyulan məsələlərin, aktuallığının əsaslandırılması (2-5 səhifə)</Label>
                 <TextArea
                     value={projectGoal}
-                    placeholder='Burada: Layihənin məqsədi ifadə edilir. \n Layihədə həllinə çalışılan problem (məsələ) təsvir olunur. \n Problemin elmi-tədqiqatın inkişafı üçün aktual olduğu əsaslandırılır'
+                    placeholder='Layihənin məqsədini ifadə edin. Layihədə həllinə çalışmaq istədiyiniz problemi (məsələni) təsvir edin. Problemin elmi-tədqiqatın inkişafı üçün aktual olduğunu əsaslandırın.'
                     onChange={(value) => {
                         setProjectGoal(value)
                         postProjectField('project_purpose', value)
                     }}
                     rows={6}
-                    disabled={!!submitted || isAfterDeadline}
+                    disabled={!!submitted}
                 />
             </div>
             <div className='mt-[20px]'>
-                <Label className='mb-[10px]'>Layihənin annotasiyası</Label>
+                <Label className='mb-[10px]'>Layihənin annotasiyası (0,5-1 səhifə)</Label>
                 <TextArea
                     value={projectAnnotation}
-                    placeholder='Burada layihənin qısa, dolğun təsviri verilir.'
+                    placeholder='Layihənin annotasiyası'
                     onChange={(value) => {
                         setProjectAnnotation(value)
                         postProjectField('project_annotation', value)
                     }}
                     rows={6}
-                    disabled={!!submitted || isAfterDeadline}
+                    disabled={!!submitted}
                 />
             </div>
             <div className='mt-[20px]'>
-                <Label className='mb-[10px]'>Layihə üzrə açar sözlər</Label>
+                <Label className='mb-[10px]'>Layihənin məzmununu tam əks etdirən açar sözlər</Label>
                 <TextArea
                     value={projectKeyWords}
-                    placeholder='Burada layihənin məzmununu tam əks etdirən açar sözlər verilir'
+                    placeholder='Layihədə əsas açar sözləri qeyd edin.'
                     onChange={(value) => {
                         setProjectKeyWords(value)
                         postProjectField('project_key_words', value)
                     }}
                     rows={6}
-                    disabled={!!submitted || isAfterDeadline}
+                    disabled={!!submitted}
                 />
             </div>
             <div className='mt-[20px]'>
-                <Label className='mb-[10px]'>Layihənin elmi ideyası</Label>
+                <Label className='mb-[10px]'>Layihənin elmi ideyası. (1-2 səhifə)</Label>
                 <TextArea
                     value={projectScientificIdea}
                     placeholder='Burada layihənin əsas elmi konsepsiyası ( layihənin elmi əsaslarını, nəzəriyyə və metodologiyasını izah edən, onun hansı elmi problemə cavab verdiyini və bu problemin necə həll ediləcəyini əsaslandıran qısa və konkret təsvir hissəsi) qeyd olunur.'
@@ -296,63 +316,63 @@ export default function ProjectDetails() {
                         postProjectField('project_scientific_idea', value)
                     }}
                     rows={6}
-                    disabled={!!submitted || isAfterDeadline}
+                    disabled={!!submitted}
 
                 />
             </div>
             <div className='mt-[20px]'>
-                <Label className='mb-[10px]'>Layihə üzrə tədqiqatın strukturu</Label>
+                <Label className='mb-[10px]'>Layihə üzrə tədqiqatın strukturu (1-2 səhifə)</Label>
                 <TextArea
                     value={projectStructure}
-                    placeholder='Burada layihənin iş planı, mərhələləri və tədqiqat üsulları göstərilir'
+                    placeholder='Burada layihənin iş planı, mərhələləri və tədqiqat üsulları göstərilməlidir'
                     onChange={(value) => {
                         setProjectStructure(value)
                         postProjectField('project_structure', value)
                     }}
                     rows={6}
-                    disabled={!!submitted || isAfterDeadline}
+                    disabled={!!submitted}
 
                 />
             </div>
             <div className='mt-[20px]'>
-                <Label className='mb-[10px]'>Layihə elmi kollektivinin xarakterizə edilməsi</Label>
+                <Label className='mb-[10px]'>Elmi kollektivin xarakterizə edilməsi</Label>
                 <TextArea
                     value={projectCharacterize}
-                    placeholder='Burada layihə rəhbəri və icraçılarının ixtisasları və onların layihə mövzusuna uyğunluq dərəcəsi; əvvəllər həmin sahədə tədqiqat aparmaq təcrübəsi ölkədaxili, regional və beynəlxalq qrant müsabiqələri çərçivəsində; layihə mövzusu üzrə iştirakçıların əsas elmi əsərləri, 8-dan artıq olmamaq şərtilə) göstərilir.'
+                    placeholder='Layihə rəhbəri və icraçılarının ixtisasları və onların layihə mövzusuna uyğunluq dərəcəsi; əvvəllər həmin sahədə tədqiqat aparmaq təcrübəsi ölkədaxili, regional və beynəlxalq qrant müsabiqələri çərçivəsində; layihə mövzusu üzrə iştirakçıların əsas elmi əsərləri, 8-dan artıq olmamaq şərtilə'
                     onChange={(value) => {
                         setProjectCharacterize(value)
                         postProjectField('team_characterization', value)
                     }}
                     rows={6}
-                    disabled={!!submitted || isAfterDeadline}
+                    disabled={!!submitted}
 
                 />
             </div>
             <div className='mt-[20px]'>
-                <Label className='mb-[10px]'>Layihənin monitorinqi və davamlığı</Label>
+                <Label className='mb-[10px]'>Layihənin monitorinqi və davamlılığı (1-2 səhifə)</Label>
                 <TextArea
                     value={projectMonitoring}
-                    placeholder='Burada layihənin icrası və nəticələri haqqında ictimaiyyətin məlumatlandırılması və informasiya əldə edilməsi yollarını göstərilr. Layihənin icrası başa çatdıqdan sonra onun davamlılığının təmin olunması istiqamətində görəcələcək işlər qeyd olunur.'
+                    placeholder='Layihənin icrası və nəticələri haqqında ictimaiyyətin məlumatlandırılması və informasiya əldə edilməsi yollarını göstərin. Layihənin icrası başa çatdıqdan sonra onun davamlılığının təmin olunması istiqamətində görəcəyiniz işləri qeyd edin.'
                     onChange={(value) => {
                         setProjectMonitoring(value)
                         postProjectField('project_monitoring', value)
                     }}
                     rows={6}
-                    disabled={!!submitted || isAfterDeadline}
+                    disabled={!!submitted}
 
                 />
             </div>
             <div className='mt-[20px]'>
-                <Label className='mb-[10px]'>Layihənin qiymətləndirilməsi və hesabatlılığı </Label>
+                <Label className='mb-[10px]'>Layihənin qiymətləndirilməsi və hesabatlılığı (1-2 səhifə)</Label>
                 <TextArea
                     value={projectEvaluation}
-                    placeholder='Burada layihənin qiymətləndirilməsi meyarlarını və hesabatlılıq formaları qeyd olunur. Nail olunmuş dəyişikliyin hansı meyarlar əsasında müəyyənləşdiriləcəyi izah olunur'
+                    placeholder='Layihənin qiymətləndirilməsi meyarlarını və hesabatlılıq formalarını qeyd edin. Nail olunmuş dəyişikliyin hansı meyarlar əsasında müəyyənləşdiriləcəyini izah edin.'
                     onChange={(value) => {
                         setProjectEvaluation(value)
                         postProjectField('project_assessment', value)
                     }}
                     rows={6}
-                    disabled={!!submitted || isAfterDeadline}
+                    disabled={!!submitted}
 
                 />
             </div>
@@ -360,13 +380,13 @@ export default function ProjectDetails() {
                 <Label className='mb-[10px]'>Layihənin tələbləri</Label>
                 <TextArea
                     value={projectRequirements}
-                    placeholder='Burada layihə üzrə elmi-tədqiqat işinin yerinə yetirilməsi üçün lazım olan avadanlıq, cihaz və qurğulardan mövcud olanlar haqqında məlumat, əlavə lazım olanlar əsaslandırılır.'
+                    placeholder='Layihə üzrə elmi-tədqiqat işinin yerinə yetirilməsi üçün lazım olan avadanlıq, cihaz və qurğulardan mövcud olanlar haqqında məlumat, əlavə lazım olanların əsaslandırılması'
                     onChange={(value) => {
                         setProjectRequirements(value)
                         postProjectField('project_requirements', value)
                     }}
                     rows={6}
-                    disabled={!!submitted || isAfterDeadline}
+                    disabled={!!submitted}
                 />
             </div>
             {projectRole === 0 ? (

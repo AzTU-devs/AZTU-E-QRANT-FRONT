@@ -45,8 +45,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
-    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
-    const isAfterDeadline = new Date() > new Date(deadline);
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editForm, setEditForm] = useState<Partial<RentItem>>({});
 
@@ -74,42 +72,59 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
         }
     }, [location.pathname]);
 
-    const handleSubmit = async () => {
-        try {
-            const response = await apiClient.post("/api/rent", {
-                project_code: projectCode,
-                rent_area: rentArea,
-                unit_of_measure: unitOfMeasure,
-                unit_price: unitPrice,
-                quantity,
-                duration,
-                total_amount: totalAmount,
-            });
+const handleSubmit = async () => {
+    // Validation before sending request
+    if (
+        !rentArea.trim() ||
+        !unitOfMeasure.trim() ||
+        Number(unitPrice) <= 0 ||
+        Number(quantity) <= 0 ||
+        Number(duration) <= 0
+    ) {
+        await Swal.fire({
+            icon: "warning",
+            title: "Diqqət!",
+            text: "Bütün xanalari doldurun və qiymət/miqdarı/müddəti 0-dan böyük daxil edin.",
+            confirmButtonText: "Bağla"
+        });
+        return;
+    }
 
-            if (response.status === 201) {
-                await Swal.fire({
-                    icon: "success",
-                    title: "Uğurlu!",
-                    text: "Məlumat uğurla yadda saxlanıldı",
-                });
-                window.location.reload();
-            } else {
-                await Swal.fire({
-                    icon: "error",
-                    title: "Xəta!",
-                    text: "Xəta baş verdi",
-                });
-                window.location.reload();
-            }
-        } catch (error: any) {
+    try {
+        const response = await apiClient.post("/api/rent", {
+            project_code: projectCode,
+            rent_area: rentArea,
+            unit_of_measure: unitOfMeasure,
+            unit_price: unitPrice,
+            quantity,
+            duration,
+            total_amount: totalAmount,
+        });
+
+        if (response.status === 201) {
+            await Swal.fire({
+                icon: "success",
+                title: "Uğurlu!",
+                text: "Məlumat uğurla yadda saxlanıldı",
+            });
+            window.location.reload();
+        } else {
             await Swal.fire({
                 icon: "error",
                 title: "Xəta!",
-                text: "Sorğu alınmadı",
+                text: "Xəta baş verdi",
             });
             window.location.reload();
         }
-    };
+    } catch (error: any) {
+        await Swal.fire({
+            icon: "error",
+            title: "Xəta!",
+            text: "Sorğu alınmadı",
+        });
+        window.location.reload();
+    }
+};
 
     const handleDelete = async (projectCode: number, id: number) => {
         try {
@@ -300,7 +315,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("rent_area", e.target.value)
                                                 }
                                                 placeholder="Ərazi"
-                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.rent_area
@@ -315,7 +329,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("unit_of_measure", e.target.value)
                                                 }
                                                 placeholder="Ölçü vahidi"
-                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.unit_of_measure
@@ -330,7 +343,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("unit_price", Number(e.target.value))
                                                 }
                                                 placeholder="Qiymət"
-                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.unit_price
@@ -345,7 +357,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("quantity", Number(e.target.value))
                                                 }
                                                 placeholder="Miqdar"
-                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.quantity
@@ -360,7 +371,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     handleEditChange("duration", Number(e.target.value))
                                                 }
                                                 placeholder="Müddət"
-                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             rent.duration
@@ -382,7 +392,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                         onClick={handleSaveEdit}
                                                         title="Yadda saxla"
                                                         className="bg-green-500 p-1 rounded text-white"
-                                                        disabled={isAfterDeadline}
 
                                                     >
                                                         <SaveIcon />
@@ -391,7 +400,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                         onClick={handleCancelEdit}
                                                         title="Ləğv et"
                                                         className="bg-red-500 p-1 rounded text-white"
-                                                        disabled={isAfterDeadline}
 
                                                     >
                                                         <CloseIcon />
@@ -402,7 +410,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                     <button
                                                         onClick={() => handleEditClick(rent)}
                                                         title="Redaktə et"
-                                                        disabled={isAfterDeadline}
                                                         className="bg-blue-500 p-1 rounded text-white"
                                                     >
                                                         <EditIcon />
@@ -411,7 +418,6 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
                                                         onClick={() => handleDelete(rent.project_code, rent.id!)}
                                                         title="Sil"
                                                         className="bg-red-500 p-1 rounded text-white"
-                                                        disabled={isAfterDeadline}
 
                                                     >
                                                         <DeleteIcon />

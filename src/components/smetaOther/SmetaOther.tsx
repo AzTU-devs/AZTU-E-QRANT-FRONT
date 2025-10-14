@@ -46,8 +46,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
     const location = useLocation();
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
-    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
-    const isAfterDeadline = new Date() > new Date(deadline);
 
     const [viewOnly, setViewOnly] = useState<boolean>(false);
 
@@ -72,6 +70,23 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
     }, [projectCode]);
 
     const handleSubmit = async () => {
+        // Validation before sending request
+        if (
+            !expensesName.trim() ||
+            !unitOfMeasure.trim() ||
+            Number(unitPrice) <= 0 ||
+            Number(quantity) <= 0 ||
+            Number(duration) <= 0
+        ) {
+            await Swal.fire({
+                icon: "warning",
+                title: "Diqqət!",
+                text: "Bütün xanalari doldurun və qiymət/miqdarı/müddəti 0-dan böyük daxil edin.",
+                confirmButtonText: "Bağla"
+            });
+            return;
+        }
+
         try {
             const response = await apiClient.post("/api/other_exp", {
                 project_code: projectCode,
@@ -311,7 +326,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                         handleEditChange("expenses_name", e.target.value)
                                                     }
                                                     placeholder="Xərc maddəsinin adı"
-                                                    disabled={isAfterDeadline}
                                                 />
                                             ) : (
                                                 item.expenses_name
@@ -326,7 +340,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                         handleEditChange("unit_of_measure", e.target.value)
                                                     }
                                                     placeholder="Ölçü vahidi"
-                                                    disabled={isAfterDeadline}
                                                 />
                                             ) : (
                                                 item.unit_of_measure
@@ -340,7 +353,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                     onChange={(e) =>
                                                         handleEditChange("unit_price", Number(e.target.value))
                                                     }
-                                                    disabled={isAfterDeadline}
                                                     placeholder="Vahid qiyməti"
                                                 />
                                             ) : (
@@ -355,7 +367,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                     onChange={(e) =>
                                                         handleEditChange("quantity", Number(e.target.value))
                                                     }
-                                                    disabled={isAfterDeadline}
                                                     placeholder="Miqdar"
                                                 />
                                             ) : (
@@ -370,7 +381,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                     onChange={(e) =>
                                                         handleEditChange("duration", Number(e.target.value))
                                                     }
-                                                    disabled={isAfterDeadline}
                                                     placeholder="Müddət"
                                                 />
                                             ) : (
@@ -392,7 +402,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                         <button
                                                             onClick={handleSaveEdit}
                                                             title="Yadda saxla"
-                                                            disabled={isAfterDeadline}
                                                             className="bg-green-500 p-1 rounded text-white"
                                                         >
                                                             <SaveIcon />
@@ -400,7 +409,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                         <button
                                                             onClick={handleCancelEdit}
                                                             title="Ləğv et"
-                                                            disabled={isAfterDeadline}
                                                             className="bg-red-500 p-1 rounded text-white"
                                                         >
                                                             <CloseIcon />
@@ -411,7 +419,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                         <button
                                                             onClick={() => handleEditClick(item)}
                                                             title="Redaktə et"
-                                                            disabled={isAfterDeadline}
                                                             className="bg-blue-500 p-1 rounded text-white"
                                                         >
                                                             <EditIcon />
@@ -422,7 +429,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                                                     handleDelete(Number(projectCode), item.id);
                                                             }}
                                                             title="Sil"
-                                                            disabled={isAfterDeadline}
                                                             className="bg-red-500 p-1 rounded text-white"
                                                         >
                                                             <DeleteIcon />
@@ -441,7 +447,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                             type="text"
                                             value={expensesName}
                                             onChange={(e) => setExpensesName(e.target.value)}
-                                            disabled={isAfterDeadline}
                                             placeholder="Xərc maddəsinin adı"
                                         />
                                     </TableCell>
@@ -450,7 +455,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                             type="text"
                                             value={unitOfMeasure}
                                             onChange={(e) => setUnitOfMeasure(e.target.value)}
-                                            disabled={isAfterDeadline}
                                             placeholder="Ölçü vahidi"
                                         />
                                     </TableCell>
@@ -459,7 +463,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                             type="number"
                                             value={unitPrice}
                                             onChange={(e) => setUnitPrice(Number(e.target.value))}
-                                            disabled={isAfterDeadline}
                                             placeholder="Vahid qiyməti"
                                         />
                                     </TableCell>
@@ -468,7 +471,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                             type="number"
                                             value={quantity}
                                             onChange={(e) => setQuantity(Number(e.target.value))}
-                                            disabled={isAfterDeadline}
                                             placeholder="Miqdar"
                                         />
                                     </TableCell>
@@ -477,7 +479,6 @@ export default function SmetaOther({ projectCode }: { projectCode: Number | null
                                             type="number"
                                             value={duration}
                                             onChange={(e) => setDuration(Number(e.target.value))}
-                                            disabled={isAfterDeadline}
                                             placeholder="Müddət"
                                         />
                                     </TableCell>

@@ -58,8 +58,6 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
     const projectCodeRedux = useSelector((state: RootState) => state.auth.projectCode);
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
-    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
-    const isAfterDeadline = new Date() > new Date(deadline);
 
     useEffect(() => {
         if (location.pathname.startsWith("/project-view/")) {
@@ -277,14 +275,12 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                             value={ownerInputs.salary}
                                             onChange={(e) => setOwnerInputs({ ...ownerInputs, salary: e.target.value })}
                                             autoFocus
-                                            disabled={isAfterDeadline}
                                         />
                                     ) : !owner?.salary?.salary_per_month ? (
                                         <Input
                                             placeholder="Xidmət haqqı"
                                             value={String(salaryPerMonth ?? "")}
                                             onChange={(e) => setSalaryPerMonth(+e.target.value)}
-                                            disabled={isAfterDeadline}
                                             autoFocus
                                         />
                                     ) : owner?.salary?.salary_per_month}
@@ -294,14 +290,12 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                         <Input
                                             placeholder="Müddət"
                                             value={ownerInputs.months}
-                                            disabled={isAfterDeadline}
                                             onChange={(e) => setOwnerInputs({ ...ownerInputs, months: e.target.value })}
                                         />
                                     ) : !owner?.salary?.months ? (
                                         <Input
                                             placeholder="Müddət"
                                             value={String(months ?? "")}
-                                            disabled={isAfterDeadline}
                                             onChange={(e) => setMonths(+e.target.value)}
                                         />
                                     ) : owner?.salary?.months}
@@ -385,7 +379,6 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                             {isEditing && !viewOnly ? (
                                                 <Input
                                                     placeholder="Xidmət haqqı"
-                                                    disabled={isAfterDeadline}
                                                     value={collabInputs[finKod]?.salary || ""}
                                                     onChange={(e) =>
                                                         setCollabInputs({
@@ -405,7 +398,6 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                             ) : (
                                                 <Input
                                                     placeholder="Xidmət haqqı"
-                                                    disabled={isAfterDeadline}
                                                     value={collabInputs[finKod]?.salary || ""}
                                                     onChange={(e) =>
                                                         setCollabInputs({
@@ -424,7 +416,6 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                             {isEditing && !viewOnly ? (
                                                 <Input
                                                     placeholder="Müddət"
-                                                    disabled={isAfterDeadline}
                                                     value={collabInputs[finKod]?.months || ""}
                                                     onChange={(e) =>
                                                         setCollabInputs({
@@ -441,7 +432,6 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                                             ) : (
                                                 <Input
                                                     placeholder="Müddət"
-                                                    disabled={isAfterDeadline}
                                                     value={collabInputs[finKod]?.months || ""}
                                                     onChange={(e) =>
                                                         setCollabInputs({

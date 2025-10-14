@@ -1,4 +1,5 @@
 import jsPDF from "jspdf";
+import Swal from "sweetalert2";
 import html2canvas from "html2canvas";
 import Button from "../ui/button/Button";
 import { useRef, useState } from "react";
@@ -16,52 +17,97 @@ import CircularProgress from "@mui/material/CircularProgress";
 import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
 
 export default function MyProject() {
-  const projectCode = useSelector((state: RootState) => state.auth.projectCode);
-  const printRef = useRef<HTMLDivElement>(null);
-  const [isExporting, setIsExporting] = useState(false);
+    const projectCode = useSelector((state: RootState) => state.auth.projectCode);
+    const printRef = useRef<HTMLDivElement>(null);
+    const [isExporting, setIsExporting] = useState(false);
 
-  const handleDownloadPdf = async () => {
-    console.log("PDF download started");
-    setIsExporting(true);
-    console.log("Exporting flag set to true");
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    //   const handleDownloadPdf = async () => {
+    //     console.log("PDF download started");
+    //     setIsExporting(true);
+    //     console.log("Exporting flag set to true");
+    //     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    const element = printRef.current;
-    console.log("Checking printRef element:", element);
-    if (!element) return;
+    //     const element = printRef.current;
+    //     console.log("Checking printRef element:", element);
+    //     if (!element) return;
 
-    const canvas = await html2canvas(element, { scale: 2 });
-    console.log("Canvas created with width:", canvas.width, "and height:", canvas.height);
-    const imgData = canvas.toDataURL("image/png");
-    console.log("Image data generated for PDF");
+    //     const canvas = await html2canvas(element, { scale: 2 });
+    //     console.log("Canvas created with width:", canvas.width, "and height:", canvas.height);
+    //     const imgData = canvas.toDataURL("image/png");
+    //     console.log("Image data generated for PDF");
 
-    const pdf = new jsPDF("p", "mm", "a4");
-    console.log("jsPDF instance created");
-    const imgWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    //     const pdf = new jsPDF("p", "mm", "a4");
+    //     console.log("jsPDF instance created");
+    //     const imgWidth = pdf.internal.pageSize.getWidth();
+    //     const pageHeight = pdf.internal.pageSize.getHeight();
+    //     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    let heightLeft = imgHeight;
-    let position = 0;
+    //     let heightLeft = imgHeight;
+    //     let position = 0;
 
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+    //     pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    //     heightLeft -= pageHeight;
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-    }
+    //     while (heightLeft > 0) {
+    //       position = heightLeft - imgHeight;
+    //       pdf.addPage();
+    //       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    //       heightLeft -= pageHeight;
+    //     }
 
-    pdf.save("layihe-detallari.pdf");
-    console.log("PDF saved as 'layihe-detallari.pdf'");
-    console.log("Exporting flag set to false");
-    setIsExporting(false);
-  };
+    //     pdf.save("layihe-detallari.pdf");
+    //     console.log("PDF saved as 'layihe-detallari.pdf'");
+    //     console.log("Exporting flag set to false");
+    //     setIsExporting(false);
+    //   };
+    const handleDownloadPdf = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/project-pdf/${projectCode}`, {
+                method: "GET",
+            });
 
-  return (
-    <>
+            if (!response.ok) {
+                throw new Error("Failed to download PDF");
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `project_${projectCode}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            Swal.fire("Xəta baş verdi!", "PDF yüklənə bilmədi", "error");
+        }
+    };
+    const handleDownloadExcel = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/project-excel/${projectCode}`, {
+                method: "GET",
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to download Excel");
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `project_${projectCode}.xlsx`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            Swal.fire("Xəta baş verdi!", "Excel yüklənə bilmədi", "error");
+        }
+    };
+    return (
+        <>
             <style>{`
         /* Safe colors for export only */
         .export-safe * {
@@ -77,7 +123,12 @@ export default function MyProject() {
             >
                 {isExporting ? <CircularProgress size={20} color="inherit" /> : "PDF yüklə"}
             </Button>
-
+            <button
+                onClick={handleDownloadExcel}
+                className="mb-4 ml-5 px-4 py-2 bg-blue-600 text-white rounded"
+            >
+                Excel ixrac edin
+            </button>
             <div
                 ref={printRef}
                 className={isExporting ? "export-safe" : ""}
@@ -114,5 +165,5 @@ export default function MyProject() {
                 )}
             </div>
         </>
-  );
+    );
 }

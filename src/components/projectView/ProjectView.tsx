@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import MainSmeta from "../mainSmeta/MainSmeta";
 import SmetaOther from "../smetaOther/SmetaOther";
@@ -7,10 +9,10 @@ import Collaborators from "../collaborators/Collaborators";
 import SmetaServices from "../smetaServices/SmetaServices";
 import SmetaExpenses from "../smetaExpenses/SmetaExpenses";
 import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
-import { useRef } from "react";
 
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import apiClient from "../../util/apiClient";
 
 export default function ProjectView() {
   const { projectCode } = useParams<{ projectCode: string }>();
@@ -51,9 +53,56 @@ export default function ProjectView() {
     });
   };
 
-  // Safe HEX colors replacing Tailwind text-gray-700 and dark:text-gray-400:
+  const handleDownloadPdf = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/project-pdf/${projectCode}`, {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download PDF");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `project_${projectCode}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      Swal.fire("Xəta baş verdi!", "PDF yüklənə bilmədi", "error");
+    }
+  };
+
+  const handleDownloadExcel = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/project-excel/${projectCode}`, {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to download Excel");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `project_${projectCode}.xlsx`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      Swal.fire("Xəta baş verdi!", "Excel yüklənə bilmədi", "error");
+    }
+  };
+ 
   const headingStyle = {
-    color: "#4B5563", // hex for Tailwind gray-700
+    color: "#4B5563",
     marginBottom: "20px",
     textAlign: "center" as const,
   };
@@ -61,10 +110,17 @@ export default function ProjectView() {
   return (
     <>
       <button
-        onClick={generatePDF}
+        onClick={handleDownloadPdf}
         className="mb-4 px-4 py-2 bg-blue-600 text-white rounded"
       >
-        Download PDF
+        PDF yükləyin
+      </button>
+
+      <button
+        onClick={handleDownloadExcel}
+        className="mb-4 ml-5 px-4 py-2 bg-blue-600 text-white rounded"
+      >
+        Excel ixrac edin
       </button>
 
       <div ref={contentRef}>

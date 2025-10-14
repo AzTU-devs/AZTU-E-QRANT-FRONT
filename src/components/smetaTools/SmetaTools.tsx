@@ -45,8 +45,6 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
-    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
-    const isAfterDeadline = new Date() > new Date(deadline);
 
     console.log('fin_kod:', fin_kod);
     console.log('projectCode:', projectCode);
@@ -66,34 +64,51 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
     }, []);
 
     const handleSaveSubject = async () => {
-        try {
-            await apiClient.post('/api/add-subject', {
-                project_code: projectCode,
-                fin_code: fin_kod,
-                equipment_name: equipmentName,
-                unit_of_measure: unit,
-                price: Number(price),
-                quantity: Number(quantity)
-            });
+    if (
+        !equipmentName.trim() ||
+        !unit.trim() ||
+        !price.trim() ||
+        !quantity.trim() ||
+        Number(price) <= 0 ||
+        Number(quantity) <= 0
+    ) {
+        await Swal.fire({
+            icon: 'warning',
+            title: 'Diqqət!',
+            text: 'Bütün xananı doldurun və qiymət/miqdarı 0-dan böyük daxil edin.',
+            confirmButtonText: 'Bağla'
+        });
+        return;
+    }
 
-            await Swal.fire({
-                icon: 'success',
-                title: 'Əlavə edildi!',
-                text: 'Məlumat uğurla yadda saxlanıldı',
-                confirmButtonText: 'OK'
-            });
+    try {
+        await apiClient.post('/api/add-subject', {
+            project_code: projectCode,
+            fin_code: fin_kod,
+            equipment_name: equipmentName,
+            unit_of_measure: unit,
+            price: Number(price),
+            quantity: Number(quantity)
+        });
 
-            window.location.reload();
-        } catch (error) {
-            console.error("Error saving subject:", error);
-            await Swal.fire({
-                icon: 'error',
-                title: 'Xəta!',
-                text: 'Məlumatı yadda saxlamaq mümkün olmadı',
-                confirmButtonText: 'Bağla'
-            });
-        }
-    };
+        await Swal.fire({
+            icon: 'success',
+            title: 'Əlavə edildi!',
+            text: 'Məlumat uğurla yadda saxlanıldı',
+            confirmButtonText: 'OK'
+        });
+
+        window.location.reload();
+    } catch (error) {
+        console.error("Error saving subject:", error);
+        await Swal.fire({
+            icon: 'error',
+            title: 'Xəta!',
+            text: 'Məlumatı yadda saxlamaq mümkün olmadı',
+            confirmButtonText: 'Bağla'
+        });
+    }
+};
 
     const handleDeleteSubject = async (id: number) => {
         try {
@@ -219,16 +234,16 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
                             {projectRole === 0 && !viewOnly && pathname === "/project-smeta-tools" ? (
                                 <TableRow>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Input placeholder="Avadanlıq" value={equipmentName} onChange={(e) => setEquipmentName(e.target.value)} disabled={isAfterDeadline}/>
+                                        <Input placeholder="Avadanlıq" value={equipmentName} onChange={(e) => setEquipmentName(e.target.value)}/>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Input placeholder="Ölçü vahidi" value={unit} onChange={(e) => setUnit(e.target.value)} disabled={isAfterDeadline}/>
+                                        <Input placeholder="Ölçü vahidi" value={unit} onChange={(e) => setUnit(e.target.value)}/>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Input placeholder="Qiymət" value={price} onChange={(e) => setPrice(e.target.value)} disabled={isAfterDeadline}/>
+                                        <Input placeholder="Qiymət" value={price} onChange={(e) => setPrice(e.target.value)}/>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        <Input placeholder="Miqdar" value={quantity} onChange={(e) => setQuantity(e.target.value)} disabled={isAfterDeadline}/>
+                                        <Input placeholder="Miqdar" value={quantity} onChange={(e) => setQuantity(e.target.value)}/>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         {+price * +quantity}

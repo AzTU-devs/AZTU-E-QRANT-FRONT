@@ -23,10 +23,12 @@ interface Project {
     project_key_words?: string;
     project_monitoring?: string;
     priotet?: string;
+    priotet_name?: string;
 }
 
 export default function ProjectDetailsView({ projectCode }: { projectCode: Number | null }) {
     const [loading, setLoading] = useState(true);
+    const [prioritetText, setPrioritetText] = useState("");
 
     const [project, setProject] = useState<Project>({
         project_name: "",
@@ -41,7 +43,8 @@ export default function ProjectDetailsView({ projectCode }: { projectCode: Numbe
         project_deadline: "",
         project_key_words: "",
         project_monitoring: "",
-        priotet: ""
+        priotet: "",
+        priotet_name: ""
     })
     useEffect(() => {
         const fetchProjects = async () => {
@@ -65,6 +68,8 @@ export default function ProjectDetailsView({ projectCode }: { projectCode: Numbe
                 </div>
             );
         }
+    
+        console.log(`project: ${project}`);
 
     return (
         <>
@@ -91,7 +96,7 @@ export default function ProjectDetailsView({ projectCode }: { projectCode: Numbe
                                         Prioritet
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 flex justify-end items-end">
-                                        {project.priotet}
+                                        {project?.priotet_name}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>

@@ -123,7 +123,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
         console.log('FormData values:', formData);
 
         const requiredFields: (keyof UserDetailsFormData)[] = [
-            "name", "surname", "father_name", "personal_id_number", "sex", "born_place",
+            "personal_id_number", "sex", "born_place",
             "living_location", "citizenship", "work_place", "department", "duty", "main_education",
             "additonal_education", "scientific_degree", "scientific_name",
             "scientific_name_date",
@@ -243,7 +243,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
         }));
     }, [formData.personal_email]);
     useEffect(() => {
-        if (!user?.institution_code) return; // wait until user has institution_code
+        if (!user?.institution_code) return;
 
         const getInstitution = async () => {
             try {
@@ -477,7 +477,8 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Lahiyə rolu
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {projectRole === 0 ? "Layihə rəhbəri" : "Layihə icraçısı"}
+                                            {/* {projectRole === 0 ? "Layihə rəhbəri" : "Layihə icraçısı"} */}
+                                            {user?.work_location}
                                         </p>
                                     </div>
 
@@ -520,7 +521,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                             Müəssisə
                                         </p>
                                         <p className="text-sm font-medium text-gray-800 dark:text-white/90">
-                                            {instituteName ? instituteName : "sikdir"}
+                                            {instituteName ? instituteName : "Mövcud deyil"}
                                         </p>
                                     </div>
                                 </div>

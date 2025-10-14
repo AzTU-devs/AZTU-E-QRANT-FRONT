@@ -41,49 +41,61 @@ export default function ProjectTable() {
     }, []);
 
     const handleBeCollaborator = async (fin_kod: string, project_code: string) => {
-        try {
-            const response = await apiClient.post('/api/be-collaborator', {
-                fin_kod,
-                project_code
-            });
-            if (response.data.status === 201) {
-                disptach(setGlobalIsCollaborator(true));
-                Swal.fire({
-                    icon: 'success',
-                    title: 'İştirakçı olaraq əlavə olundunuz!',
-                    text: "Təsdiq edildikdən sonra aktiv icraçı statusu əldə edəcəksiniz!",
-                    confirmButtonText: 'OK'
-                });
-            } else {
-                Swal.fire('Xəta!', 'Serverlə əlaqə zamanı xəta baş verdi.', 'error');
-            }
+    const result = await Swal.fire({
+        title: 'Əminsiniz?',
+        text: 'Layihəyə iştirakçı olaraq qoşulmaq istədiyinizə əminsiniz? \n Təsdiqlədikdən sonra yalnız bir layihədə icraçı olursuz və layihə dəyişikliyi mümkün deyil.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Bəli, əminəm',
+        cancelButtonText: 'Xeyr, imtina et'
+    });
 
-        } catch (error: any) {
-            if (error.response?.status === 403) {
-                Swal.fire({
-                    title: 'Xəta!',
-                    text: 'Layihəni təsdiq etmək üçün ilk növbədə şəxsi məlumatlarınızı təmin etməlisiniz!',
-                    icon: 'error',
-                    showCancelButton: true,
-                    confirmButtonText: 'Şəxsi məlumatlara keç',
-                    cancelButtonText: 'Bağla'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = `/user-details/${fin_kod}`;
-                    }
-                });
-            } else if (error.response?.status === 409) {
-                Swal.fire({
-                    title: 'Xəta!',
-                    text: 'Layihə üçün bütün yerlər doludur!',
-                    icon: 'error',
-                    confirmButtonText: 'Ok',
-                })
-            } else {
-                Swal.fire('Xəta!', 'Serverlə əlaqə zamanı xəta baş verdi.', 'error');
-            }
+    if (!result.isConfirmed) return;
+
+    try {
+        const response = await apiClient.post('/api/be-collaborator', {
+            fin_kod,
+            project_code
+        });
+
+        if (response.data.status === 201) {
+            disptach(setGlobalIsCollaborator(true));
+            Swal.fire({
+                icon: 'success',
+                title: 'İştirakçı olaraq əlavə olundunuz!',
+                text: "Təsdiq edildikdən sonra aktiv icraçı statusu əldə edəcəksiniz!",
+                confirmButtonText: 'OK'
+            });
+        } else {
+            Swal.fire('Xəta!', 'Serverlə əlaqə zamanı xəta baş verdi.', 'error');
         }
-    };
+
+    } catch (error: any) {
+        if (error.response?.status === 403) {
+            Swal.fire({
+                title: 'Xəta!',
+                text: 'Layihəni təsdiq etmək üçün ilk növbədə şəxsi məlumatlarınızı təmin etməlisiniz!',
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: 'Şəxsi məlumatlara keç',
+                cancelButtonText: 'Bağla'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/user-details/${fin_kod}`;
+                }
+            });
+        } else if (error.response?.status === 409) {
+            Swal.fire({
+                title: 'Xəta!',
+                text: 'Layihə üçün bütün yerlər doludur!',
+                icon: 'error',
+                confirmButtonText: 'Ok',
+            });
+        } else {
+            Swal.fire('Xəta!', 'Serverlə əlaqə zamanı xəta baş verdi.', 'error');
+        }
+    }
+};
 
     if (loading) {
         return (

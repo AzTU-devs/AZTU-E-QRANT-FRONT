@@ -18,11 +18,14 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import { PersistGate } from "redux-persist/integration/react";
 import SmetaToolsPage from "./pages/SmetaTools/SmetaToolsPage";
 import SmetaOtherPage from "./pages/SmetaOther/SmetaOtherPage";
+import NewPasswordPage from "./pages/AuthPages/NewPassworPage";
 import MyProjectPage from "./pages/MyProjectPage/MyProjectPage";
 import UserDetailsPage from "./pages/UserDetails/UserDetailsPage";
 import SmetaSalaryPage from "./pages/SmetaSalary/SmetaSalaryPage";
 import ProjectViewPage from "./pages/ProjectView/ProjectViewPage";
 import PrioritetsPage from "./pages/PrioritetsPage/PrioritetsPage";
+import OtpVerificationPage from "./pages/AuthPages/OtpVerification";
+import ResetPasswordPage from "./pages/AuthPages/ResetPasswordPage";
 import ProjectTablePage from "./pages/ProjectTable/ProjectTablePage";
 import UserTypeChoicePage from "./pages/AuthPages/UserTypeChoicePage";
 import CollaboratorPage from "./pages/Collaborators/CollaboratorPage";
@@ -32,10 +35,7 @@ import ProjectDetailsPage from "./pages/ProjectDetailsPage/ProjectDetailsPage";
 import CollboratorProject from "./components/collaboratorProject/CollboratorProject";
 import ApproveWaitingUsersPage from "./pages/ApproveWaitingUsersPage/ApproveWaitingUsersPage";
 import ApproveWaitingCollaboratorsPage from "./pages/ApproveWaitingCollaboratorsPage/ApproveWaitingCollaboratorsPage";
-import ResetPasswordPage from "./pages/AuthPages/ResetPasswordPage";
-import OtpVerification from "./components/auth/OtpVerification";
-import OtpVerificationPage from "./pages/AuthPages/OtpVerification";
-import NewPasswordPage from "./pages/AuthPages/NewPassworPage";
+import RolePermissionsPage from "./pages/RolePermissionsPage/RolePermissionsPage";
 
 export default function App() {
   return (
@@ -92,6 +92,7 @@ function AppWithRouterWrapper() {
             <Route path="/experts" element={<Experts />} />
             <Route path="/prioritets" element={<PrioritetsPage />} />
             <Route path="/collaborator-project" element={<CollboratorProject />} />
+            <Route path="/role-permissions" element={<RolePermissionsPage />  } />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/signin" />} />

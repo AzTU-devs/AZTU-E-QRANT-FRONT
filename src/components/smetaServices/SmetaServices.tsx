@@ -41,8 +41,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
     const [editingId, setEditingId] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
-    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
-    const isAfterDeadline = new Date() > new Date(deadline);
 
     const [editInputs, setEditInputs] = useState<{
         services_name: string;
@@ -83,6 +81,24 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
     }, [projectCode]);
 
     const handleSubmit = async () => {
+        // Validation before sending request
+        if (
+            !servicesName.trim() ||
+            !unitOfMeasure.trim() ||
+            price === '' ||
+            quantity === '' ||
+            Number(price) <= 0 ||
+            Number(quantity) <= 0
+        ) {
+            await Swal.fire({
+                icon: 'warning',
+                title: 'Diqqət!',
+                text: 'Bütün xanalari doldurun və qiymət/miqdarı 0-dan böyük daxil edin.',
+                confirmButtonText: 'Bağla'
+            });
+            return;
+        }
+
         try {
             const response = await apiClient.post('/api/add-services', {
                 project_code: projectCode,
@@ -276,7 +292,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             <Input
                                                 value={editInputs.services_name}
                                                 onChange={(e) => handleEditChange("services_name", e.target.value)}
-                                                disabled={isAfterDeadline}
                                             />
                                         ) : (
                                             service.services_name
@@ -286,7 +301,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                         {editingId === service.id && !viewOnly ? (
                                             <Input
                                                 value={editInputs.unit_of_measure}
-                                                disabled={isAfterDeadline}
                                                 onChange={(e) => handleEditChange("unit_of_measure", e.target.value)}
                                             />
                                         ) : (
@@ -298,7 +312,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             <Input
                                                 type="number"
                                                 value={editInputs.price}
-                                                disabled={isAfterDeadline}
                                                 onChange={(e) => handleEditChange("price", e.target.value)}
                                             />
                                         ) : (
@@ -310,7 +323,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             <Input
                                                 type="number"
                                                 value={editInputs.quantity}
-                                                disabled={isAfterDeadline}
                                                 onChange={(e) => handleEditChange("quantity", e.target.value)}
                                             />
                                         ) : (
@@ -365,7 +377,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             value={servicesName}
                                             onChange={(e) => setServicesName(e.target.value)}
                                             className="w-full bg-transparent border-b border-gray-300 focus:outline-none"
-                                            disabled={isAfterDeadline}
                                             placeholder="İş və xidmətlərin adları*"
                                         />
                                     </TableCell>
@@ -375,7 +386,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             value={unitOfMeasure}
                                             onChange={(e) => setUnitOfMeasure(e.target.value)}
                                             className="w-full bg-transparent border-b border-gray-300 focus:outline-none"
-                                            disabled={isAfterDeadline}
                                             placeholder="Ölçü vahidi"
                                         />
                                     </TableCell>
@@ -389,7 +399,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                                 setPrice(val === '' ? '' : parseFloat(val));
                                             }}
                                             className="w-full bg-transparent border-b border-gray-300 focus:outline-none"
-                                            disabled={isAfterDeadline}
                                             placeholder="Vahidin qiyməti (manat)"
                                         />
                                     </TableCell>
@@ -402,7 +411,6 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                                 const val = e.target.value;
                                                 setQuantity(val === '' ? '' : parseFloat(val));
                                             }}
-                                            disabled={isAfterDeadline}
                                             className="w-full bg-transparent border-b border-gray-300 focus:outline-none"
                                             placeholder="Miqdar"
                                         />

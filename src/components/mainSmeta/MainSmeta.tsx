@@ -39,7 +39,6 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
     const [socialEdit, setSocialEdit] = useState(false);
     const pathname = useLocation().pathname;
     const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
-    const isAfterDeadline = new Date() > new Date(deadline);
 
     const [mainSmeta, setMainSmeta] = useState<MainSmeta>({
         total_other_smeta: 0,
@@ -225,7 +224,6 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                                     }))
                                                 }
                                                 type="number"
-                                                disabled={isAfterDeadline}
                                             />
                                         </div>
                                     ) : (
@@ -292,7 +290,6 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
                                                     }))
                                                 }
                                                 type="number"
-                                                disabled={isAfterDeadline}
                                             />
                                         </div>
                                     ) : (
