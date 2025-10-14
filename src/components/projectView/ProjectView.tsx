@@ -13,6 +13,8 @@ import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import apiClient from "../../util/apiClient";
+import ProjectActivitiesPage from "../../pages/ProjectActivitiesPage/ProjectActivitiesPage";
+import { ActivitiesView } from "../ActivitiesView/ActivitiesView";
 
 export default function ProjectView() {
   const { projectCode } = useParams<{ projectCode: string }>();
@@ -126,6 +128,8 @@ export default function ProjectView() {
       <div ref={contentRef}>
         <h1 style={headingStyle}>Layihə detalları</h1>
         <ProjectDetailsView projectCode={+projectCode} />
+        <h1 style={headingStyle} className="mt-[20px]">Layihə üzrə görüləcək işlər (ay üzrə)</h1>
+        <ActivitiesView projectCode={+projectCode}/>
         <h1 style={{ ...headingStyle, marginTop: "20px" }}>Layihənin komandası</h1>
         <Collaborators projectCode={+projectCode} />
         <h1 style={{ ...headingStyle, marginTop: "20px" }}>Layihə Smetası</h1>

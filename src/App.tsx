@@ -36,6 +36,7 @@ import CollboratorProject from "./components/collaboratorProject/CollboratorProj
 import ApproveWaitingUsersPage from "./pages/ApproveWaitingUsersPage/ApproveWaitingUsersPage";
 import ApproveWaitingCollaboratorsPage from "./pages/ApproveWaitingCollaboratorsPage/ApproveWaitingCollaboratorsPage";
 import RolePermissionsPage from "./pages/RolePermissionsPage/RolePermissionsPage";
+import ProjectActivitiesPage from "./pages/ProjectActivitiesPage/ProjectActivitiesPage";
 
 export default function App() {
   return (
@@ -78,6 +79,7 @@ function AppWithRouterWrapper() {
             <Route path="/collaborators" element={<CollaboratorPage />} />
             <Route path="/main-smeta" element={<MainSmetaPage />} />
             <Route path="/project-smeta-salary" element={<SmetaSalaryPage />} />
+            <Route path="/project-activities" element={<ProjectActivitiesPage />} />
             <Route path="/project-smeta-tools" element={<SmetaToolsPage />} />
             <Route path="/project-smeta-services" element={<SmetaServicesPage />} />
             <Route path="/project-smeta-expences" element={<SmetaExpensesPage />} />
