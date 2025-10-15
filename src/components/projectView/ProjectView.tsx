@@ -9,9 +9,6 @@ import Collaborators from "../collaborators/Collaborators";
 import SmetaServices from "../smetaServices/SmetaServices";
 import SmetaExpenses from "../smetaExpenses/SmetaExpenses";
 import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
-
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import { ActivitiesView } from "../ActivitiesView/ActivitiesView";
 
 export default function ProjectView() {
@@ -34,24 +31,24 @@ export default function ProjectView() {
     });
   };
 
-  const generatePDF = () => {
-    const element = contentRef.current;
-    if (!element) return;
+  // const generatePDF = () => {
+  //   const element = contentRef.current;
+  //   if (!element) return;
 
-    overrideColors(element);
+  //   overrideColors(element);
 
-    html2canvas(element, { scale: 2 }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  //   html2canvas(element, { scale: 2 }).then((canvas) => {
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF("p", "mm", "a4");
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`project_${projectCode}.pdf`);
+  //     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+  //     pdf.save(`project_${projectCode}.pdf`);
 
-      window.location.reload();
-    });
-  };
+  //     window.location.reload();
+  //   });
+  // };
 
   const handleDownloadPdf = async () => {
     try {

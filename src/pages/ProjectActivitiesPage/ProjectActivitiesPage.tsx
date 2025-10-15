@@ -10,7 +10,7 @@ export default function ProjectActivitiesPage() {
                 description="This is React.js Form Elements  Dashboard page for TailAdmin - React.js Tailwind CSS Admin Dashboard Template"
             />
             <PageBreadcrumb pageTitle="Layihədə görüləcək işlər (ay üzrə)" />
-            <ProjectActivitiesTable projectCode={14419424}/>
+            <ProjectActivitiesTable />
         </div>
     );
 }

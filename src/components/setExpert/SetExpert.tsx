@@ -10,8 +10,8 @@ export default function SetExpert() {
     const location = useLocation();
     const project = location.state?.project;
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [success, setSuccess] = useState(false);
+    const [, setError] = useState<string | null>(null);
+    const [, setSuccess] = useState(false);
     const [experts, setExperts] = useState<{ value: string; label: string }[]>([]);
     const [selectedExpert, setSelectedExpert] = useState<string>("");
     const [priotetName, setPriotetName] = useState("");

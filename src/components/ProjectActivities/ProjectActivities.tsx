@@ -29,7 +29,7 @@ interface ProjectActivity {
 const ProjectActivitiesTable = () => {
     const projectCode = useSelector((state: RootState) => state.auth.projectCode);
     const [activities, setActivities] = useState<Activity[]>(
-        Array.from({ length: 15 }, (_, i) => ({
+        Array.from({ length: 15 }, (_) => ({
             name: "",
             months: [] as string[],
             created: false,

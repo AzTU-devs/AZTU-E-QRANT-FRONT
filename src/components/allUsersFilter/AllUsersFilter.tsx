@@ -1,9 +1,7 @@
 import Label from "../form/Label";
 import Button from "../ui/button/Button";
-import { useSelector } from "react-redux";
 import Input from "../form/input/InputField";
-import { RootState } from "../../redux/store";
-import { useEffect, useState, useMemo } from "react";
+import { useState } from "react";
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 type AllUsersFilterProps = {
@@ -23,9 +21,6 @@ export default function AllUsersFilter({ onChange }: AllUsersFilterProps) {
     const [finKod, setFinKod] = useState("");
     const [surname, setSurname] = useState("");
     const [filter, setFilter] = useState(false);
-    const [, setLoading] = useState(false);
-
-    const token = useSelector((state: RootState) => state.auth.token);
 
     const toggleFilter = async () => {
         setFilter(prev => !prev);

@@ -1,7 +1,4 @@
-import jsPDF from "jspdf";
 import Swal from "sweetalert2";
-import html2canvas from "html2canvas";
-import Button from "../ui/button/Button";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -20,7 +17,7 @@ import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
 export default function MyProject() {
     const projectCode = useSelector((state: RootState) => state.auth.projectCode);
     const printRef = useRef<HTMLDivElement>(null);
-    const [isExporting, setIsExporting] = useState(false);
+    const [isExporting, ] = useState(false);
 
     //   const handleDownloadPdf = async () => {
     //     console.log("PDF download started");

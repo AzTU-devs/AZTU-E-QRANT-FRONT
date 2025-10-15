@@ -28,7 +28,7 @@ interface Project {
 
 export default function ProjectDetailsView({ projectCode }: { projectCode: Number | null }) {
     const [loading, setLoading] = useState(true);
-    const [prioritetText, setPrioritetText] = useState("");
+    // const [prioritetText, setPrioritetText] = useState("");
 
     const [project, setProject] = useState<Project>({
         project_name: "",

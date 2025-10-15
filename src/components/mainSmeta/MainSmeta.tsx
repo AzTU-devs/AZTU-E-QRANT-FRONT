@@ -18,8 +18,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DoneIcon from "@mui/icons-material/Done";
 import ErrorImage from "../../../public/error.png";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../../redux/store";
 
 interface MainSmeta {
     total_other_smeta?: number,
@@ -38,7 +38,7 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
     const [taxEdit, setTaxEdit] = useState(false);
     const [socialEdit, setSocialEdit] = useState(false);
     const pathname = useLocation().pathname;
-    const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
+    // const deadline = useSelector((state: RootState) => state.deadline.submissionDeadline);
 
     const [mainSmeta, setMainSmeta] = useState<MainSmeta>({
         total_other_smeta: 0,
