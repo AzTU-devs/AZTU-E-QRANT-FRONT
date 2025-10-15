@@ -101,7 +101,7 @@ const AppSidebar: React.FC = () => {
             { name: "Layihənin təklifi", path: "/project-offer", pro: false },
             { name: "Layihəm", path: "/my-project", pro: false },
             { name: "Layihə komandası", path: "/collaborators", pro: false },
-            { name: "Layihədə görüləcək işlər (ay üzrə)", path: "/project-activities", pro: false },
+            { name: "Layihədə görüləcək işlər (ay üzrə)", path: "/project-activities", pro: false, new: true },
           ],
         },
         {
@@ -253,7 +253,7 @@ const AppSidebar: React.FC = () => {
                   <li key={subItem.name}>
                     <Link
                       to={subItem.path}
-                      className={`menu-dropdown-item ${isActive(subItem.path)
+                      className={`relative menu-dropdown-item ${isActive(subItem.path)
                         ? "menu-dropdown-item-active"
                         : "menu-dropdown-item-inactive"
                         }`}
@@ -262,12 +262,9 @@ const AppSidebar: React.FC = () => {
                       <span className="flex items-center gap-1 ml-auto">
                         {subItem.new && (
                           <span
-                            className={`ml-auto ${isActive(subItem.path)
-                              ? "menu-dropdown-badge-active"
-                              : "menu-dropdown-badge-inactive"
-                              } menu-dropdown-badge`}
+                            className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-semibold px-2 py-[1px] rounded-full"
                           >
-                            new
+                            YENİ
                           </span>
                         )}
                         {subItem.pro && (

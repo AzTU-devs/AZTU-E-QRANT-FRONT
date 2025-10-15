@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
 import DoneIcon from '@mui/icons-material/Done';
 import EditIcon from '@mui/icons-material/Edit';
+import CircularProgress from "@mui/material/CircularProgress";
+import Skeleton from "@mui/material/Skeleton";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const months = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
 
@@ -22,7 +26,8 @@ interface ProjectActivity {
     updated_at: string | null;
 }
 
-const ProjectActivitiesTable = ({ projectCode }: { projectCode: number }) => {
+const ProjectActivitiesTable = () => {
+    const projectCode = useSelector((state: RootState) => state.auth.projectCode);
     const [activities, setActivities] = useState<Activity[]>(
         Array.from({ length: 15 }, (_, i) => ({
             name: "",
@@ -33,11 +38,13 @@ const ProjectActivitiesTable = ({ projectCode }: { projectCode: number }) => {
     );
 
     const [loading, setLoading] = useState(false);
+    const [initialLoading, setInitialLoading] = useState(true);
 
     // ✅ Fetch existing activities
     useEffect(() => {
         const fetchActivities = async () => {
             try {
+                setInitialLoading(true);
                 const res = await apiClient.get<{ message: string; activities: ProjectActivity[]; status_code: number }>(
                     `/api/project-activity/${projectCode}`
                 );
@@ -53,6 +60,8 @@ const ProjectActivitiesTable = ({ projectCode }: { projectCode: number }) => {
                 }
             } catch (err) {
                 console.error("Error fetching project activities:", err);
+            } finally {
+                setInitialLoading(false);
             }
         };
         fetchActivities();
@@ -167,9 +176,11 @@ const ProjectActivitiesTable = ({ projectCode }: { projectCode: number }) => {
 
     return (
         <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">
-                Layihə Fəaliyyətləri (Proyekt kodu: {projectCode})
+            {projectCode ? (
+                <h2 className="text-2xl font-bold mb-4">
+                Layihə Fəaliyyətləri (Proyekt kodu: {projectCode.toString()})
             </h2>
+            ) : null}
 
             <table className="table-auto border-collapse border border-gray-300 w-full">
                 <thead>
@@ -186,79 +197,100 @@ const ProjectActivitiesTable = ({ projectCode }: { projectCode: number }) => {
                 </thead>
 
                 <tbody>
-                    {activities.map((activity, index) => {
-                        const isSelectedByOther =
-                            selectedMonths.has(activity.months[0]) &&
-                            !activity.months.includes(activity.months[0]);
-                        const disableInputs = isAnyEditing && !activity.isEditing;
-
-                        return (
-                            <tr key={index} className="hover:bg-gray-50">
-                                <td className="border border-gray-300 text-center">{index + 1}</td>
-
-                                <td className="border border-gray-300 p-2">
-                                    <textarea
-                                        value={activity.name}
-                                        placeholder="Fəaliyyətin adını daxil edin"
-                                        onChange={(e) => handleNameChange(index, e.target.value)}
-                                        className="w-full border border-gray-300 rounded px-2 py-1 h-20"
-                                        disabled={disableInputs || (!activity.isEditing && activity.created)}
-                                    />
-                                </td>
-
-                                {months.map((month) => {
-                                    const isSelectedByOtherMonth =
-                                        selectedMonths.has(month) && !activity.months.includes(month);
-                                    return (
-                                        <td key={month} className="border border-gray-300 text-center">
-                                            <input
-                                                type="checkbox"
-                                                checked={activity.months.includes(month)}
-                                                onChange={() => handleMonthChange(index, month)}
-                                                disabled={
-                                                    disableInputs ||
-                                                    (!activity.isEditing && activity.created) ||
-                                                    isSelectedByOtherMonth
-                                                }
-                                            />
-                                        </td>
-                                    );
-                                })}
-
+                    {initialLoading ? (
+                        Array.from({ length: 5 }).map((_, i) => (
+                            <tr key={i}>
                                 <td className="border border-gray-300 text-center">
-                                    {!activity.created ? (
-                                        <button
-                                            onClick={() => handleCreate(index)}
-                                            className="bg-green-600 hover:text-green-800 disabled:text-gray-400 rounded-[10px] p-[10px]"
-                                            disabled={loading || isAnyEditing}
-                                        >
-                                            <DoneIcon className="text-white" />
-                                        </button>
-                                    ) : activity.isEditing ? (
-                                        <button
-                                            onClick={() => handleSave(index)}
-                                            className="bg-green-600 hover:text-green-800 disabled:text-gray-400 rounded-[10px] p-[10px]"
-                                            disabled={loading}
-                                        >
-                                            <DoneIcon className="text-white" />
-                                        </button>
-                                    ) : (
-                                        <>
-                                            <span className="text-gray-400 mr-2">✔️</span>
-                                            <button
-                                                onClick={() => handleEdit(index)}
-                                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-[10px] p-[10px]"
-                                                disabled={isAnyEditing}
-                                                title="Edit"
-                                            >
-                                                <EditIcon />
-                                            </button>
-                                        </>
-                                    )}
+                                    <Skeleton variant="text" width={20} />
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                    <Skeleton variant="rectangular" height={40} />
+                                </td>
+                                {months.map((_, j) => (
+                                    <td key={j} className="border border-gray-300 text-center">
+                                        <Skeleton variant="circular" width={20} height={20} />
+                                    </td>
+                                ))}
+                                <td className="border border-gray-300 text-center">
+                                    <Skeleton variant="circular" width={32} height={32} />
                                 </td>
                             </tr>
-                        );
-                    })}
+                        ))
+                    ) : (
+                        activities.map((activity, index) => {
+                            // const isSelectedByOther =
+                            //     selectedMonths.has(activity.months[0]) &&
+                            //     !activity.months.includes(activity.months[0]);
+                            const disableInputs = isAnyEditing && !activity.isEditing;
+
+                            return (
+                                <tr key={index} className="hover:bg-gray-50">
+                                    <td className="border border-gray-300 text-center">{index + 1}</td>
+
+                                    <td className="border border-gray-300 p-2">
+                                        <textarea
+                                            value={activity.name}
+                                            placeholder="Fəaliyyətin adını daxil edin"
+                                            onChange={(e) => handleNameChange(index, e.target.value)}
+                                            className="w-full border border-gray-300 rounded px-2 py-1 h-20"
+                                            disabled={disableInputs || (!activity.isEditing && activity.created)}
+                                        />
+                                    </td>
+
+                                    {months.map((month) => {
+                                        const isSelectedByOtherMonth =
+                                            selectedMonths.has(month) && !activity.months.includes(month);
+                                        return (
+                                            <td key={month} className="border border-gray-300 text-center">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={activity.months.includes(month)}
+                                                    onChange={() => handleMonthChange(index, month)}
+                                                    disabled={
+                                                        disableInputs ||
+                                                        (!activity.isEditing && activity.created) ||
+                                                        isSelectedByOtherMonth
+                                                    }
+                                                />
+                                            </td>
+                                        );
+                                    })}
+
+                                    <td className="border border-gray-300 text-center">
+                                        {!activity.created ? (
+                                            <button
+                                                onClick={() => handleCreate(index)}
+                                                className="bg-green-600 hover:text-green-800 disabled:text-gray-400 rounded-[10px] p-[10px]"
+                                                disabled={loading || isAnyEditing}
+                                            >
+                                                {loading ? <CircularProgress size={20} color="inherit" /> : <DoneIcon className="text-white" />}
+                                            </button>
+                                        ) : activity.isEditing ? (
+                                            <button
+                                                onClick={() => handleSave(index)}
+                                                className="bg-green-600 hover:text-green-800 disabled:text-gray-400 rounded-[10px] p-[10px]"
+                                                disabled={loading}
+                                            >
+                                                {loading ? <CircularProgress size={20} color="inherit" /> : <DoneIcon className="text-white" />}
+                                            </button>
+                                        ) : (
+                                            <>
+                                                <span className="text-gray-400 mr-2">✔️</span>
+                                                <button
+                                                    onClick={() => handleEdit(index)}
+                                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-[10px] p-[10px]"
+                                                    disabled={isAnyEditing}
+                                                    title="Edit"
+                                                >
+                                                    {loading ? <CircularProgress size={20} color="inherit" /> : <EditIcon />}
+                                                </button>
+                                            </>
+                                        )}
+                                    </td>
+                                </tr>
+                            );
+                        })
+                    )}
                 </tbody>
             </table>
         </div>

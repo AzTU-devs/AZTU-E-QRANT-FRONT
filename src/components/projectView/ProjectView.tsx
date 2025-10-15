@@ -12,8 +12,6 @@ import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
 
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import apiClient from "../../util/apiClient";
-import ProjectActivitiesPage from "../../pages/ProjectActivitiesPage/ProjectActivitiesPage";
 import { ActivitiesView } from "../ActivitiesView/ActivitiesView";
 
 export default function ProjectView() {
