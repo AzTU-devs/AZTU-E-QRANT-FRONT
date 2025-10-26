@@ -60,7 +60,7 @@ export default function MyProject() {
     //   };
     const handleDownloadPdf = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/project-pdf/${projectCode}`, {
+            const response = await fetch(`http://e-grant.aztu.edu.az/api/project-pdf/${projectCode}`, {
                 method: "GET",
             });
 
@@ -83,7 +83,7 @@ export default function MyProject() {
     };
     const handleDownloadExcel = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/project-excel/${projectCode}`, {
+            const response = await fetch(`http://e-grant.aztu.edu.az/api/project-excel/${projectCode}`, {
                 method: "GET",
             });
 

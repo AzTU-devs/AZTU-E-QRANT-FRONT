@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import Label from "../form/Label";
 import Select from "../form/Select";
+import { Modal } from "../ui/modal";
 import Button from "../ui/button/Button";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -193,6 +194,74 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
     const [loading, setLoading] = useState(true);
     console.log(user);
 
+    // State for edit modal
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editFormData, setEditFormData] = useState<Partial<UserDetailsFormData>>({});
+
+    // Open edit modal and prefill data (all editable fields)
+    const handleOpenEditModal = () => {
+        if (user) {
+            setEditFormData({
+                name: user.name || "",
+                surname: user.surname || "",
+                father_name: user.father_name || "",
+                personal_id_number: user.personal_id_number || "",
+                sex: user.sex || "",
+                born_date: user.born_date || "",
+                born_place: user.born_place || "",
+                living_location: user.living_location || "",
+                citizenship: user.citizenship || "",
+                work_place: user.work_place || "",
+                department: user.department || "",
+                duty: user.duty || "",
+                main_education: user.main_education || "",
+                additonal_education: user.additonal_education || "",
+                scientific_degree: user.scientific_degree || "",
+                scientific_name: user.scientific_name || "",
+                scientific_date: user.scientific_date || "",
+                scientific_name_date: user.scientific_name_date || "",
+                work_location: user.work_location || "",
+                work_phone: user.work_phone || "",
+                work_email: user.work_email || ""
+            });
+            setIsEditModalOpen(true);
+        }
+    };
+
+    // Edit input change handler
+    const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEditFormData({
+            ...editFormData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    // Edit modal submit handler
+    const handleEditSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!fin_kod) return;
+
+        try {
+            const res = await apiClient.put(`/api/profile/${fin_kod}/edit`, editFormData);
+
+            if (res.status === 200) {
+                setUser((prev) => ({ ...prev!, ...editFormData }));
+                Swal.fire({
+                    icon: "success",
+                    title: "İstifadəçi məlumatları yeniləndi!",
+                    confirmButtonText: "OK"
+                });
+                setIsEditModalOpen(false);
+            }
+        } catch (err) {
+            Swal.fire({
+                icon: "error",
+                title: "Xəta baş verdi",
+                text: "Məlumatları yeniləmək alınmadı!"
+            });
+        }
+    };
+
     useEffect(() => {
         apiClient.get(`/api/profile/${fin_kod}`)
             .then((res) => {
@@ -312,7 +381,6 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                 <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
                                     Şəxsi məlumatlar
                                 </h4>
-
                                 <div className="grid grid-cols-5 gap-5 lg:grid-cols-5 lg:gap-7 2xl:gap-x-32">
                                     <div>
                                         <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
@@ -528,6 +596,115 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                             </div>
                         </div>
                     </div>
+                    {/* Edit Button */}
+                    <div className="flex justify-end mt-4">
+                        <Button onClick={handleOpenEditModal} className="bg-blue-600 hover:bg-blue-700 text-white">
+                            Redaktə et
+                        </Button>
+                    </div>
+                    {/* Edit Modal */}
+                    <Modal
+                        isOpen={isEditModalOpen}
+                        onClose={() => setIsEditModalOpen(false)}
+                        className="max-w-3xl mx-auto p-[40px]"
+                    >
+                        <div className="max-w-3xl mx-auto w-full">
+                            <form onSubmit={handleEditSubmit}>
+                              <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+                                <div>
+                                  <Label>Ad</Label>
+                                  <Input type="text" name="name" value={editFormData.name ?? user?.name ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Soyad</Label>
+                                  <Input type="text" name="surname" value={editFormData.surname ?? user?.surname ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Ata adı</Label>
+                                  <Input type="text" name="father_name" value={editFormData.father_name ?? user?.father_name ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Şəxsiyyet vəsiqəsinin seriyası</Label>
+                                  <Input type="text" name="personal_id_number" value={editFormData.personal_id_number ?? user?.personal_id_number ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Cinsiyyət</Label>
+                                  <Input type="text" name="sex" value={editFormData.sex ?? user?.sex ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Doğum tarixi</Label>
+                                  <Input type="date" name="born_date" value={editFormData.born_date ?? user?.born_date ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Doğum yeri</Label>
+                                  <Input type="text" name="born_place" value={editFormData.born_place ?? user?.born_place ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Yaşayış yeri</Label>
+                                  <Input type="text" name="living_location" value={editFormData.living_location ?? user?.living_location ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Vətəndaşlıq</Label>
+                                  <Input type="text" name="citizenship" value={editFormData.citizenship ?? user?.citizenship ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>İş yeri</Label>
+                                  <Input type="text" name="work_place" value={editFormData.work_place ?? user?.work_place ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Şöbə</Label>
+                                  <Input type="text" name="department" value={editFormData.department ?? user?.department ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Vəzifə</Label>
+                                  <Input type="text" name="duty" value={editFormData.duty ?? user?.duty ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Ali təhsil</Label>
+                                  <Input type="text" name="main_education" value={editFormData.main_education ?? user?.main_education ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Əlavə ali təhsil</Label>
+                                  <Input type="text" name="additonal_education" value={editFormData.additonal_education ?? user?.additonal_education ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Elmi dərəcə</Label>
+                                  <Input type="text" name="scientific_degree" value={editFormData.scientific_degree ?? user?.scientific_degree ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Elmi ad</Label>
+                                  <Input type="text" name="scientific_name" value={editFormData.scientific_name ?? user?.scientific_name ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Elmi dərəcənin tarixi</Label>
+                                  <Input type="date" name="scientific_date" value={editFormData.scientific_date ?? user?.scientific_date ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Elmi adın verilmə tarixi</Label>
+                                  <Input type="date" name="scientific_name_date" value={editFormData.scientific_name_date ?? user?.scientific_name_date ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Lahiyə rolu</Label>
+                                  <Input type="text" name="work_location" value={editFormData.work_location ?? user?.work_location ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Əlaqə nömrəsi - koperativ</Label>
+                                  <Input type="text" name="work_phone" value={editFormData.work_phone ?? user?.work_phone ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                                <div>
+                                  <Label>Epoçt- Adres - koperativ</Label>
+                                  <Input type="text" name="work_email" value={editFormData.work_email ?? user?.work_email ?? ""} onChange={handleEditInputChange} />
+                                </div>
+                              </div>
+                              <div className="flex justify-end gap-2 mt-6">
+                                <Button className="bg-gray-200 text-gray-800 hover:bg-gray-300" onClick={() => setIsEditModalOpen(false)}>
+                                  Ləğv et
+                                </Button>
+                                <Button className="hover:bg-green-700 text-white">Yadda saxla</Button>
+                              </div>
+                            </form>
+                        </div>
+                    </Modal>
                 </>
             ) : (
                 <>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
 import DoneIcon from '@mui/icons-material/Done';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import CircularProgress from "@mui/material/CircularProgress";
 import Skeleton from "@mui/material/Skeleton";
 import { useSelector } from "react-redux";
@@ -168,6 +169,27 @@ const ProjectActivitiesTable = () => {
         }
     };
 
+    // ✅ Delete an activity
+    const handleDelete = async (index: number) => {
+        const activity = activities[index];
+        if (!activity.id) {
+            alert("Silinəcək fəaliyyət tapılmadı.");
+            return;
+        }
+
+        if (!window.confirm("Bu fəaliyyəti silmək istədiyinizə əminsiniz?")) return;
+
+        try {
+            setLoading(true);
+            await apiClient.delete(`/api/project-activity/delete/${activity.id}`);
+            setActivities((prev) => prev.filter((_, i) => i !== index));
+        } catch (err) {
+            console.error("Error deleting activity:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const selectedMonths = new Set(
         activities.flatMap((a) => a.months)
     );
@@ -278,11 +300,19 @@ const ProjectActivitiesTable = () => {
                                                 <span className="text-gray-400 mr-2">✔️</span>
                                                 <button
                                                     onClick={() => handleEdit(index)}
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-[10px] p-[10px]"
+                                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-[10px] p-[10px] mr-2"
                                                     disabled={isAnyEditing}
                                                     title="Edit"
                                                 >
                                                     {loading ? <CircularProgress size={20} color="inherit" /> : <EditIcon />}
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(index)}
+                                                    className="bg-red-600 hover:bg-red-700 text-white rounded-[10px] p-[10px]"
+                                                    disabled={loading}
+                                                    title="Delete"
+                                                >
+                                                    {loading ? <CircularProgress size={20} color="inherit" /> : <DeleteIcon />}
                                                 </button>
                                             </>
                                         )}
