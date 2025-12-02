@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import MainSmeta from "../mainSmeta/MainSmeta";
 import SmetaOther from "../smetaOther/SmetaOther";
@@ -14,6 +14,8 @@ import { ActivitiesView } from "../ActivitiesView/ActivitiesView";
 export default function ProjectView() {
   const { projectCode } = useParams<{ projectCode: string }>();
   const contentRef = useRef<HTMLDivElement>(null);
+  const [isLoadingPdf, setIsLoadingPdf] = useState(false);
+  const [isLoadingExcel, setIsLoadingExcel] = useState(false);
 
   if (!projectCode) {
     return <div>Project code is missing.</div>;
@@ -52,7 +54,12 @@ export default function ProjectView() {
 
   const handleDownloadPdf = async () => {
     try {
-      const response = await fetch(`http://e-grant.aztu.edu.az/api/project-pdf/${projectCode}`, {
+      setIsLoadingPdf(true);
+      // const response = await fetch(`http://e-grant.aztu.edu.az/api/project-pdf/${projectCode}`, {
+      //   method: "GET",
+      // });
+
+      const response = await fetch(`http://127.0.0.1:8080/api/project-pdf/${projectCode}`, {
         method: "GET",
       });
 
@@ -71,12 +78,19 @@ export default function ProjectView() {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       Swal.fire("Xəta baş verdi!", "PDF yüklənə bilmədi", "error");
+    } finally {
+      setIsLoadingPdf(false);
     }
   };
 
   const handleDownloadExcel = async () => {
     try {
-      const response = await fetch(`http://e-grant.aztu.edu.az/api/project-excel/${projectCode}`, {
+      setIsLoadingExcel(true);
+      // const response = await fetch(`http://e-grant.aztu.edu.az/api/project-excel/${projectCode}`, {
+      //   method: "GET",
+      // });
+
+      const response = await fetch(`http://127.0.0.1:8080/api/project-excel/${projectCode}`, {
         method: "GET",
       });
 
@@ -95,6 +109,8 @@ export default function ProjectView() {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       Swal.fire("Xəta baş verdi!", "Excel yüklənə bilmədi", "error");
+    } finally {
+      setIsLoadingExcel(false);
     }
   };
  
@@ -108,16 +124,18 @@ export default function ProjectView() {
     <>
       <button
         onClick={handleDownloadPdf}
-        className="mb-4 px-4 py-2 bg-blue-600 text-white rounded"
+        disabled={isLoadingPdf}
+        className={`mb-4 px-4 py-2 bg-blue-600 text-white rounded ${isLoadingPdf ? "opacity-50" : ""}`}
       >
-        PDF yükləyin
+        {isLoadingPdf ? "Yüklənir..." : "PDF yükləyin"}
       </button>
 
       <button
         onClick={handleDownloadExcel}
-        className="mb-4 ml-5 px-4 py-2 bg-blue-600 text-white rounded"
+        disabled={isLoadingExcel}
+        className={`mb-4 ml-5 px-4 py-2 bg-blue-600 text-white rounded${isLoadingExcel ? " opacity-50" : ""}`}
       >
-        Excel ixrac edin
+        {isLoadingExcel ? "Yüklənir..." : "Excel ixrac edin"}
       </button>
 
       <div ref={contentRef}>

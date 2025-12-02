@@ -27,7 +27,7 @@ export default function ProjectDetails() {
     const [projectCode, setProjectCode] = useState("");
     const [prioritet, setPrioritet] = useState("");
     const [collaboratorLimit, setCollaboratorLimit] = useState<number | null>(7);
-    const [maxSmetaExpense, setMaxSmetaExpense] = useState<number | null>(30000);
+    const [maxSmetaExpense, setMaxSmetaExpense] = useState<number | null>(200000);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
     const [loading, setLoading] = useState(false);
@@ -215,14 +215,14 @@ export default function ProjectDetails() {
                 <div style={{
                     width: "calc((100% / 2) - 10px)"
                 }}>
-                    <Label className='mb-[10px]'>Layihənin maksimum smeta xərci (maksimum 30000 AZN)</Label>
+                    <Label className='mb-[10px]'>Layihənin maksimum smeta xərci (maksimum 200000 AZN)</Label>
                     <Input
                         type='number'
                         value={maxSmetaExpense ? maxSmetaExpense : 0}
-                        max={30000}
+                        max={200000}
                         placeholder='Burada: Layihənin məqsədi ifadə edilir. \n Layihədə həllinə çalışılan problem (məsələ) təsvir olunur. \n Problemin elmi-tədqiqatın inkişafı üçün aktual olduğu əsaslandırılır'
                         onChange={(e) => {
-                            const value = Math.min(+e.target.value, 30000);
+                            const value = Math.min(+e.target.value, 200000);
                             setMaxSmetaExpense(value);
                             postProjectField('max_smeta_amount', String(value));
                         }}

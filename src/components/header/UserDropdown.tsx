@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
 import { Dropdown } from "../ui/dropdown/Dropdown";
-import { DropdownItem } from "../ui/dropdown/DropdownItem";
+// import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import Profile from "../../../public/profile.webp";
@@ -94,7 +94,7 @@ export default function UserDropdown() {
           </span>
         </div>
 
-        <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
+        {/* <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
           <li>
             <DropdownItem
               onItemClick={closeDropdown}
@@ -120,7 +120,7 @@ export default function UserDropdown() {
               Şəxsi məlumatlar
             </DropdownItem>
           </li>
-        </ul>
+        </ul> */}
         <button
           onClick={() => {
             dispatch(logout()); // add clear login steps there when log out

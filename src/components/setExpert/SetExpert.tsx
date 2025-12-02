@@ -24,19 +24,14 @@ export default function SetExpert() {
 
                 console.log(data);
 
-                setExperts(
-                    data.map((exp: any) => ({
-                        value: exp.email,
-                        label: `${exp.name} ${exp.surname} (${exp.email})`
-                    }))
-                );
-
+                
                 if (response.data.status === 200) {
-                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Ekspert uğurla təyin edildi!',
-                                        confirmButtonText: 'OK'
-                                    });
+                    setExperts(
+                        data.map((exp: any) => ({
+                            value: exp.email,
+                            label: `${exp.name} ${exp.surname} (${exp.email})`
+                        }))
+                    );
                 } else {
                      Swal.fire('Xəta!', 'Serverlə əlaqə zamanı xəta baş verdi.', 'error');
                 }

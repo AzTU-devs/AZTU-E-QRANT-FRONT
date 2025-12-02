@@ -163,6 +163,11 @@ const AppSidebar: React.FC = () => {
           name: "Rol və icazələr",
           path: "/role-permissions"
         },
+        {
+          icon: <WorkIcon />,
+          name: "Təqdim edilmiş layihələr",
+          path: "/projects/submitted",
+        },
       ] : projectRole === 1 ? [
         {
           icon: <WorkIcon />,

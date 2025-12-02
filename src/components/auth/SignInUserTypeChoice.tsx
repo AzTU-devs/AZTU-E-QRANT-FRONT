@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Button from "../ui/button/Button";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { RootState } from "../../redux/store";
 import PersonIcon from '@mui/icons-material/Person';
 import { setUserType } from "../../redux/slices/authSlice";
@@ -11,6 +11,7 @@ import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 export default function SignInUserTypeChoice() {
     const dispatch = useDispatch();
     const location = useLocation();
+    const navigate = useNavigate();
     console.log(location.pathname);
 
     const userType = useSelector((state: RootState) => state.auth.userType);
@@ -27,7 +28,7 @@ export default function SignInUserTypeChoice() {
                         <PersonIcon />
                         Daxili qrant layihəsi
                     </Button>
-                    <Button onClick={() => { dispatch(setUserType(1)) }}>
+                    <Button onClick={() => { navigate("/signin-expert"); dispatch(setUserType(1)) }}>
                         <SupervisorAccountIcon />
                         Ekspertlər
                     </Button>

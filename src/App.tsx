@@ -37,6 +37,11 @@ import ApproveWaitingUsersPage from "./pages/ApproveWaitingUsersPage/ApproveWait
 import ApproveWaitingCollaboratorsPage from "./pages/ApproveWaitingCollaboratorsPage/ApproveWaitingCollaboratorsPage";
 import RolePermissionsPage from "./pages/RolePermissionsPage/RolePermissionsPage";
 import ProjectActivitiesPage from "./pages/ProjectActivitiesPage/ProjectActivitiesPage";
+import ExpertSigninPage from "./pages/AuthPages/ExpertSigninPage";
+import { useState, useEffect } from "react";
+import { getLockStatus } from "./services/lock/lockService";
+import LockViewPage from "./pages/LockViewPage.tsx/LockViewPage";
+import SubmittedUsersPage from "./pages/SubmittedUsersPage/SubmittedUsersPage";
 
 export default function App() {
   return (
@@ -63,6 +68,21 @@ function isTokenExpired(token: string): boolean {
 function AppWithRouterWrapper() {
   const token = useSelector((state: RootState) => state.auth.token);
   const userType = useSelector((state: RootState) => state.auth.userType);
+  const [lock, setLock] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchLockStatus = async () => {
+      try {
+        const res = await getLockStatus();
+        setLock(res.locked);
+      } catch (err) {
+        console.error("Failed to fetch lock status", err);
+        setLock(false);
+      }
+    };
+
+    fetchLockStatus();
+  }, [lock]);
 
   return (
     <>
@@ -77,13 +97,13 @@ function AppWithRouterWrapper() {
             <Route path="/user-details/:fin_kod" element={<UserDetailsPage />} />
             <Route path="/projects" element={<ProjectTablePage />} />
             <Route path="/collaborators" element={<CollaboratorPage />} />
-            <Route path="/main-smeta" element={<MainSmetaPage />} />
-            <Route path="/project-smeta-salary" element={<SmetaSalaryPage />} />
-            <Route path="/project-activities" element={<ProjectActivitiesPage />} />
-            <Route path="/project-smeta-tools" element={<SmetaToolsPage />} />
-            <Route path="/project-smeta-services" element={<SmetaServicesPage />} />
-            <Route path="/project-smeta-expences" element={<SmetaExpensesPage />} />
-            <Route path="/project-smeta-other-expences" element={<SmetaOtherPage />} />
+            <Route path="/main-smeta" element={!lock ? <MainSmetaPage /> : <LockViewPage />} />
+            <Route path="/project-smeta-salary" element={!lock ? <SmetaSalaryPage /> : <LockViewPage />} />
+            <Route path="/project-activities" element={!lock ? <ProjectActivitiesPage /> : <LockViewPage />} />
+            <Route path="/project-smeta-tools" element={!lock ? <SmetaToolsPage /> : <LockViewPage />} />
+            <Route path="/project-smeta-services" element={!lock ? <SmetaServicesPage /> : <LockViewPage />} />
+            <Route path="/project-smeta-expences" element={!lock ? <SmetaExpensesPage /> : <LockViewPage />} />
+            <Route path="/project-smeta-other-expences" element={!lock ? <SmetaOtherPage /> : <LockViewPage />} />
             <Route path="/project-view/:projectCode" element={<ProjectViewPage />} />
             <Route path="/user-view/:fin_kod" element={<UserViewPage />} />
             <Route path="/my-project" element={<MyProjectPage />} />
@@ -94,7 +114,8 @@ function AppWithRouterWrapper() {
             <Route path="/experts" element={<Experts />} />
             <Route path="/prioritets" element={<PrioritetsPage />} />
             <Route path="/collaborator-project" element={<CollboratorProject />} />
-            <Route path="/role-permissions" element={<RolePermissionsPage />  } />
+            <Route path="/role-permissions" element={<RolePermissionsPage />} />
+            <Route path="/projects/submitted" element={<SubmittedUsersPage />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/signin" />} />
@@ -105,11 +126,7 @@ function AppWithRouterWrapper() {
           element={
             userType === null ? (
               <UserTypeChoicePage />
-            )
-              // : academicType === null ? (
-              //   <AcademicTypeChoicePage />
-              // )
-              : (
+            ) : (
                 <SignIn />
               )
           }
@@ -128,6 +145,7 @@ function AppWithRouterWrapper() {
               )
           }
         />
+        <Route path="/expert-signin" element={<ExpertSigninPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/otp-verification/:finKod" element={<OtpVerificationPage />} />
         <Route path="/reset-password/:token" element={<NewPasswordPage />} />

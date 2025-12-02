@@ -6,6 +6,7 @@ import {
     TableCell
 } from "../ui/table";
 import Swal from "sweetalert2";
+import { getLockStatus, lockVariable, unlockVariable } from "../../services/lock/lockService";
 import Select from "../form/Select";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -13,6 +14,7 @@ import apiClient from "../../util/apiClient";
 import DoneIcon from '@mui/icons-material/Done';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CircularProgress from "@mui/material/CircularProgress";
+import Button from "../ui/button/Button";
 
 interface UserInterface {
     name: string;
@@ -58,6 +60,7 @@ export default function RolePermissions({ filters }: AllUsersFilterProps) {
     const [selectedRole, setSelectedRole] = useState("");
     const [loadingRows, setLoadingRows] = useState<{ [finKod: string]: boolean }>({});
     const [users, setUsers] = useState<UserInterface[]>([]);
+    const [lockStatus, setLockStatus] = useState<boolean>(false);
 
     const roleOptions = [
         {
@@ -94,7 +97,33 @@ export default function RolePermissions({ filters }: AllUsersFilterProps) {
             }
         };
         fetchUsers();
-    }, [filters]);
+        // Fetch lock status on mount
+        const fetchLockStatus = async () => {
+            try {
+                const response = await getLockStatus();
+                setLockStatus(response.locked);
+            } catch (err) {
+                // Optionally handle error
+            }
+        };
+        fetchLockStatus();
+    }, [filters, lockStatus]);
+
+    const handleLockToggle = async () => {
+        try {
+            if (lockStatus) {
+                await unlockVariable();
+                Swal.fire("Sistem açıldı!", "", "success");
+                setLockStatus(false);
+            } else {
+                await lockVariable();
+                Swal.fire("Sistem kilidləndi!", "", "success");
+                setLockStatus(true);
+            }
+        } catch (err) {
+            Swal.fire("Server xətası!", "", "error");
+        }
+    };
 
     const handleRoleUpdate = async (finKod: string, projectRole: number) => {
         setLoadingRows(prev => ({ ...prev, [finKod]: true }));
@@ -130,6 +159,9 @@ export default function RolePermissions({ filters }: AllUsersFilterProps) {
 
     return (
         <>
+                <Button onClick={handleLockToggle} className={lockStatus ? "bg-red-500" : "bg-green-500"}>
+                    {lockStatus ? "Unlock" : "Lock"}
+                </Button>
             <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] mt-[30px]">
                 <div className="max-w-full overflow-x-auto">
                     <Table>
