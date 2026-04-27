@@ -37,6 +37,7 @@ import ApproveWaitingUsersPage from "./pages/ApproveWaitingUsersPage/ApproveWait
 import ApproveWaitingCollaboratorsPage from "./pages/ApproveWaitingCollaboratorsPage/ApproveWaitingCollaboratorsPage";
 import RolePermissionsPage from "./pages/RolePermissionsPage/RolePermissionsPage";
 import ProjectActivitiesPage from "./pages/ProjectActivitiesPage/ProjectActivitiesPage";
+import QuarterlyReportPage from "./pages/QuarterlyReportPage/QuarterlyReportPage";
 import ExpertSigninPage from "./pages/AuthPages/ExpertSigninPage";
 import { useState, useEffect } from "react";
 import { getLockStatus } from "./services/lock/lockService";
@@ -100,6 +101,7 @@ function AppWithRouterWrapper() {
             <Route path="/main-smeta" element={!lock ? <MainSmetaPage /> : <LockViewPage />} />
             <Route path="/project-smeta-salary" element={!lock ? <SmetaSalaryPage /> : <LockViewPage />} />
             <Route path="/project-activities" element={!lock ? <ProjectActivitiesPage /> : <LockViewPage />} />
+            <Route path="/quarterly-report" element={<QuarterlyReportPage />} />
             <Route path="/project-smeta-tools" element={!lock ? <SmetaToolsPage /> : <LockViewPage />} />
             <Route path="/project-smeta-services" element={!lock ? <SmetaServicesPage /> : <LockViewPage />} />
             <Route path="/project-smeta-expences" element={!lock ? <SmetaExpensesPage /> : <LockViewPage />} />

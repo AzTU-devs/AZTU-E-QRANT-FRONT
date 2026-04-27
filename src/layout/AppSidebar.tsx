@@ -102,6 +102,7 @@ const AppSidebar: React.FC = () => {
             { name: "Layihəm", path: "/my-project", pro: false },
             { name: "Layihə komandası", path: "/collaborators", pro: false },
             { name: "Layihədə görüləcək işlər (ay üzrə)", path: "/project-activities", pro: false, new: true },
+            { name: "Rüblük Elmi-Texniki Hesabat", path: "/quarterly-report", pro: false, new: true },
           ],
         },
         {

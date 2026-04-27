@@ -13,69 +13,96 @@ import GrantLogo from "../../../../public/e-grant-logo-light.png";
 
 export default function IntroFooter() {
     return (
-        <footer className="border-t border-gray-200 flex flex-col justify-center items-center" style={{ backgroundColor: "rgb(29, 42, 108)" }}>
-            <div className='w-full flex flex-col lg:flex-row justify-between items-center p-[40px] gap-10'>
-                <div className="flex justify-center items-center">
-                    <img src={AzTULogo} alt="AzTU" className="w-[150px] mr-[20px]" />
-                    <img src={GrantLogo} alt="Grant" className="w-[150px]" />
-                </div>
-                <div>
-                    <div className='flex flex-wrap justify-center items-center mb-[10px]'>
-                        <a href="https://x.com/aztueduaz" target="_blank">
-                            <XIcon style={{ color: "#fff", marginInline: 10, fontSize: 35 }} />
-                        </a>
-                        <a href="https://www.linkedin.com/school/aztueduaz/posts/?feedView=all" target="_blank">
-                            <LinkedInIcon style={{ color: "#fff", marginInline: 10, fontSize: 35 }} />
-                        </a>
-                        <a href="https://www.youtube.com/channel/UCu_PoZ-9DKNYs3hxuK9pW1Q" target="_blank">
-                            <YouTubeIcon style={{ color: "#fff", marginInline: 10, fontSize: 35 }} />
-                        </a>
-                        <a href="https://www.instagram.com/aztueduaz" target='_blank'>
-                            <InstagramIcon style={{ color: "#fff", marginInline: 10, fontSize: 35 }} />
-                        </a>
-                        <a href="https://www.facebook.com/aztu1950.official/" target='_blank'>
-                            <FacebookIcon style={{ color: "#fff", marginInline: 10, fontSize: 35 }} />
-                        </a>
-                        <a href="https://t.me/aztu_edu_az" target='_blank'>
-                            <TelegramIcon style={{ color: "#fff", marginInline: 10, fontSize: 35 }} />
-                        </a>
+        <footer className="bg-[rgb(20,30,79)] text-white border-t border-white/10">
+            <div className="max-w-7xl mx-auto px-6 py-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                    {/* Brand Section */}
+                    <div className="flex flex-col items-start gap-6 col-span-1 md:col-span-2 lg:col-span-1">
+                        <div className="flex items-center gap-4">
+                            <img src={AzTULogo} alt="AzTU" className="h-12 w-auto" />
+                            <img src={GrantLogo} alt="Grant" className="h-12 w-auto" />
+                        </div>
+                        <p className="text-blue-100/70 text-sm leading-relaxed max-w-xs">
+                            Azərbaycan Texniki Universiteti elmi potensialın inkişafı və innovativ tədqiqatların dəstəklənməsi üçün daxili qrant müsabiqələri təşkil edir.
+                        </p>
+                        <div className="flex flex-wrap gap-3">
+                            {[
+                                { icon: <FacebookIcon />, href: "https://www.facebook.com/aztu1950.official/" },
+                                { icon: <InstagramIcon />, href: "https://www.instagram.com/aztueduaz" },
+                                { icon: <LinkedInIcon />, href: "https://www.linkedin.com/school/aztueduaz/" },
+                                { icon: <YouTubeIcon />, href: "https://www.youtube.com/channel/UCu_PoZ-9DKNYs3hxuK9pW1Q" },
+                                { icon: <TelegramIcon />, href: "https://t.me/aztu_edu_az" },
+                                { icon: <XIcon />, href: "https://x.com/aztueduaz" },
+                            ].map((social, i) => (
+                                <a key={i} href={social.href} target="_blank" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/20 transition-colors">
+                                    {social.icon}
+                                </a>
+                            ))}
+                        </div>
                     </div>
-                    <div className='flex justify-center items-center'>
-                        <a href="https://maps.app.goo.gl/uSbCPTZDsVBZZ4n16" className='flex justify-center items-center' target='_blank'>
-                            <LocationOnIcon style={{ color: "#fff" }} />
-                            <p className='text-white'>
-                                <span style={{ fontWeight: 600, marginRight: 5 }}>Ünvan:</span>
-                                H.Cavid prospekti 25, Baku, Azərbaycan AZ 1073 Azərbaycan Texniki Universiteti.
-                            </p>
-                        </a>
+
+                    {/* Quick Links / Info */}
+                    <div>
+                        <h4 className="text-lg font-bold mb-6 border-b border-white/10 pb-2 inline-block">Məlumat</h4>
+                        <ul className="space-y-4 text-sm text-blue-100/70">
+                            <li><a href="#" className="hover:text-white transition-colors">Qaydalar və Şərtlər</a></li>
+                            <li><a href="#" className="hover:text-white transition-colors">Tez-tez verilən suallar</a></li>
+                            <li><a href="#" className="hover:text-white transition-colors">Təlimatlar</a></li>
+                            <li><a href="#" className="hover:text-white transition-colors">Nəticələr</a></li>
+                        </ul>
+                    </div>
+
+                    {/* Contact Info */}
+                    <div className="col-span-1 md:col-span-2">
+                        <h4 className="text-lg font-bold mb-6 border-b border-white/10 pb-2 inline-block">Əlaqə</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div className="space-y-4">
+                                <a href="https://maps.app.goo.gl/uSbCPTZDsVBZZ4n16" target="_blank" className="flex items-start gap-3 group">
+                                    <LocationOnIcon className="text-blue-400 mt-1" />
+                                    <span className="text-sm text-blue-100/70 group-hover:text-white transition-colors leading-relaxed">
+                                        H.Cavid prospekti 25, Bakı, Azərbaycan AZ 1073
+                                    </span>
+                                </a>
+                                <a href="tel:+994125391305" className="flex items-center gap-3 group">
+                                    <PhoneIcon className="text-blue-400" />
+                                    <span className="text-sm text-blue-100/70 group-hover:text-white transition-colors">
+                                        AzTU: (+994 12) 539-13-05
+                                    </span>
+                                </a>
+                                <a href="tel:+994125383383" className="flex items-center gap-3 group">
+                                    <PhoneIcon className="text-blue-400" />
+                                    <span className="text-sm text-blue-100/70 group-hover:text-white transition-colors">
+                                        Qrant: (+994 12) 538-33-83
+                                    </span>
+                                </a>
+                            </div>
+                            <div className="space-y-4">
+                                <a href="mailto:aztu@aztu.edu.az" className="flex items-center gap-3 group">
+                                    <MailIcon className="text-blue-400" />
+                                    <span className="text-sm text-blue-100/70 group-hover:text-white transition-colors">
+                                        aztu@aztu.edu.az
+                                    </span>
+                                </a>
+                                <a href="mailto:qrant@aztu.edu.az" className="flex items-center gap-3 group">
+                                    <MailIcon className="text-blue-400" />
+                                    <span className="text-sm text-blue-100/70 group-hover:text-white transition-colors">
+                                        qrant@aztu.edu.az
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className='flex flex-col sm:flex-col sm:justify-center items-start gap-4'>
-                    <a href="tel:+994125391305" className='flex justify-center items-center mb-[10px]'>
-                        <PhoneIcon style={{ color: "#fff", marginRight: 10 }} />
-                        <p className='text-white'>AzTU qaynar xətt: (+994 12) 539-13-05</p>
-                    </a>
-                    <a href="tel:+994125383383" className='flex justify-center items-center mb-[10px]'>
-                        <PhoneIcon style={{ color: "#fff", marginRight: 10 }} />
-                        <p className='text-white'>Qrant müsabiqəsi qaynar xətt: (+994 12) 538-33-83</p>
-                    </a>
-                    <a href="mailto:aztu@aztu.edu.az" className='flex justify-center items-center mb-[10px]'>
-                        <MailIcon style={{ color: "#fff", marginRight: 10 }} />
-                        <p className='text-white' style={{ fontSize: 15, fontWeight: 400 }} >AzTU E-poçt: aztu@aztu.edu.az</p>
-                    </a>
-                    <a href="mailto:qrant@aztu.edu.az" className='flex justify-center items-center'>
-                        <MailIcon style={{ color: "#fff", marginRight: 10 }} />
-                        <p className='text-white' style={{ fontSize: 15, fontWeight: 400 }} >Daxili Qrant E-poçt: qrant@aztu.edu.az</p>
-                    </a>
+
+                <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-blue-100/50">
+                    <div className="flex items-center gap-2">
+                        <CopyrightIcon sx={{ fontSize: 16 }} />
+                        <p>Azərbaycan Texniki Universiteti. Bütün hüquqlar qorunur.</p>
+                    </div>
+                    <p>Designed with excellence by AzTU</p>
                 </div>
-            </div>
-            <div className='w-[90%] flex justify-center items-center' style={{
-                borderTop: "1px solid rgba(255, 255, 255, 0.2)",
-                padding: 40
-            }}>
-                <CopyrightIcon style={{ color: "#fff", marginRight: 10 }} />
-                <p style={{ color: "#fff" }}>Azərbaycan Texniki Universiteti Daxili Qrant Müsabiqəsi. Bütün hüquqlar qorunur.</p>
             </div>
         </footer>
     )
 }
+

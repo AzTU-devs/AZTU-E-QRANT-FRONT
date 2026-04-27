@@ -1,18 +1,52 @@
 import { motion, Variants } from 'framer-motion';
+import TargetIcon from '@mui/icons-material/AdsClick';
+import PeopleIcon from '@mui/icons-material/Groups';
+import StarIcon from '@mui/icons-material/Star';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
+
+const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+        },
+    },
+};
+
+const itemVariants: Variants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            type: 'spring',
+            damping: 12,
+            stiffness: 100,
+        },
+    },
+};
 
 export default function IntroMain() {
     const text = 'Azərbaycan Texniki Universiteti (AzTU) daxili qrant müsabiqəsi elan edir';
     const letters = text.split('');
 
-    const container: Variants = {
+    const titleContainer: Variants = {
         hidden: { opacity: 0 },
         visible: (i = 1) => ({
             opacity: 1,
-            transition: { staggerChildren: 0.01, delayChildren: 0.01 * i },
+            transition: { staggerChildren: 0.03, delayChildren: 0.02 * i },
         }),
     };
 
-    const child: Variants = {
+    const letterVariants: Variants = {
         hidden: {
             y: 20,
             opacity: 0,
@@ -29,307 +63,227 @@ export default function IntroMain() {
     };
 
     return (
-        <>
-            <main className='w-full px-4 sm:px-8 md:px-16 lg:px-20 py-8 flex flex-col justify-center items-center'>
-                <section className='w-full max-w-6xl flex flex-col justify-start items-center px-4 sm:px-0'>
-                    <h1
-                        style={{
-                            fontSize: '1.875rem', // 30px
-                            color: "rgb(20, 30, 79)",
-                            marginBottom: 30,
-                        }}
-                        className="flex justify-center items-center text-center self-center"
+        <main className="w-full bg-gray-50/50">
+            {/* Hero Section */}
+            <section className="relative overflow-hidden bg-[rgb(20,30,79)] py-20 px-4 sm:px-8 md:px-16 lg:px-20 text-white">
+                <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                    <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400 blur-[120px]"></div>
+                    <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-600 blur-[120px]"></div>
+                </div>
+
+                <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center text-center">
+                    <motion.div
+                        variants={titleContainer}
+                        initial="hidden"
+                        animate="visible"
+                        className="flex flex-wrap justify-center text-3xl md:text-5xl font-bold mb-8 tracking-tight"
                     >
-                        <motion.div
-                            style={{ display: 'flex', fontSize: '2rem', fontWeight: 'bold' }}
-                            variants={container}
-                            initial="hidden"
-                            animate="visible"
-                            className="flex flex-wrap justify-center"
-                        >
-                            {letters.map((char, index) => (
-                                <motion.span
-                                    key={index}
-                                    variants={child}
-                                    aria-hidden={char === ' '}
-                                >
-                                    {char === ' ' ? '\u00A0' : char}
-                                </motion.span>
-                            ))}
-                        </motion.div>
-                    </h1>
-                    <h2
-                        className="text-center self-center text-lg sm:text-xl font-medium"
-                        style={{
-                            color: "rgb(20, 30, 79)",
-                            marginBottom: 10
-                        }}
+                        {letters.map((char, index) => (
+                            <motion.span
+                                key={index}
+                                variants={letterVariants}
+                                aria-hidden={char === ' '}
+                            >
+                                {char === ' ' ? '\u00A0' : char}
+                            </motion.span>
+                        ))}
+                    </motion.div>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.5, duration: 0.8 }}
+                        className="text-lg md:text-xl text-blue-100 max-w-3xl mb-10 leading-relaxed"
                     >
                         Azərbaycan Texniki Universiteti (AzTU) elmi-tədqiqat işlərinin və innovasiyaların dəstəklənməsi və inkişafı məqsədilə daxili qrant müsabiqəsi elan edir.
-                    </h2>
-                    {/* <p
-                        style={{
-                            fontSize: '0.875rem',
-                            textAlign: "left",
-                            maxWidth: '100%',
-                            color: "rgba(0, 0, 0, 0.6)",
-                            lineHeight: 1.6,
-                        }}
-                        className="max-w-full sm:max-w-[90%]"
-                    >
-                        Qrant müsabiqəsi çərçivəsində AzTU-da çalışan professor-müəllim heyətinin, doktorantlar və magistrlər
-                        elmi-tədqiqat layihələri qəbul olunur. Qrant müsabiqəsi AzTU-da aparılan sənaye və praktik əhəmiyyətli
-                        elmi-tədqiqat işlərinin, ixtiraların və yeni texnoloji işləmələrin sayını artırmaq üçün nəzərdə tutulub.
-                        Qrant müsabiqəsində əsas məqsəd AzTU-nun daxili imkanları hesabına müsabiqə əsasında ayrılan maliyyə vəsaiti
-                        hesabına tədqiqat ekosisteminin formalaşdırılması elmi səviyyəni yüksəltmək və yeganə meyar olan tədqiqatın
-                        elmi əhəmiyyətini rəhbər tutaraq alimlərin özləri tərəfindən təklif olunan mövzular üzrə tədqiqatları dəstəkləməkdir.
-                        Layihələrin maliyyə həcmi maksimum dəyəri 30000 (otuz min) AZN-dək və icra müddəti 6 - 12 ay qədərdir.
-                    </p> */}
-                </section>
+                    </motion.p>
 
-                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
-                    <h2
-                        className="text-center self-center font-medium text-lg sm:text-xl text-primary-900 mb-2"
-                        style={{ color: "rgb(20, 30, 79)" }}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.8 }}
                     >
-                        Müsabiqənin məqsədi
-                    </h2>
-                    <p
-                        style={{
-                            fontSize: '0.875rem',
-                            textAlign: "left",
-                            color: "rgba(0, 0, 0, 0.6)"
-                        }}
-                        className="max-w-full sm:max-w-[90%]"
-                    >
-                        <ul className='list-disc'>
-                            <li>AzTU və tərəfdaş institutların (İnformasiya Texnologiyaları İnstitutu və İdarəetmə Sistemləri İnstitutu) sənaye və praktik əhəmiyyətli elmi-tədqiqat işlərinə, ixtiralarına və yeni texnoloji işləmələrinə dəstək vermək;
-                            </li>
-                            <li>Universitetin elmi-tədqiqat ekosistemini gücləndirmək, innovativ ideyaların reallaşmasına dəstək vermək;
-                            </li>
-                            <li>Elmi-tədqiqat potensialını yüksəltmək, professor-müəllim heyətinin, doktorant və magistrlərin tədqiqat işlərinə motivasiyasını artırmaq.
-                            </li>
-                        </ul>
+                        <a
+                            href="/signin"
+                            className="inline-flex items-center gap-2 bg-white text-[rgb(20,30,79)] px-8 py-4 rounded-full font-bold text-lg transition-all hover:bg-blue-50 hover:scale-105 shadow-xl"
+                        >
+                            İndi müraciət et <ArrowForwardIcon />
+                        </a>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Info Grid */}
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                className="max-w-7xl mx-auto px-4 sm:px-8 py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+                {/* Purpose Card */}
+                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-blue-100 text-[rgb(20,30,79)] rounded-xl flex items-center justify-center mb-6">
+                        <TargetIcon />
+                    </div>
+                    <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Müsabiqənin məqsədi</h3>
+                    <ul className="space-y-3 text-gray-600 text-sm">
+                        <li className="flex gap-2">
+                            <span className="text-blue-500">•</span>
+                            AzTU və tərəfdaş institutların sənaye və praktik əhəmiyyətli işlərinə dəstək vermək
+                        </li>
+                        <li className="flex gap-2">
+                            <span className="text-blue-500">•</span>
+                            Elmi-tədqiqat ekosistemini gücləndirmək və innovativ ideyaları reallaşdırmaq
+                        </li>
+                        <li className="flex gap-2">
+                            <span className="text-blue-500">•</span>
+                            Tədqiqatçıların motivasiyasını və elmi potensialını yüksəltmək
+                        </li>
+                    </ul>
+                </motion.div>
+
+                {/* Eligibility Card */}
+                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-xl flex items-center justify-center mb-6">
+                        <PeopleIcon />
+                    </div>
+                    <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Kimlər iştirak edə bilər?</h3>
+                    <ul className="space-y-3 text-gray-600 text-sm">
+                        <li className="flex gap-2">
+                            <span className="text-indigo-500">•</span>
+                            AzTU-nun professor-müəllim heyəti, doktorantları və magistrləri
+                        </li>
+                        <li className="flex gap-2">
+                            <span className="text-indigo-500">•</span>
+                            İnformasiya Texnologiyaları və İdarəetmə Sistemləri İnstitutunun əməkdaşları
+                        </li>
+                    </ul>
+                </motion.div>
+
+                {/* Priorities Card */}
+                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center mb-6">
+                        <StarIcon />
+                    </div>
+                    <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Prioritet istiqamətlər</h3>
+                    <ul className="space-y-2 text-gray-600 text-sm">
+                        <li>1. Rəqəmsal texnologiyalar</li>
+                        <li>2. Müdafiə sənayesi işləmələri</li>
+                        <li>3. Yeni materiallar</li>
+                        <li>4. Yaşıl enerji və ətraf mühit</li>
+                        <li>5. Yeni qurğu və cihaz layihələndirmələri</li>
+                    </ul>
+                </motion.div>
+
+                {/* Budget Card */}
+                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 md:col-span-2 lg:col-span-1 flex flex-col justify-between">
+                    <div>
+                        <div className="w-12 h-12 bg-green-100 text-green-700 rounded-xl flex items-center justify-center mb-6">
+                            <AccountBalanceWalletIcon />
+                        </div>
+                        <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Maliyyə və Müddət</h3>
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-3">
+                                <span className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Büdcə</span>
+                                <span className="text-gray-700 font-medium">Maks. 30,000 AZN / layihə</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Müddət</span>
+                                <span className="text-gray-700 font-medium">6 - 12 ay</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p className="mt-6 text-xs text-gray-400 italic">Ümumi fond: 300,000 AZN</p>
+                </motion.div>
+
+                {/* Principles Card */}
+                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 md:col-span-2 lg:col-span-2">
+                    <div className="w-12 h-12 bg-purple-100 text-purple-700 rounded-xl flex items-center justify-center mb-6">
+                        <ListAltIcon />
+                    </div>
+                    <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Əsas Prinsiplər</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-gray-600 text-sm">
+                        <p>• Kiçik yaradıcı kollektivlər (maks. 7 nəfər)</p>
+                        <p>• Təcrübəli və beynəlxalq nüfuzlu rəhbərlər</p>
+                        <p>• Digər fondlar tərəfindən maliyyələşməyən mövzular</p>
+                        <p>• Texniki və elmi ekspertiza mərhələləri</p>
+                        <p>• Hər şəxs üçün yalnız bir layihə</p>
+                        <p>• Şəffaf və çarpaz elmi qiymətləndirmə</p>
+                    </div>
+                </motion.div>
+            </motion.div>
+
+            {/* Application Section */}
+            <section className="bg-gray-100 py-20">
+                <div className="max-w-4xl mx-auto px-4 text-center">
+                    <div className="inline-block p-3 bg-blue-100 text-[rgb(20,30,79)] rounded-full mb-6">
+                        <AppRegistrationIcon fontSize="large" />
+                    </div>
+                    <h2 className="text-3xl font-bold text-[rgb(20,30,79)] mb-6">Müraciət qaydası və vaxtı</h2>
+                    <p className="text-gray-600 mb-8 leading-relaxed">
+                        Layihə təklifləri <span className="font-bold text-gray-900">30 oktyabr 2025-ci il</span> tarixinədək AzTU-nun rəsmi qrant portalı vasitəsilə qəbul ediləcək.
                     </p>
-
-                    <h2
-                        className="text-center self-center font-medium text-lg sm:text-xl mt-8 mb-5"
-                        style={{ color: "rgb(20, 30, 79)" }}
-                    >
-                        Müsabiqədə kimlər iştirak edə bilər
-                    </h2>
-
-                    <div className='flex sm:flex-row justify-between items-start w-full gap-6'>
-                        <ul
-                            className='list-decimal pl-5 flex justify-between items-center w-full'
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "start",
-                                color: "rgba(0, 0, 0, 0.6)",
-                                lineHeight: 1.5,
-                            }}
-                        >
-                            <li className='mb-2'>
-                                AzTU-nun professor-müəllim heyəti, doktorantları və magistrləri.
-                            </li>
-                            <li>
-                                İnformasiya Texnologiyaları İnstitutu və İdarəetmə Sistemləri İnstitutunun əməkdaşları.
-                            </li>
-                        </ul>
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 inline-block">
+                        <a href="http://e-grant.aztu.edu.az/signin" className="text-xl font-semibold text-[rgb(20,30,79)] hover:underline">
+                            e-grant.aztu.edu.az
+                        </a>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
-                    <h2
-                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
-                        style={{ color: "rgb(20, 30, 79)" }}
-                    >
-                        Müsabiqənin prioritet istiqamətləri
-                    </h2>
-                    <p style={{
-                        fontSize: '0.875rem',
-                        textAlign: "left",
-                        color: "rgba(0, 0, 0, 0.6)",
-                        marginBottom: "10px"
-                    }}
-                        className="max-w-full sm:max-w-[90%]">
-                        Müsabiqə çərçivəsində təqdim edilən layihələr aşağıdakı sahələr üzrə aparılan sənaye, praktik və innovativ elmi-tədqiqat işləri, ixtiralar və yeni texnoloji işləmələrlə bağlı olmalıdır:
-
-                    </p>
-                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
-                        <ol
-                            className='list-decimal pl-5 sm:w-1/2'
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "start",
-                                color: "rgba(0, 0, 0, 0.6)",
-                                lineHeight: 1.5,
-                            }}
-                        >
-                            <li className='mb-2'>Rəqəmsal texnologiyaların elmi-nəzəri və tətbiqi problemləri</li>
-                            <li className='mb-2'>Müdafiə sənayesi təyinatlı texnoloji işləmələr</li>
-                            <li className='mb-2'>Yeni materiallar və texnologiyalar</li>
-                        </ol>
-                        <ol
-                            className='list-decimal pl-5 sm:w-1/2'
-                            start={4}
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "start",
-                                color: "rgba(0, 0, 0, 0.6)",
-                                lineHeight: 1.5,
-                            }}
-                        >
-                            <li className='mb-2'>Yaşıl enerji, ətraf mühit və davamlı inkişaf məsələləri</li>
-                            <li className='mb-2'>Tətbiqi əhəmiyyətli yeni qurğu və cihaz layihələndirmələri</li>
-                        </ol>
-                    </div>
-                    <p
-                        className="italic font-medium mt-3 text-center"
-                        style={{ width: '100%' }}
-                    >
-                        Hər bir prioritet istiqamət üzrə minimum bir layihənin qalib olması nəzərdə tutulur.
-                    </p>
-                </section>
-
-                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
-                    <h2
-                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
-                        style={{ color: "rgb(20, 30, 79)" }}
-                    >
-                        Maliyyə vəsaiti və müddət:
-                    </h2>
-                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
-                        <ul
-                            className='list-disc pl-5 sm:w-1/2'
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "start",
-                                color: "rgba(0, 0, 0, 0.6)",
-                                lineHeight: 1.5,
-                            }}
-                        >
-                            <li className='mb-2'>Hər bir layihə üçün ayrılacaq maliyyənin miqdarı: maksimum 30 000 (otuz min) AZN;</li>
-                            <li className='mb-2'> Layihələrin icra müddəti: 6-12 ay;</li>
-                            <li className='mb-2'>Qrant müsabiqəsi üçün nəzərdə tutulam ümumi məbləğ: 300 000 (üç yüz min) AZN.</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
-                    <h2
-                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
-                        style={{ color: "rgb(20, 30, 79)" }}
-                    >
-                        Cari müsabiqənin keçirilməsinin əsas prinsipləri
-                    </h2>
-                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
-                        <ol
-                            className='list-decimal pl-5 sm:w-1/2'
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "start",
-                                color: "rgba(0, 0, 0, 0.6)",
-                            }}
-                        >
-                            <li className='ml-5'>
-                                Müsabiqəyə professor-müəllim heyəti, tədqiqatçı-alimlər və gənc tədqiqatçılar müraciət edə bilərlər.
-                            </li>
-                            <li className='ml-5 list-decimal'>
-                                Qrant müsabiqəsi yalnız AzTU, İnformasiya Texnologiyaları İnstitutu və İdarəetmə Sistemləri İnstitutunun alimlərindən təşkil olunmuş elmi yaradıcı kollektivlər tərəfindən təqdim edilmiş layihələr üçün nəzərdə tutulur.
-
-                            </li>
-                            <li className='ml-5 list-decimal'>
-                                Birgə qrant layihəsi ilə müsabiqədə iştirak etmək istəyən AzTU və institutların alimləri sənədlərin təqdim edilməsindən əvvəl müzakirələr apararaq, qrant layihəsinin mövzusunu, şərtlərini və digər müvafiq məsələləri qarşılıqlı şəkildə razılaşdırmalıdırlar.
-
-                            </li>
-                            <li className='ml-5 list-decimal'>
-                                Müsabiqəyə alimlərdən təşkil olunmuş kiçik saylı (7 nəfərədək, layihə rəhbəri və icraçılar daxil olmaqla) müvəqqəti yaradıcı kollektivlər tərəfindən həyata keçiriləcək fundamental və tətbiqi xarakterli elmi-tədqiqat layihələri qəbul olunur.
-
-                            </li>
-                            <li className='ml-5 list-decimal'>
-                                Layihə rəhbəri və icraçılar kifayət qədər təcrübəli, beynəlxalq əlaqələrə malik, nüfuzlu elmi nəşrlərdə dərc olunmuş məqalələri olan alimlər olmalıdır.
-                            </li>
-                        </ol>
-                        <ol
-                            className='list-decimal pl-5 sm:w-1/2'
-                            start={6}
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "start",
-                                color: "rgba(0, 0, 0, 0.6)",
-                            }}
-                        >
-                            <li className='ml-5'>
-                                Elmi-tədqiqat qurumlarının planları üzrə mövzunun layihədə təkrarlanmasına yol verilmir.
-                            </li>
-                            <li className='ml-5 list-decimal'>
-                                Digər fond və qurumlar tərəfindən maliyyələşdirilən mövzular üzrə layihələr müsabiqəyə qəbul olunmur.
-                            </li>
-                            <li className='ml-5 list-decimal'>
-                                Cari müsabiqədə hər bir şəxs yalnız bir layihə üzrə qrant iddiaçısı ola bilər (rəhbər və ya icraçı qismində).
-                            </li>
-                            <li className='ml-5 list-decimal'>
-                                Müsabiqəyə təqdim olunmuş layihələr qaydalara uyğun olaraq texniki və elmi ekspertiza mərhələlərindən keçirilir. Bu zaman tərəflərin çarpaz elmi ekspertizası da nəzərdə tutulur.
-                            </li>
-                            <li className='ml-5 list-decimal'>
-                                Qrant layihəsi çərçivəsində elmi məqsədlər üçün tələb olunan əsas vəsaitlər (elmi cihazlar, avadanlıq və qurğular, ləvazimat və qeyri-maddi aktivlər və s.), iş və xidmətlər layihənin ümumi büdcəsinin 30%-dən (vergi və rüsumlar daxil olmaqla), ezamiyyətlər isə 10%-dən artıq ola bilməz.
-                            </li>
-                        </ol>
-                    </div>
-                </section>
-                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
-                    <h2
-                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
-                        style={{ color: "rgb(20, 30, 79)" }}
-                    >
-                        Müraciət qaydası və vaxtı
-                    </h2>
-                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
-                        <p
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "left",
-                                maxWidth: '100%',
-                                color: "rgba(0, 0, 0, 0.6)",
-                                lineHeight: 1.6,
-                            }}
-                            className="max-w-full sm:max-w-[90%]"
-                        >
-                            Layihə təklifləri <span style={{ fontWeight: 600 }}>30 oktyabr 2025-ci il</span> tarixinədək AzTU-nun rəsmi &nbsp;
-                            <a href="http://e-grant.aztu.edu.az/signin" style={{ fontWeight: 600, color: "rgb(20, 30, 79)" }}>qrant portalı http://e-grant.aztu.edu.az/</a> &nbsp;
-                            vasitəsilə qəbul ediləcək.
-                            <br />
-                            Müraciətlər yalnız bu portal üzərindən həyata keçiriləcək. Qəbul edilmiş layihələr komissiya tərəfindən qiymətləndirildikdən sonra nəticələr elan olunacaq.
+            {/* Contact Section */}
+            <section className="py-20 px-4">
+                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+                    <div className="md:w-1/2">
+                        <h2 className="text-3xl font-bold text-[rgb(20,30,79)] mb-6 flex items-center gap-3">
+                            <ContactSupportIcon fontSize="large" /> Əlaqə
+                        </h2>
+                        <p className="text-gray-600 mb-8">
+                            Əlavə məlumat üçün AzTU Tədqiqat və İnkişaf Departamenti ilə əlaqə saxlaya bilərsiniz.
                         </p>
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-4">
+                                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-[rgb(20,30,79)]">
+                                    <ScheduleIcon />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-gray-500 uppercase font-bold">İş vaxtı</p>
+                                    <p className="text-gray-700">09:00 - 18:00</p>
+                                </div>
+                            </div>
+                            <a href="tel:+994125383383" className="flex items-center gap-4 group">
+                                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-[rgb(20,30,79)] transition-colors group-hover:bg-[rgb(20,30,79)] group-hover:text-white">
+                                    <PhoneIcon />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-gray-500 uppercase font-bold">Telefon</p>
+                                    <p className="text-gray-700 font-semibold group-hover:text-[rgb(20,30,79)] transition-colors">(+994 12) 538-33-83</p>
+                                </div>
+                            </a>
+                            <a href="mailto:grant@aztu.edu.az" className="flex items-center gap-4 group">
+                                <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-[rgb(20,30,79)] transition-colors group-hover:bg-[rgb(20,30,79)] group-hover:text-white">
+                                    <EmailIcon />
+                                </div>
+                                <div>
+                                    <p className="text-xs text-gray-500 uppercase font-bold">E-poçt</p>
+                                    <p className="text-gray-700 font-semibold group-hover:text-[rgb(20,30,79)] transition-colors">grant@aztu.edu.az</p>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                </section>
-                <section className='w-full max-w-6xl px-4 sm:px-0 mt-10'>
-                    <h2
-                        className="text-center self-center font-medium text-lg sm:text-xl mb-2"
-                        style={{ color: "rgb(20, 30, 79)" }}
-                    >
-                        Əlaqə
-                    </h2>
-                    <div className='flex flex-col sm:flex-row justify-between items-start gap-6'>
-                        <p
-                            style={{
-                                fontSize: '0.875rem',
-                                textAlign: "left",
-                                maxWidth: '100%',
-                                color: "rgba(0, 0, 0, 0.6)",
-                                lineHeight: 1.6,
-                            }}
-                            className="max-w-full sm:max-w-[90%]"
-                        >
-                            Əlavə məlumat üçün AzTU Tədqiqat və İnkişaf Departamenti ilə əlaqə saxlaya bilərsiniz: <br />
-                            Telefon: <a href="telto:+994125383383"><span style={{ fontWeight: 600, color: "rgb(20, 30, 79)" }}>(+994 12) 538-33-83</span></a><br />
-                            Email: <a href="mailto:grant@aztu.edu.az"><span style={{ fontWeight: 600, color: "rgb(20, 30, 79)" }}>grant@aztu.edu.az</span></a><br />
-                            Ünvan: Azərbaycan Texniki Universiteti, Bakı, Azərbaycan<br />
+                    <div className="md:w-1/2 bg-[rgb(20,30,79)] text-white p-10 rounded-3xl relative overflow-hidden">
+                        <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-white/5 blur-3xl"></div>
+                        <h3 className="text-2xl font-bold mb-6">Sualınız var?</h3>
+                        <p className="text-blue-100 mb-8 leading-relaxed">
+                            Bütün suallarınızı elektron poçt ünvanımıza göndərə bilərsiniz. Komandamız operativ şəkildə cavablandıracaqdır.
                         </p>
+                        <a href="mailto:grant@aztu.edu.az" className="inline-block bg-white text-[rgb(20,30,79)] px-6 py-3 rounded-xl font-bold transition-transform hover:scale-105 shadow-lg">
+                            Məktub yazın
+                        </a>
                     </div>
-                </section>
-            </main>
-        </>
+                </div>
+            </section>
+        </main>
     );
 }
