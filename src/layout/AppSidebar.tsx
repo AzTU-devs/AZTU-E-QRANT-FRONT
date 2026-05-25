@@ -206,7 +206,7 @@ const AppSidebar: React.FC = () => {
   );
 
   const renderMenuItems = (items: NavItem[]) => (
-    <ul className="flex flex-col gap-4">
+    <ul className="flex flex-col gap-1.5">
       {items.map((nav, index) => (
         <li key={index}>
           {nav.subItems ? (
@@ -238,6 +238,9 @@ const AppSidebar: React.FC = () => {
                 className={`menu-item group ${isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
                   }`}
               >
+                {isActive(nav.path) && (
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-gradient-to-b from-brand-500 to-purple-500 shadow-[0_0_10px_rgba(91,91,240,0.6)]" />
+                )}
                 <span
                   className={`menu-item-icon-size ${isActive(nav.path)
                     ? "menu-item-icon-active"
@@ -253,8 +256,8 @@ const AppSidebar: React.FC = () => {
             )
           )}
           {nav.subItems && openSubmenus[nav.name] && (isExpanded || isHovered || isMobileOpen) && (
-            <div className="mt-2 ml-9">
-              <ul className="space-y-1">
+            <div className="mt-1.5 ml-5 pl-4 border-l border-dashed border-gray-200 dark:border-white/[0.08]">
+              <ul className="space-y-0.5">
                 {nav.subItems.map((subItem) => (
                   <li key={subItem.name}>
                     <Link
@@ -264,18 +267,18 @@ const AppSidebar: React.FC = () => {
                         : "menu-dropdown-item-inactive"
                         }`}
                     >
-                      {subItem.name}
-                      <span className="flex items-center gap-1 ml-auto">
+                      <span className="flex-1 leading-snug pr-2">{subItem.name}</span>
+                      <span className="flex items-center gap-1 ml-auto shrink-0">
                         {subItem.new && (
                           <span
-                            className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-semibold px-2 py-[1px] rounded-full"
+                            className="text-[9px] font-bold tracking-wider px-1.5 py-0.5 rounded-md bg-gradient-to-r from-error-500 to-orange-500 text-white shadow-[0_2px_8px_-2px_rgba(240,68,56,0.55)]"
                           >
                             YENİ
                           </span>
                         )}
                         {subItem.pro && (
                           <span
-                            className={`ml-auto ${isActive(subItem.path)
+                            className={`${isActive(subItem.path)
                               ? "menu-dropdown-badge-active"
                               : "menu-dropdown-badge-inactive"
                               } menu-dropdown-badge`}
@@ -297,7 +300,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-4 left-0 backdrop-blur-xl bg-white/80 dark:bg-gray-900/70 dark:border-white/[0.06] text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200/70 shadow-[1px_0_0_0_rgba(20,19,61,0.02)]
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-3 left-0 backdrop-blur-2xl bg-white/85 dark:bg-gray-950/80 dark:border-white/[0.06] text-gray-900 h-screen transition-all duration-300 ease-out z-50 border-r border-gray-200/60 shadow-[1px_0_24px_-12px_rgba(20,19,61,0.10)]
         ${isExpanded || isMobileOpen
           ? "w-[290px]"
           : isHovered
@@ -310,22 +313,21 @@ const AppSidebar: React.FC = () => {
       onMouseLeave={() => undefined}
     >
       <div
-        className={`py-8 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+        className={`py-6 flex ${!isExpanded && !isHovered ? "lg:justify-center" : "justify-start px-2"
           }`}
       >
-        <Link to="/home">
-          <>
-            <img
-              src={GrantLogoLight} // ✅ Light mode
-              alt="Logo Light"
-              className={`${isExpanded ? "h-[100px]" : "h-[40px]"} hidden dark:block transition-all duration-300`}
-            />
-            <img
-              src={GrantLogoDark} // ✅ Dark mode
-              alt="Logo Dark"
-              className={`${isExpanded ? "h-[100px]" : "h-[40px]"} block dark:hidden transition-all duration-300`}
-            />
-          </>
+        <Link to="/home" className="group relative flex items-center justify-center rounded-2xl transition-all">
+          <span className="pointer-events-none absolute -inset-2 rounded-3xl bg-gradient-to-br from-brand-500/15 via-purple-500/10 to-transparent opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-100" />
+          <img
+            src={GrantLogoLight}
+            alt="Logo Light"
+            className={`relative ${isExpanded || isHovered ? "h-[88px]" : "h-[36px]"} hidden dark:block transition-all duration-300`}
+          />
+          <img
+            src={GrantLogoDark}
+            alt="Logo Dark"
+            className={`relative ${isExpanded || isHovered ? "h-[88px]" : "h-[36px]"} block dark:hidden transition-all duration-300`}
+          />
         </Link>
       </div>
       <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">

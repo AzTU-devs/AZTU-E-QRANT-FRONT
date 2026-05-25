@@ -39,28 +39,25 @@ export default function UserDropdown() {
     <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="flex items-center text-gray-700 dropdown-toggle dark:text-gray-400"
+        className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full text-gray-700 dropdown-toggle dark:text-gray-300 bg-white/60 hover:bg-white dark:bg-white/[0.04] dark:hover:bg-white/[0.08] border border-gray-200/70 dark:border-white/[0.06] shadow-theme-xs hover:shadow-theme-sm transition-all"
       >
-        <span className="mr-3 overflow-hidden rounded-full h-11 w-11 flex justify-center items-center">
+        <span className="relative overflow-hidden rounded-full h-9 w-9 flex justify-center items-center ring-2 ring-white dark:ring-gray-900 shadow-[0_0_0_2px_rgba(91,91,240,0.25)]">
           {user?.image ? (
-            <div className="col-span-5 lg:col-span-1">
-              <img
-                src={`data:image/jpeg;base64,${user.image}`}
-                alt="User"
-                className="w-[fit-content] h-[fit-content] rounded-full object-cover border border-gray-300"
-              />
-            </div>
+            <img
+              src={`data:image/jpeg;base64,${user.image}`}
+              alt="User"
+              className="h-full w-full rounded-full object-cover"
+            />
           ) : (
-            <div className="col-span-5 lg:col-span-1">
-              <img
-                src={Profile}
-                alt="User"
-                className="w-[fit-content] h-[fit-content] rounded-full object-cover border border-gray-300"
-              />
-            </div>
+            <img
+              src={Profile}
+              alt="User"
+              className="h-full w-full rounded-full object-cover"
+            />
           )}
+          <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-success-500 ring-2 ring-white dark:ring-gray-900" />
         </span>
-        <span className="block mr-1 font-medium text-theme-sm">{user?.name} {user?.surname}</span>
+        <span className="hidden sm:block font-semibold text-theme-sm leading-tight max-w-[160px] truncate">{user?.name} {user?.surname}</span>
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
             }`}
@@ -83,15 +80,20 @@ export default function UserDropdown() {
       <Dropdown
         isOpen={isOpen}
         onClose={closeDropdown}
-        className="absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark"
+        className="absolute right-0 mt-3 flex w-[280px] flex-col rounded-2xl border border-gray-200/70 dark:border-white/[0.06] bg-white/95 backdrop-blur-xl dark:bg-gray-900/95 p-3 shadow-theme-xl animate-[fadeIn_180ms_ease-out]"
       >
-        <div>
-          <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-            {user?.name} {user?.surname}
+        <div className="flex items-center gap-3 p-2 mb-2 rounded-xl bg-gradient-to-br from-brand-50 to-purple-50/40 dark:from-brand-500/10 dark:to-purple-500/5">
+          <span className="overflow-hidden rounded-full h-10 w-10 flex justify-center items-center ring-2 ring-white dark:ring-gray-900">
+            <img src={user?.image ? `data:image/jpeg;base64,${user.image}` : Profile} alt="User" className="h-full w-full object-cover" />
           </span>
-          <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-            {user?.fin_kod}
-          </span>
+          <div className="min-w-0">
+            <span className="block font-semibold text-gray-800 text-theme-sm dark:text-white truncate">
+              {user?.name} {user?.surname}
+            </span>
+            <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400 truncate">
+              FIN: {user?.fin_kod}
+            </span>
+          </div>
         </div>
 
         {/* <ul className="flex flex-col gap-1 pt-4 pb-3 border-b border-gray-200 dark:border-gray-800">
@@ -127,10 +129,10 @@ export default function UserDropdown() {
             closeDropdown();
             navigate("/signin");
           }}
-          className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+          className="flex items-center gap-3 px-3 py-2.5 mt-1 font-semibold text-error-600 rounded-xl group text-theme-sm hover:bg-error-50 dark:text-error-400 dark:hover:bg-error-500/10 transition-colors"
         >
           <svg
-            className="fill-gray-500 group-hover:fill-gray-700 dark:group-hover:fill-gray-300"
+            className="fill-error-500 group-hover:fill-error-600 dark:fill-error-400"
             width="24"
             height="24"
             viewBox="0 0 24 24"
