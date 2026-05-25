@@ -19,14 +19,14 @@ const DropzoneComponent: React.FC = () => {
   });
   return (
     <ComponentCard title="Dropzone">
-      <div className="transition border border-gray-300 border-dashed cursor-pointer dark:hover:border-brand-500 dark:border-gray-700 rounded-xl hover:border-brand-500">
+      <div className="transition-all border-2 border-gray-200 border-dashed cursor-pointer dark:hover:border-brand-500 dark:border-white/10 rounded-2xl hover:border-brand-400 hover:bg-brand-25/40 dark:hover:bg-brand-500/[0.04]">
         <form
           {...getRootProps()}
-          className={`dropzone rounded-xl   border-dashed border-gray-300 p-7 lg:p-10
+          className={`dropzone rounded-2xl border-dashed p-7 lg:p-12 transition-all
         ${
           isDragActive
-            ? "border-brand-500 bg-gray-100 dark:bg-gray-800"
-            : "border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
+            ? "border-brand-500 bg-gradient-to-br from-brand-50 to-purple-50 dark:from-brand-500/10 dark:to-purple-500/10"
+            : "border-gray-200 bg-white/40 dark:border-white/10 dark:bg-white/[0.02]"
         }
       `}
           id="demo-upload"
@@ -37,7 +37,7 @@ const DropzoneComponent: React.FC = () => {
           <div className="dz-message flex flex-col items-center m-0!">
             {/* Icon Container */}
             <div className="mb-[22px] flex justify-center">
-              <div className="flex h-[68px] w-[68px]  items-center justify-center rounded-full bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-400">
+              <div className="flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-purple-500 text-white shadow-[0_10px_28px_-8px_rgba(91,91,240,0.55)]">
                 <svg
                   className="fill-current"
                   width="29"

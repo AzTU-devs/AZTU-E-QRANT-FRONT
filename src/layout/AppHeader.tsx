@@ -42,11 +42,11 @@ const AppHeader: React.FC = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 flex w-full bg-white border-gray-200 z-99999 dark:border-gray-800 dark:bg-gray-900 lg:border-b">
+    <header className="sticky top-0 flex w-full backdrop-blur-xl bg-white/70 dark:bg-gray-900/60 border-b border-gray-200/70 dark:border-white/[0.06] z-99999 supports-[backdrop-filter]:bg-white/60">
       <div className="flex flex-col items-center justify-between grow lg:flex-row lg:px-6">
         <div className="flex items-center justify-between w-full gap-2 px-3 py-3 border-b border-gray-200 dark:border-gray-800 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4">
           <button
-            className="items-center justify-center w-10 h-10 text-gray-500 border-gray-200 rounded-lg z-99999 dark:border-gray-800 lg:flex dark:text-gray-400 lg:h-11 lg:w-11 lg:border"
+            className="items-center justify-center w-10 h-10 text-gray-500 bg-white/60 hover:bg-white dark:bg-white/[0.04] dark:hover:bg-white/[0.08] border-gray-200/70 rounded-xl z-99999 dark:border-white/[0.06] lg:flex dark:text-gray-300 lg:h-11 lg:w-11 lg:border transition-all"
             onClick={handleToggle}
             aria-label="Toggle Sidebar"
           >

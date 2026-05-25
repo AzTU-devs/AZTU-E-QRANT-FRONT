@@ -21,23 +21,23 @@ const Alert: React.FC<AlertProps> = ({
   const variantClasses = {
     success: {
       container:
-        "border-success-500 bg-success-50 dark:border-success-500/30 dark:bg-success-500/15",
-      icon: "text-success-500",
+        "border-success-200 bg-gradient-to-br from-success-50 to-white dark:border-success-500/30 dark:from-success-500/10 dark:to-transparent",
+      icon: "text-success-500 bg-success-100/70 dark:bg-success-500/15 rounded-xl p-1.5",
     },
     error: {
       container:
-        "border-error-500 bg-error-50 dark:border-error-500/30 dark:bg-error-500/15",
-      icon: "text-error-500",
+        "border-error-200 bg-gradient-to-br from-error-50 to-white dark:border-error-500/30 dark:from-error-500/10 dark:to-transparent",
+      icon: "text-error-500 bg-error-100/70 dark:bg-error-500/15 rounded-xl p-1.5",
     },
     warning: {
       container:
-        "border-warning-500 bg-warning-50 dark:border-warning-500/30 dark:bg-warning-500/15",
-      icon: "text-warning-500",
+        "border-warning-200 bg-gradient-to-br from-warning-50 to-white dark:border-warning-500/30 dark:from-warning-500/10 dark:to-transparent",
+      icon: "text-warning-500 bg-warning-100/70 dark:bg-warning-500/15 rounded-xl p-1.5",
     },
     info: {
       container:
-        "border-blue-light-500 bg-blue-light-50 dark:border-blue-light-500/30 dark:bg-blue-light-500/15",
-      icon: "text-blue-light-500",
+        "border-blue-light-200 bg-gradient-to-br from-blue-light-50 to-white dark:border-blue-light-500/30 dark:from-blue-light-500/10 dark:to-transparent",
+      icon: "text-blue-light-500 bg-blue-light-100/70 dark:bg-blue-light-500/15 rounded-xl p-1.5",
     },
   };
 
@@ -113,10 +113,10 @@ const Alert: React.FC<AlertProps> = ({
 
   return (
     <div
-      className={`rounded-xl border p-4 ${variantClasses[variant].container}`}
+      className={`rounded-2xl border p-4 shadow-theme-xs ${variantClasses[variant].container}`}
     >
       <div className="flex items-start gap-3">
-        <div className={`-mt-0.5 ${variantClasses[variant].icon}`}>
+        <div className={`${variantClasses[variant].icon}`}>
           {icons[variant]}
         </div>
 
