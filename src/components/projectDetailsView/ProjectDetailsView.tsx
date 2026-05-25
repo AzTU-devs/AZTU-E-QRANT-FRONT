@@ -78,7 +78,7 @@ export default function ProjectDetailsView({ projectCode }: { projectCode: Numbe
                     <img src={NotFound} alt="Not Found" className="w-[100px] h-[100px]"/>
                 </div>
             ) : (
-                <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+                <div className="overflow-hidden rounded-2xl border border-gray-200/70 bg-white/80 backdrop-blur-sm shadow-theme-sm dark:border-white/[0.06] dark:bg-gray-900/40">
                     <div className="max-w-full overflow-x-auto">
                         <Table>
                             {/* Table Body */}

@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+Disallow: /signin
+Disallow: /signup
+Disallow: /home
+Disallow: /projects
+Disallow: /my-project
+Disallow: /collaborators
+Disallow: /user-details
+Disallow: /approve-waiting-users
+Disallow: /approve-waiting-auth-users
+Disallow: /experts
+Disallow: /new-expert
+Disallow: /role-permissions
+Disallow: /prioritets
+Disallow: /main-smeta
+Disallow: /project-smeta-salary
+Disallow: /project-smeta-tools
+Disallow: /project-smeta-services
+Disallow: /project-smeta-expences
+Disallow: /project-smeta-other-expences
+Disallow: /quarterly-report
+Disallow: /project-activities
+
+Sitemap: https://e-grant.aztu.edu.az/sitemap.xml

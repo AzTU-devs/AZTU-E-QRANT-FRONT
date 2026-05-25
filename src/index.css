@@ -348,6 +348,50 @@ layer(base);
   }
 }
 
+/* Modern table baseline — applies to every <table> in the app */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+table thead th {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gray-500);
+  background: linear-gradient(180deg, rgba(249,250,251,0.9), rgba(249,250,251,0.55));
+  border-bottom: 1px solid rgba(228, 231, 236, 0.7);
+  padding-top: 14px;
+  padding-bottom: 14px;
+  white-space: nowrap;
+}
+.dark table thead th {
+  color: var(--color-gray-400);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+table tbody td {
+  border-bottom: 1px solid rgba(242, 244, 247, 0.9);
+  vertical-align: middle;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.dark table tbody td {
+  border-bottom-color: rgba(255,255,255,0.04);
+}
+table tbody tr {
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+table tbody tr:hover {
+  background-color: rgba(91, 91, 240, 0.04);
+}
+.dark table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.025);
+}
+table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
 .tableCheckbox:checked ~ span span {
   @apply opacity-100;
 }

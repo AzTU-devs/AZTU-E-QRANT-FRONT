@@ -1,0 +1,26 @@
+{
+  "name": "AzTU E-Qrant — Daxili Qrant Müsabiqəsi",
+  "short_name": "AzTU E-Qrant",
+  "description": "Azərbaycan Texniki Universitetinin rəsmi daxili qrant müsabiqəsi platforması.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f6f7fb",
+  "theme_color": "#5b5bf0",
+  "lang": "az-AZ",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/e-grant-logo-light.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

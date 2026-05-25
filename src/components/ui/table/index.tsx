@@ -1,68 +1,95 @@
-// Props for TableFooter
-interface TableFooterProps {
-  children: ReactNode; // Footer row(s)
-  className?: string; // Optional className for styling
-}
-
-// TableFooter Component
-const TableFooter: React.FC<TableFooterProps> = ({ children, className }) => {
-  return <tfoot className={className}>{children}</tfoot>;
-};
 import { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
-// Props for Table
 interface TableProps {
-  children: ReactNode; // Table content (thead, tbody, etc.)
-  className?: string; // Optional className for styling
+  children: ReactNode;
+  className?: string;
 }
-
-// Props for TableHeader
 interface TableHeaderProps {
-  children: ReactNode; // Header row(s)
-  className?: string; // Optional className for styling
+  children: ReactNode;
+  className?: string;
 }
-
-// Props for TableBody
 interface TableBodyProps {
-  children: ReactNode; // Body row(s)
-  className?: string; // Optional className for styling
+  children: ReactNode;
+  className?: string;
 }
-
-// Props for TableRow
 interface TableRowProps {
-  children: ReactNode; // Cells (th or td)
-  className?: string; // Optional className for styling
+  children: ReactNode;
+  className?: string;
 }
-
-// Props for TableCell
 interface TableCellProps {
-  children: ReactNode; // Cell content
-  isHeader?: boolean; // If true, renders as <th>, otherwise <td>
-  className?: string; // Optional className for styling
-  colSpan?: number; // Optional colSpan attribute
+  children: ReactNode;
+  isHeader?: boolean;
+  className?: string;
+  colSpan?: number;
+}
+interface TableFooterProps {
+  children: ReactNode;
+  className?: string;
 }
 
-// Table Component
 const Table: React.FC<TableProps> = ({ children, className }) => {
-  return <table className={`min-w-full  ${className}`}>{children}</table>;
+  return (
+    <table
+      className={twMerge(
+        "min-w-full text-left text-sm border-separate border-spacing-0",
+        className
+      )}
+    >
+      {children}
+    </table>
+  );
 };
 
-// TableHeader Component
 const TableHeader: React.FC<TableHeaderProps> = ({ children, className }) => {
-  return <thead className={className}>{children}</thead>;
+  return (
+    <thead
+      className={twMerge(
+        "bg-gradient-to-r from-gray-50/80 to-gray-50/40 dark:from-white/[0.04] dark:to-white/[0.02] sticky top-0 z-10",
+        className
+      )}
+    >
+      {children}
+    </thead>
+  );
 };
 
-// TableBody Component
 const TableBody: React.FC<TableBodyProps> = ({ children, className }) => {
-  return <tbody className={className}>{children}</tbody>;
+  return (
+    <tbody
+      className={twMerge("[&>tr]:transition-colors", className)}
+    >
+      {children}
+    </tbody>
+  );
 };
 
-// TableRow Component
+const TableFooter: React.FC<TableFooterProps> = ({ children, className }) => {
+  return (
+    <tfoot
+      className={twMerge(
+        "bg-gray-50/60 dark:bg-white/[0.02] font-semibold",
+        className
+      )}
+    >
+      {children}
+    </tfoot>
+  );
+};
+
 const TableRow: React.FC<TableRowProps> = ({ children, className }) => {
-  return <tr className={className}>{children}</tr>;
+  return (
+    <tr
+      className={twMerge(
+        "group hover:bg-brand-50/40 dark:hover:bg-white/[0.03]",
+        className
+      )}
+    >
+      {children}
+    </tr>
+  );
 };
 
-// TableCell Component
 const TableCell: React.FC<TableCellProps> = ({
   children,
   isHeader = false,
@@ -70,8 +97,12 @@ const TableCell: React.FC<TableCellProps> = ({
   colSpan,
 }) => {
   const CellTag = isHeader ? "th" : "td";
+  const base = isHeader
+    ? "px-5 py-3.5 text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 border-b border-gray-200/70 dark:border-white/[0.06] whitespace-nowrap"
+    : "px-5 py-3.5 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-100/80 dark:border-white/[0.04] align-middle";
+
   return (
-    <CellTag className={` ${className}`} colSpan={colSpan}>
+    <CellTag className={twMerge(base, className)} colSpan={colSpan}>
       {children}
     </CellTag>
   );

@@ -50,20 +50,20 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 
   return (
     <div className="w-full">
-      <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+      <label className="mb-2 block text-[13px] font-semibold tracking-tight text-gray-700 dark:text-gray-300">
         {label}
       </label>
 
       <div className="relative z-20 inline-block w-full">
         <div className="relative flex flex-col items-center">
           <div onClick={toggleDropdown} className="w-full">
-            <div className="mb-2 flex h-11 rounded-lg border border-gray-300 py-1.5 pl-3 pr-3 shadow-theme-xs outline-hidden transition focus:border-brand-300 focus:shadow-focus-ring dark:border-gray-700 dark:bg-gray-900 dark:focus:border-brand-300">
+            <div className="mb-2 flex min-h-11 rounded-xl border border-gray-200 bg-white/70 backdrop-blur py-1.5 pl-3 pr-3 shadow-theme-xs outline-hidden transition-all duration-200 hover:border-gray-300 focus-within:border-brand-400 focus-within:ring-4 focus-within:ring-brand-500/15 dark:border-white/10 dark:bg-gray-900/60 dark:hover:border-white/20">
               <div className="flex flex-wrap flex-auto gap-2">
                 {selectedValuesText.length > 0 ? (
                   selectedValuesText.map((text, index) => (
                     <div
                       key={index}
-                      className="group flex items-center justify-center rounded-full border-[0.7px] border-transparent bg-gray-100 py-1 pl-2.5 pr-2 text-sm text-gray-800 hover:border-gray-200 dark:bg-gray-800 dark:text-white/90 dark:hover:border-gray-800"
+                      className="group flex items-center justify-center rounded-full bg-gradient-to-r from-brand-50 to-purple-50 ring-1 ring-brand-200/60 py-1 pl-3 pr-2 text-xs font-semibold text-brand-700 hover:brightness-105 dark:from-brand-500/15 dark:to-purple-500/10 dark:ring-brand-400/20 dark:text-brand-300"
                     >
                       <span className="flex-initial max-w-full">{text}</span>
                       <div className="flex flex-row-reverse flex-auto">
@@ -130,29 +130,35 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
 
           {isOpen && (
             <div
-              className="absolute left-0 z-40 w-full overflow-y-auto bg-white rounded-lg shadow-sm top-full max-h-select dark:bg-gray-900"
+              className="absolute left-0 z-40 mt-1 w-full overflow-y-auto rounded-xl border border-gray-200/70 bg-white/95 backdrop-blur-xl shadow-theme-lg top-full max-h-select dark:border-white/[0.08] dark:bg-gray-900/95 animate-[fadeIn_160ms_ease-out]"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="flex flex-col">
-                {options.map((option, index) => (
-                  <div
-                    key={index}
-                    className={`hover:bg-primary/5 w-full cursor-pointer rounded-t border-b border-gray-200 dark:border-gray-800`}
-                    onClick={() => handleSelect(option.value)}
-                  >
+              <div className="flex flex-col p-1.5">
+                {options.map((option, index) => {
+                  const active = selectedOptions.includes(option.value);
+                  return (
                     <div
-                      className={`relative flex w-full items-center p-2 pl-2 ${
-                        selectedOptions.includes(option.value)
-                          ? "bg-primary/10"
-                          : ""
+                      key={index}
+                      className={`w-full cursor-pointer rounded-lg transition-colors ${
+                        active
+                          ? "bg-gradient-to-r from-brand-50 to-purple-50/40 dark:from-brand-500/15 dark:to-purple-500/10"
+                          : "hover:bg-gray-100/70 dark:hover:bg-white/[0.04]"
                       }`}
+                      onClick={() => handleSelect(option.value)}
                     >
-                      <div className="mx-2 leading-6 text-gray-800 dark:text-white/90">
-                        {option.text}
+                      <div className="relative flex w-full items-center gap-2 px-3 py-2">
+                        <span className={`flex h-4 w-4 items-center justify-center rounded border ${active ? "border-transparent bg-gradient-to-br from-brand-500 to-purple-500" : "border-gray-300 dark:border-white/15"}`}>
+                          {active && (
+                            <svg width="10" height="10" viewBox="0 0 14 14" fill="none"><path d="M11.6666 3.5L5.24992 9.91667L2.33325 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          )}
+                        </span>
+                        <div className={`text-sm leading-6 ${active ? "text-brand-700 dark:text-white font-medium" : "text-gray-700 dark:text-gray-300"}`}>
+                          {option.text}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           )}

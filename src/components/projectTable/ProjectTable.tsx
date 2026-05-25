@@ -109,7 +109,7 @@ export default function ProjectTable() {
 
     return (
         <>
-            <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
+            <div className="overflow-hidden rounded-2xl border border-gray-200/70 bg-white/80 backdrop-blur-sm shadow-theme-sm dark:border-white/[0.06] dark:bg-gray-900/40">
                 <div className="max-w-full overflow-x-auto">
                     <Table>
                         {/* Table Header */}
@@ -185,13 +185,15 @@ export default function ProjectTable() {
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         {project.approved === 0 ? (
-                                            <p className="bg-yellow-200 dark:bg-yellow-500 text-yellow-900 dark:text-yellow-100 px-2 py-1 rounded-[20px] inline-block">
+                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full bg-warning-50 text-warning-700 ring-1 ring-inset ring-warning-200/60 dark:bg-warning-500/15 dark:text-warning-400 dark:ring-warning-400/20">
+                                                <span className="h-1.5 w-1.5 rounded-full bg-warning-500 animate-pulse" />
                                                 Təsdiq gözləyir
-                                            </p>
+                                            </span>
                                         ) : (
-                                            <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
+                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full bg-success-50 text-success-700 ring-1 ring-inset ring-success-200/60 dark:bg-success-500/15 dark:text-success-400 dark:ring-success-400/20">
+                                                <span className="h-1.5 w-1.5 rounded-full bg-success-500" />
                                                 Təsdiq olunub
-                                            </p>
+                                            </span>
                                         )}
                                     </TableCell>
                                     {projectRole === 2 ? (
