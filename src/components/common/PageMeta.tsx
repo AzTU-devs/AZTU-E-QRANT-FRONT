@@ -1,6 +1,6 @@
 import { HelmetProvider, Helmet } from "react-helmet-async";
 
-const SITE_URL = "https://e-grant.aztu.edu.az";
+const SITE_URL = "http://e-grant.aztu.edu.az";
 const DEFAULT_IMAGE = `${SITE_URL}/e-grant-logo-light.png`;
 const SITE_NAME = "AzTU E-Qrant";
 
@@ -43,7 +43,6 @@ const PageMeta = ({
       <meta property="og:description" content={description} />
       <meta property="og:url" content={canonical} />
       <meta property="og:image" content={absoluteImage} />
-      <meta property="og:image:secure_url" content={absoluteImage} />
       <meta property="og:image:alt" content={SITE_NAME} />
 
       {/* Twitter */}

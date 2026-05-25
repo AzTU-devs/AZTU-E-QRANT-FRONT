@@ -22,4 +22,4 @@ Disallow: /project-smeta-other-expences
 Disallow: /quarterly-report
 Disallow: /project-activities
 
-Sitemap: https://e-grant.aztu.edu.az/sitemap.xml
+Sitemap: http://e-grant.aztu.edu.az/sitemap.xml
