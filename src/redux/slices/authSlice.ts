@@ -7,10 +7,10 @@ interface AuthState {
   projectRole: number | null;
   token: string | null;
   isAuthenticated: boolean;
-  projectCode: Number | null;
-  profileCompleted: Number | null;
-  showLoginToast: Boolean;
-  isCollaborator: Boolean | null;
+  projectCode: number | null;
+  profileCompleted: number | null;
+  showLoginToast: boolean;
+  isCollaborator: boolean | null;
 }
 
 const initialState: AuthState = {

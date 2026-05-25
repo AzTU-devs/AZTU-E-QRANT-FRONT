@@ -1,19 +1,15 @@
-import Swal from "sweetalert2";
 import { useState } from "react";
 import Label from "../form/Label";
 import Button from "../ui/button/Button";
 import { useDispatch } from "react-redux";
 import Input from "../form/input/InputField";
-import { useNavigate } from "react-router-dom";
-import { sendOtp } from "../../services/otp/otp";
 import { setUserType } from "../../redux/slices/authSlice";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export default function ExpertSignin() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
 
 //   const handleSendOtp = async (e: React.FormEvent<HTMLFormElement>) => {
 //     e.preventDefault();
