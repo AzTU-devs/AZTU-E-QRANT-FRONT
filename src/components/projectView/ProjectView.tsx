@@ -125,7 +125,7 @@ export default function ProjectView() {
       <button
         onClick={handleDownloadPdf}
         disabled={isLoadingPdf}
-        className={`mb-4 px-4 py-2 bg-blue-600 text-white rounded ${isLoadingPdf ? "opacity-50" : ""}`}
+        className={`mb-4 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded ${isLoadingPdf ? "opacity-50" : ""}`}
       >
         {isLoadingPdf ? "Yüklənir..." : "PDF yükləyin"}
       </button>
@@ -133,7 +133,7 @@ export default function ProjectView() {
       <button
         onClick={handleDownloadExcel}
         disabled={isLoadingExcel}
-        className={`mb-4 ml-5 px-4 py-2 bg-blue-600 text-white rounded${isLoadingExcel ? " opacity-50" : ""}`}
+        className={`mb-4 ml-5 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded${isLoadingExcel ? " opacity-50" : ""}`}
       >
         {isLoadingExcel ? "Yüklənir..." : "Excel ixrac edin"}
       </button>

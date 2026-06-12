@@ -41,7 +41,7 @@ export default function UserDropdown() {
         onClick={toggleDropdown}
         className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full text-gray-700 dropdown-toggle dark:text-gray-300 bg-white/60 hover:bg-white dark:bg-white/[0.04] dark:hover:bg-white/[0.08] border border-gray-200/70 dark:border-white/[0.06] shadow-theme-xs hover:shadow-theme-sm transition-all"
       >
-        <span className="relative overflow-hidden rounded-full h-9 w-9 flex justify-center items-center ring-2 ring-white dark:ring-gray-900 shadow-[0_0_0_2px_rgba(91,91,240,0.25)]">
+        <span className="relative overflow-hidden rounded-full h-9 w-9 flex justify-center items-center ring-2 ring-white dark:ring-gray-900 shadow-[0_0_0_2px_rgba(24,47,121,0.25)]">
           {user?.image ? (
             <img
               src={`data:image/jpeg;base64,${user.image}`}

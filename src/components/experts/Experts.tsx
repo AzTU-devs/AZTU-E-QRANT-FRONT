@@ -128,7 +128,7 @@ export default function Experts() {
                                             <Link to={`/user-view/${collaborator.personal_id_serial_number}`}>
                                                 <VisibilityIcon
                                                     style={{ width: 35, height: 35 }}
-                                                    className="cursor-pointer bg-blue-100 text-blue-600 rounded p-1 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-400 dark:hover:bg-blue-700 transition-colors duration-200"
+                                                    className="cursor-pointer bg-brand-50 text-brand-600 rounded p-1 hover:bg-brand-100 dark:bg-brand-900/40 dark:text-brand-300 dark:hover:bg-brand-800/60 transition-colors duration-200"
                                                 />
                                             </Link>
                                         </TableCell>

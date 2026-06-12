@@ -125,13 +125,13 @@ export default function MyProject() {
 
             <button
                 onClick={handleDownloadPdf}
-                className="mb-4 px-4 py-2 bg-blue-600 text-white rounded"
+                className="mb-4 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded"
             >
                 {isExporting ? <CircularProgress size={20} color="inherit" /> : "PDF yüklə"}
             </button>
             <button
                 onClick={handleDownloadExcel}
-                className="mb-4 ml-5 px-4 py-2 bg-blue-600 text-white rounded"
+                className="mb-4 ml-5 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded"
             >
                 Excel ixrac edin
             </button>

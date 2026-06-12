@@ -51,7 +51,7 @@ const Badge: React.FC<BadgeProps> = ({
       dark: "bg-gray-800 text-white ring-gray-700/40 dark:bg-white/10 dark:text-white",
     },
     solid: {
-      primary: "bg-gradient-to-r from-brand-500 to-purple-500 text-white ring-transparent shadow-[0_4px_10px_-2px_rgba(91,91,240,0.45)]",
+      primary: "bg-gradient-to-r from-brand-500 to-purple-500 text-white ring-transparent shadow-[0_4px_10px_-2px_rgba(24,47,121,0.45)]",
       success: "bg-gradient-to-r from-success-500 to-success-600 text-white ring-transparent",
       error: "bg-gradient-to-r from-error-500 to-error-600 text-white ring-transparent",
       warning: "bg-gradient-to-r from-warning-500 to-orange-500 text-white ring-transparent",

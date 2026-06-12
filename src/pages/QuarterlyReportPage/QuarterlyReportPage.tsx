@@ -26,7 +26,7 @@ export default function QuarterlyReportPage() {
             <PageBreadcrumb pageTitle="Rüblük Elmi-Texniki Hesabat" />
 
             <div className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm">
-                <div className="flex flex-wrap items-center gap-4 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+                <div className="flex flex-wrap items-center gap-4 border-b border-gray-200 dark:border-gray-700 px-5 py-4">
                     <div className="flex items-center gap-2">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-400">
                             Rüb:
@@ -69,7 +69,7 @@ export default function QuarterlyReportPage() {
                         year={year}
                     />
                 ) : (
-                    <div className="px-6 py-10 text-center text-gray-500 dark:text-gray-400">
+                    <div className="px-5 py-10 text-center text-gray-500 dark:text-gray-400">
                         Layihə kodu tapılmadı. Zəhmət olmasa əvvəlcə layihənizi seçin.
                     </div>
                 )}

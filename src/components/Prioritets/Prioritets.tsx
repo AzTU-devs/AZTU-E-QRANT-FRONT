@@ -252,7 +252,7 @@ export default function Prioritets() {
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             <div
-                                                className="bg-blue-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
+                                                className="bg-brand-600 hover:bg-brand-700 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px]"
                                                 title="Redaktə et"
                                                 onClick={() => {
                                                     setSelectedPrioritet(prioritet.prioritet_code);
@@ -282,13 +282,13 @@ export default function Prioritets() {
                             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
                                 Prioriteti redaktə edin
                             </h4>
-                            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+                            <p className="mb-4 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
                                 Məlumatları dolduraraq prioriteti redaktə edin
                             </p>
                         </div>
                         <form className="flex flex-col">
                             <div className="px-2 overflow-y-auto custom-scrollbar">
-                                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+                                <div className="grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-2">
                                     <div>
                                         <Label>Prioritet kodu</Label>
                                         <Input type="text" value={selectedPrioritet ? selectedPrioritet : 0} disabled={true} />
@@ -299,7 +299,7 @@ export default function Prioritets() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
+                            <div className="flex items-center gap-3 px-2 mt-4 lg:justify-end">
                                 <Button size="sm" variant="outline" onClick={closeModal}>
                                     Bağla
                                 </Button>
@@ -315,13 +315,13 @@ export default function Prioritets() {
                             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
                                 Yeni prioritet
                             </h4>
-                            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+                            <p className="mb-4 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
                                 Məlumatları dolduraraq prioritet əlavə edin
                             </p>
                         </div>
                         <form className="flex flex-col">
                             <div className="px-2 overflow-y-auto custom-scrollbar">
-                                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+                                <div className="grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-2">
                                     <div>
                                         <Label>Prioritet kodu</Label>
                                         <Input type="text" value={maxPrioritetCode ? maxPrioritetCode + 1 : 1} />
@@ -332,7 +332,7 @@ export default function Prioritets() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
+                            <div className="flex items-center gap-3 px-2 mt-4 lg:justify-end">
                                 <Button size="sm" variant="outline" onClick={closeModal}>
                                     Bağla
                                 </Button>

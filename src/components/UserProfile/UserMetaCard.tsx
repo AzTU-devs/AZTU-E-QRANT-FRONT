@@ -32,9 +32,9 @@ export default function UserMetaCard() {
   }, []);
   return (
     <>
-      <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
+      <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-4">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-          <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
+          <div className="flex flex-col items-center w-full gap-4 xl:flex-row">
             <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
             {user?.image ? (
               <div className="col-span-5 lg:col-span-1">
@@ -98,18 +98,18 @@ export default function UserMetaCard() {
             <h4 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
               Edit Personal Information
             </h4>
-            <p className="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
+            <p className="mb-4 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
               Update your details to keep your profile up-to-date.
             </p>
           </div>
           <form className="flex flex-col">
             <div className="custom-scrollbar h-[450px] overflow-y-auto px-2 pb-3">
               <div>
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
+                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-4">
                   Social Links
                 </h5>
 
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+                <div className="grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-2">
                   <div>
                     <Label>Facebook</Label>
                     <Input
@@ -138,11 +138,11 @@ export default function UserMetaCard() {
                 </div>
               </div>
               <div className="mt-7">
-                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
+                <h5 className="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-4">
                   Personal Information
                 </h5>
 
-                <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+                <div className="grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-2">
                   <div className="col-span-2 lg:col-span-1">
                     <Label>First Name</Label>
                     <Input type="text" value="Musharof" />
@@ -170,7 +170,7 @@ export default function UserMetaCard() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">
+            <div className="flex items-center gap-3 px-2 mt-4 lg:justify-end">
               <Button size="sm" variant="outline" onClick={closeModal}>
                 Close
               </Button>

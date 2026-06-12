@@ -41,7 +41,7 @@ const Radio: React.FC<RadioProps> = ({
       <span
         className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all duration-200 ${
           checked
-            ? "border-transparent bg-gradient-to-br from-brand-500 to-purple-500 shadow-[0_4px_10px_-2px_rgba(91,91,240,0.45)]"
+            ? "border-transparent bg-gradient-to-br from-brand-500 to-purple-500 shadow-[0_4px_10px_-2px_rgba(24,47,121,0.45)]"
             : "bg-white border-gray-300 hover:border-brand-400 dark:bg-gray-900/60 dark:border-white/15"
         } ${
           disabled

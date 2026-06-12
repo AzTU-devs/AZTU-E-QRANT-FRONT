@@ -8,7 +8,7 @@ import { MoreDotIcon } from "../../icons";
 export default function MonthlyTarget() {
   const series = [75.55];
   const options: ApexOptions = {
-    colors: ["#465FFF"],
+    colors: ["#1e40af"],
     chart: {
       fontFamily: "Outfit, sans-serif",
       type: "radialBar",
@@ -47,7 +47,7 @@ export default function MonthlyTarget() {
     },
     fill: {
       type: "solid",
-      colors: ["#465FFF"],
+      colors: ["#1e40af"],
     },
     stroke: {
       lineCap: "round",
@@ -65,7 +65,7 @@ export default function MonthlyTarget() {
   }
   return (
     <div className="rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-white/[0.03]">
-      <div className="px-5 pt-5 bg-white shadow-default rounded-2xl pb-11 dark:bg-gray-900 sm:px-6 sm:pt-6">
+      <div className="px-5 pt-5 bg-white shadow-default rounded-2xl pb-11 dark:bg-gray-900 sm:px-4 sm:pt-4">
         <div className="flex justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white/90">
@@ -119,7 +119,7 @@ export default function MonthlyTarget() {
         </p>
       </div>
 
-      <div className="flex items-center justify-center gap-5 px-6 py-3.5 sm:gap-8 sm:py-5">
+      <div className="flex items-center justify-center gap-5 px-4 py-3.5 sm:gap-5 sm:py-5">
         <div>
           <p className="mb-1 text-center text-gray-500 text-theme-xs dark:text-gray-400 sm:text-sm">
             Target

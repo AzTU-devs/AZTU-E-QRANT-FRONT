@@ -45,7 +45,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ children, className }) => {
   return (
     <thead
       className={twMerge(
-        "bg-gradient-to-r from-gray-50/80 to-gray-50/40 dark:from-white/[0.04] dark:to-white/[0.02] sticky top-0 z-10",
+        "bg-gradient-to-b from-brand-50/70 to-brand-50/30 dark:from-white/[0.05] dark:to-white/[0.02] sticky top-0 z-10",
         className
       )}
     >

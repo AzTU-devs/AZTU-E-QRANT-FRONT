@@ -37,7 +37,7 @@ const DropzoneComponent: React.FC = () => {
           <div className="dz-message flex flex-col items-center m-0!">
             {/* Icon Container */}
             <div className="mb-[22px] flex justify-center">
-              <div className="flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-purple-500 text-white shadow-[0_10px_28px_-8px_rgba(91,91,240,0.55)]">
+              <div className="flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-purple-500 text-white shadow-[0_10px_28px_-8px_rgba(24,47,121,0.55)]">
                 <svg
                   className="fill-current"
                   width="29"

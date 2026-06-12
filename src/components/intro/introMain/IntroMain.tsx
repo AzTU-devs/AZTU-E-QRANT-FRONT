@@ -65,10 +65,10 @@ export default function IntroMain() {
     return (
         <main className="w-full bg-gray-50/50">
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-[rgb(20,30,79)] py-20 px-4 sm:px-8 md:px-16 lg:px-20 text-white">
+            <section className="relative overflow-hidden bg-[rgb(20,30,79)] py-20 px-4 sm:px-5 md:px-16 lg:px-20 text-white">
                 <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-                    <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400 blur-[120px]"></div>
-                    <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-600 blur-[120px]"></div>
+                    <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-brand-400 blur-[120px]"></div>
+                    <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-brand-600 blur-[120px]"></div>
                 </div>
 
                 <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center text-center">
@@ -76,7 +76,7 @@ export default function IntroMain() {
                         variants={titleContainer}
                         initial="hidden"
                         animate="visible"
-                        className="flex flex-wrap justify-center text-3xl md:text-5xl font-bold mb-8 tracking-tight"
+                        className="flex flex-wrap justify-center text-3xl md:text-5xl font-bold mb-5 tracking-tight"
                     >
                         {letters.map((char, index) => (
                             <motion.span
@@ -93,7 +93,7 @@ export default function IntroMain() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.5, duration: 0.8 }}
-                        className="text-lg md:text-xl text-blue-100 max-w-3xl mb-10 leading-relaxed"
+                        className="text-lg md:text-xl text-brand-100 max-w-3xl mb-10 leading-relaxed"
                     >
                         Azərbaycan Texniki Universiteti (AzTU) elmi-tədqiqat işlərinin və innovasiyaların dəstəklənməsi və inkişafı məqsədilə daxili qrant müsabiqəsi elan edir.
                     </motion.p>
@@ -105,7 +105,7 @@ export default function IntroMain() {
                     >
                         <a
                             href="/signin"
-                            className="inline-flex items-center gap-2 bg-white text-[rgb(20,30,79)] px-8 py-4 rounded-full font-bold text-lg transition-all hover:bg-blue-50 hover:scale-105 shadow-xl"
+                            className="inline-flex items-center gap-2 bg-white text-[rgb(20,30,79)] px-5 py-4 rounded-full font-bold text-lg transition-all hover:bg-brand-50 hover:scale-105 shadow-xl"
                         >
                             İndi müraciət et <ArrowForwardIcon />
                         </a>
@@ -119,51 +119,51 @@ export default function IntroMain() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-100px" }}
-                className="max-w-7xl mx-auto px-4 sm:px-8 py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                className="max-w-7xl mx-auto px-4 sm:px-5 py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
             >
                 {/* Purpose Card */}
-                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-blue-100 text-[rgb(20,30,79)] rounded-xl flex items-center justify-center mb-6">
+                <motion.div variants={itemVariants} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-brand-100 text-[rgb(20,30,79)] rounded-xl flex items-center justify-center mb-4">
                         <TargetIcon />
                     </div>
                     <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Müsabiqənin məqsədi</h3>
                     <ul className="space-y-3 text-gray-600 text-sm">
                         <li className="flex gap-2">
-                            <span className="text-blue-500">•</span>
+                            <span className="text-brand-500">•</span>
                             AzTU və tərəfdaş institutların sənaye və praktik əhəmiyyətli işlərinə dəstək vermək
                         </li>
                         <li className="flex gap-2">
-                            <span className="text-blue-500">•</span>
+                            <span className="text-brand-500">•</span>
                             Elmi-tədqiqat ekosistemini gücləndirmək və innovativ ideyaları reallaşdırmaq
                         </li>
                         <li className="flex gap-2">
-                            <span className="text-blue-500">•</span>
+                            <span className="text-brand-500">•</span>
                             Tədqiqatçıların motivasiyasını və elmi potensialını yüksəltmək
                         </li>
                     </ul>
                 </motion.div>
 
                 {/* Eligibility Card */}
-                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-xl flex items-center justify-center mb-6">
+                <motion.div variants={itemVariants} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-brand-100 text-brand-700 rounded-xl flex items-center justify-center mb-4">
                         <PeopleIcon />
                     </div>
                     <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Kimlər iştirak edə bilər?</h3>
                     <ul className="space-y-3 text-gray-600 text-sm">
                         <li className="flex gap-2">
-                            <span className="text-indigo-500">•</span>
+                            <span className="text-brand-500">•</span>
                             AzTU-nun professor-müəllim heyəti, doktorantları və magistrləri
                         </li>
                         <li className="flex gap-2">
-                            <span className="text-indigo-500">•</span>
+                            <span className="text-brand-500">•</span>
                             İnformasiya Texnologiyaları və İdarəetmə Sistemləri İnstitutunun əməkdaşları
                         </li>
                     </ul>
                 </motion.div>
 
                 {/* Priorities Card */}
-                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center mb-6">
+                <motion.div variants={itemVariants} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center mb-4">
                         <StarIcon />
                     </div>
                     <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Prioritet istiqamətlər</h3>
@@ -177,9 +177,9 @@ export default function IntroMain() {
                 </motion.div>
 
                 {/* Budget Card */}
-                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 md:col-span-2 lg:col-span-1 flex flex-col justify-between">
+                <motion.div variants={itemVariants} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 md:col-span-2 lg:col-span-1 flex flex-col justify-between">
                     <div>
-                        <div className="w-12 h-12 bg-green-100 text-green-700 rounded-xl flex items-center justify-center mb-6">
+                        <div className="w-12 h-12 bg-green-100 text-green-700 rounded-xl flex items-center justify-center mb-4">
                             <AccountBalanceWalletIcon />
                         </div>
                         <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Maliyyə və Müddət</h3>
@@ -189,17 +189,17 @@ export default function IntroMain() {
                                 <span className="text-gray-700 font-medium">Maks. 30,000 AZN / layihə</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Müddət</span>
+                                <span className="bg-brand-50 text-brand-700 px-3 py-1 rounded-full text-xs font-semibold">Müddət</span>
                                 <span className="text-gray-700 font-medium">6 - 12 ay</span>
                             </div>
                         </div>
                     </div>
-                    <p className="mt-6 text-xs text-gray-400 italic">Ümumi fond: 300,000 AZN</p>
+                    <p className="mt-4 text-xs text-gray-400 italic">Ümumi fond: 300,000 AZN</p>
                 </motion.div>
 
                 {/* Principles Card */}
-                <motion.div variants={itemVariants} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 md:col-span-2 lg:col-span-2">
-                    <div className="w-12 h-12 bg-purple-100 text-purple-700 rounded-xl flex items-center justify-center mb-6">
+                <motion.div variants={itemVariants} className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 md:col-span-2 lg:col-span-2">
+                    <div className="w-12 h-12 bg-purple-100 text-purple-700 rounded-xl flex items-center justify-center mb-4">
                         <ListAltIcon />
                     </div>
                     <h3 className="text-xl font-bold text-[rgb(20,30,79)] mb-4">Əsas Prinsiplər</h3>
@@ -217,14 +217,14 @@ export default function IntroMain() {
             {/* Application Section */}
             <section className="bg-gray-100 py-20">
                 <div className="max-w-4xl mx-auto px-4 text-center">
-                    <div className="inline-block p-3 bg-blue-100 text-[rgb(20,30,79)] rounded-full mb-6">
+                    <div className="inline-block p-3 bg-brand-100 text-[rgb(20,30,79)] rounded-full mb-4">
                         <AppRegistrationIcon fontSize="large" />
                     </div>
-                    <h2 className="text-3xl font-bold text-[rgb(20,30,79)] mb-6">Müraciət qaydası və vaxtı</h2>
-                    <p className="text-gray-600 mb-8 leading-relaxed">
+                    <h2 className="text-3xl font-bold text-[rgb(20,30,79)] mb-4">Müraciət qaydası və vaxtı</h2>
+                    <p className="text-gray-600 mb-5 leading-relaxed">
                         Layihə təklifləri <span className="font-bold text-gray-900">30 oktyabr 2025-ci il</span> tarixinədək AzTU-nun rəsmi qrant portalı vasitəsilə qəbul ediləcək.
                     </p>
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 inline-block">
+                    <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-200 inline-block">
                         <a href="http://e-grant.aztu.edu.az/signin" className="text-xl font-semibold text-[rgb(20,30,79)] hover:underline">
                             e-grant.aztu.edu.az
                         </a>
@@ -236,10 +236,10 @@ export default function IntroMain() {
             <section className="py-20 px-4">
                 <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
                     <div className="md:w-1/2">
-                        <h2 className="text-3xl font-bold text-[rgb(20,30,79)] mb-6 flex items-center gap-3">
+                        <h2 className="text-3xl font-bold text-[rgb(20,30,79)] mb-4 flex items-center gap-3">
                             <ContactSupportIcon fontSize="large" /> Əlaqə
                         </h2>
-                        <p className="text-gray-600 mb-8">
+                        <p className="text-gray-600 mb-5">
                             Əlavə məlumat üçün AzTU Tədqiqat və İnkişaf Departamenti ilə əlaqə saxlaya bilərsiniz.
                         </p>
                         <div className="space-y-4">
@@ -274,11 +274,11 @@ export default function IntroMain() {
                     </div>
                     <div className="md:w-1/2 bg-[rgb(20,30,79)] text-white p-10 rounded-3xl relative overflow-hidden">
                         <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-white/5 blur-3xl"></div>
-                        <h3 className="text-2xl font-bold mb-6">Sualınız var?</h3>
-                        <p className="text-blue-100 mb-8 leading-relaxed">
+                        <h3 className="text-2xl font-bold mb-4">Sualınız var?</h3>
+                        <p className="text-brand-100 mb-5 leading-relaxed">
                             Bütün suallarınızı elektron poçt ünvanımıza göndərə bilərsiniz. Komandamız operativ şəkildə cavablandıracaqdır.
                         </p>
-                        <a href="mailto:grant@aztu.edu.az" className="inline-block bg-white text-[rgb(20,30,79)] px-6 py-3 rounded-xl font-bold transition-transform hover:scale-105 shadow-lg">
+                        <a href="mailto:grant@aztu.edu.az" className="inline-block bg-white text-[rgb(20,30,79)] px-4 py-3 rounded-xl font-bold transition-transform hover:scale-105 shadow-lg">
                             Məktub yazın
                         </a>
                     </div>

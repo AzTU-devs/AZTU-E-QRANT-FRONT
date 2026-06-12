@@ -56,7 +56,7 @@ export default function AllUsersFilter({ onChange }: AllUsersFilterProps) {
                 </div>
                 {filter ? (
                     <form action="" onSubmit={handleSubmit} className="flex">
-                        <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-4 w-full">
+                        <div className="grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-4 w-full">
                             <div>
                                 <Label>Ad</Label>
                                 <Input type="text" value={name} onChange={(e) => { setName(e.target.value) }} placeholder="Ad" />

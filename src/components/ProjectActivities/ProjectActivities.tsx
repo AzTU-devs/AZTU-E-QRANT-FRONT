@@ -197,7 +197,7 @@ const ProjectActivitiesTable = () => {
     const isAnyEditing = activities.some((act) => act.isEditing);
 
     return (
-        <div className="p-6">
+        <div className="p-4">
             {projectCode ? (
                 <h2 className="text-2xl font-bold mb-4">
                 Layihə Fəaliyyətləri (Proyekt kodu: {projectCode.toString()})
@@ -300,7 +300,7 @@ const ProjectActivitiesTable = () => {
                                                 <span className="text-gray-400 mr-2">✔️</span>
                                                 <button
                                                     onClick={() => handleEdit(index)}
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white rounded-[10px] p-[10px] mr-2"
+                                                    className="bg-brand-600 hover:bg-brand-700 text-white rounded-[10px] p-[10px] mr-2"
                                                     disabled={isAnyEditing}
                                                     title="Edit"
                                                 >

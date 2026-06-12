@@ -239,7 +239,7 @@ const AppSidebar: React.FC = () => {
                   }`}
               >
                 {isActive(nav.path) && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-gradient-to-b from-brand-500 to-purple-500 shadow-[0_0_10px_rgba(91,91,240,0.6)]" />
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-gradient-to-b from-brand-500 to-purple-500 shadow-[0_0_10px_rgba(24,47,121,0.6)]" />
                 )}
                 <span
                   className={`menu-item-icon-size ${isActive(nav.path)

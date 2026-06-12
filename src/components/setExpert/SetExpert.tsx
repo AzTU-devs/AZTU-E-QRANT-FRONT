@@ -88,7 +88,7 @@ export default function SetExpert() {
                 Layihə prioteti: {priotetName}
             </p>
         </div>
-            <form className="space-y-6 mx-auto w-full mt-[20px]" onSubmit={handleSubmit}>
+            <form className="space-y-4 mx-auto w-full mt-[20px]" onSubmit={handleSubmit}>
                 <div className="flex justify-between items-center">
                     <div style={{ width: "calc((100% / 3) - 10px)" }}>
                         <Label>Ekspert</Label>

@@ -59,7 +59,7 @@ export default function NewExpert() {
         !personalIdSerialNumber.trim();
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 mx-auto w-full">
+        <form onSubmit={handleSubmit} className="space-y-4 mx-auto w-full">
             <div className="w-full flex justify-between items-center">
                 <div style={{ width: "calc((100% / 3) - 10px)" }}>
                     <Label>

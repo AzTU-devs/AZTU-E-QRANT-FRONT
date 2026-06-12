@@ -113,7 +113,7 @@ export default function NewPassword() {
         <div className="flex flex-col flex-1">
             <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
                 <div>
-                    <div className="mb-5 sm:mb-8">
+                    <div className="mb-5 sm:mb-5">
                         <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
                             Yeni şifrə təyin edin
                         </h1>
@@ -123,7 +123,7 @@ export default function NewPassword() {
                     </div>
                     <div>
                         <form onSubmit={handleResetPassword}>
-                            <div className="space-y-6">
+                            <div className="space-y-5">
                                 <div className="relative">
                                     <Label>
                                         Yeni şifrə <span className="text-error-500">*</span>{" "}

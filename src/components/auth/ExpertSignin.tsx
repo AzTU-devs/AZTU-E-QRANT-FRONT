@@ -57,7 +57,7 @@ export default function ExpertSignin() {
             <ArrowBackIosIcon /> Əvvəl
           </div>
         </div>
-          <div className="mb-5 sm:mb-8">
+          <div className="mb-5 sm:mb-5">
             <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
               Daxil Ol
             </h1>
@@ -67,7 +67,7 @@ export default function ExpertSignin() {
           </div>
           <div>
             <form>
-              <div className="space-y-6">
+              <div className="space-y-5">
                 <div>
                   <Label>
                     Email <span className="text-error-500">*</span>{" "}

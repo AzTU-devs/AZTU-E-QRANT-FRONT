@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import CircularProgress from "@mui/material/CircularProgress";
 import apiClient from "../../util/apiClient";
+import ReportFilesUpload from "./ReportFilesUpload";
 
 interface Props {
     projectCode: string | number;
@@ -88,7 +89,7 @@ const QuarterlyReportForm: React.FC<Props> = ({ projectCode, quarter, year }) =>
                 icon: "success",
                 title: "Uğurlu!",
                 text: "Hesabat uğurla saxlanıldı.",
-                confirmButtonColor: "#465fff",
+                confirmButtonColor: "#182f79",
             });
         } catch (err) {
             console.error("Hesabat saxlanılarkən xəta:", err);
@@ -96,7 +97,7 @@ const QuarterlyReportForm: React.FC<Props> = ({ projectCode, quarter, year }) =>
                 icon: "error",
                 title: "Xəta",
                 text: "Hesabat saxlanılarkən xəta baş verdi.",
-                confirmButtonColor: "#465fff",
+                confirmButtonColor: "#182f79",
             });
         } finally {
             setSaving(false);
@@ -112,7 +113,7 @@ const QuarterlyReportForm: React.FC<Props> = ({ projectCode, quarter, year }) =>
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 p-6">
+        <form onSubmit={handleSubmit} className="space-y-4 p-4">
             <div className="mb-4">
                 <p className="text-sm text-gray-500 dark:text-gray-400">
                     Layihə kodu: <span className="font-semibold text-gray-700 dark:text-gray-200">{projectCode}</span>
@@ -139,6 +140,16 @@ const QuarterlyReportForm: React.FC<Props> = ({ projectCode, quarter, year }) =>
                     />
                 </div>
             ))}
+
+            {quarter === 4 && (
+                <div className="-mx-4 mt-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+                    <ReportFilesUpload
+                        projectCode={projectCode}
+                        quarter={quarter}
+                        year={year}
+                    />
+                </div>
+            )}
 
             <div className="flex justify-end pt-2">
                 <button

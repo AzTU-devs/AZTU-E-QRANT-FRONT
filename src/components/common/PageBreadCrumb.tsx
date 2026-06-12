@@ -6,7 +6,7 @@ interface BreadcrumbProps {
 
 const PageBreadcrumb: React.FC<BreadcrumbProps> = ({ pageTitle }) => {
   return (
-    <div className="relative mb-8">
+    <div className="relative mb-5">
       <div className="pointer-events-none absolute -top-4 -left-4 h-24 w-64 rounded-full bg-gradient-to-br from-brand-500/10 via-purple-500/8 to-transparent blur-2xl dark:from-brand-500/20 dark:via-purple-500/15" />
       <nav className="relative mb-3">
         <ol className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider">
@@ -37,7 +37,7 @@ const PageBreadcrumb: React.FC<BreadcrumbProps> = ({ pageTitle }) => {
         </ol>
       </nav>
       <div className="relative flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           {pageTitle}
         </h2>
         <span className="h-1 w-12 rounded-full bg-gradient-to-r from-brand-500 to-purple-500" />

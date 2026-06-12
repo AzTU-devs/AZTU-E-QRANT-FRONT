@@ -79,7 +79,7 @@ export default function SignInForm() {
           </div>
         </div>
         <form onSubmit={handleSubmit}>
-          <div className="space-y-6">
+          <div className="space-y-5">
             <div>
               <Label>
                 Fin kod <span className="text-error-500">*</span>

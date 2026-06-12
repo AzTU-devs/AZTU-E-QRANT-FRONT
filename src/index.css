@@ -41,18 +41,28 @@ layer(base);
   --color-white: #ffffff;
   --color-black: #101828;
 
-  --color-brand-25: #f5f6ff;
-  --color-brand-50: #eef0ff;
-  --color-brand-100: #dfe3ff;
-  --color-brand-200: #c2c9ff;
-  --color-brand-300: #9da6ff;
-  --color-brand-400: #7c83ff;
-  --color-brand-500: #5b5bf0;
-  --color-brand-600: #4a44d6;
-  --color-brand-700: #3a34b2;
-  --color-brand-800: #2f2c8c;
-  --color-brand-900: #25246b;
-  --color-brand-950: #14133d;
+  /* AZTU official brand blue (#182f79) scale */
+  --color-brand-25: #f3f6fd;
+  --color-brand-50: #e8eefb;
+  --color-brand-100: #ccd8f5;
+  --color-brand-200: #a3b8ec;
+  --color-brand-300: #7591e0;
+  --color-brand-400: #4d6bd4;
+  --color-brand-500: #2f4fb8;
+  --color-brand-600: #182f79;
+  --color-brand-700: #142766;
+  --color-brand-800: #0e205b;
+  --color-brand-900: #0b1a4a;
+  --color-brand-950: #07112f;
+
+  /* Secondary accent paired with brand in gradients (was indigo "purple").
+     Remapped to AZTU royal blue so brand→accent gradients stay in the blue family. */
+  --color-purple-50: #eef2fe;
+  --color-purple-100: #d8e0fc;
+  --color-purple-400: #6178d6;
+  --color-purple-500: #3b4fc2;
+  --color-purple-600: #2c3da3;
+  --color-purple-700: #233286;
 
   --color-blue-light-25: #f5fbff;
   --color-blue-light-50: #f0f9ff;
@@ -135,7 +145,7 @@ layer(base);
 
   --color-theme-pink-500: #ee46bc;
 
-  --color-theme-purple-500: #7a5af8;
+  --color-theme-purple-500: #3b4fc2;
 
   --shadow-theme-md: 0px 8px 24px -6px rgba(20, 19, 61, 0.12),
     0px 2px 6px -2px rgba(20, 19, 61, 0.06);
@@ -147,7 +157,7 @@ layer(base);
   --shadow-theme-xl: 0px 28px 56px -12px rgba(20, 19, 61, 0.20),
     0px 10px 16px -6px rgba(20, 19, 61, 0.06);
   --shadow-datepicker: -5px 0 0 #262d3c, 5px 0 0 #262d3c;
-  --shadow-focus-ring: 0px 0px 0px 4px rgba(70, 95, 255, 0.12);
+  --shadow-focus-ring: 0px 0px 0px 4px rgba(24, 47, 121, 0.16);
   --shadow-slider-navigation: 0px 1px 2px 0px rgba(16, 24, 40, 0.1),
     0px 1px 3px 0px rgba(16, 24, 40, 0.1);
   --shadow-tooltip: 0px 4px 6px -2px rgba(16, 24, 40, 0.05),
@@ -188,23 +198,23 @@ layer(base);
   body {
     @apply relative font-normal font-outfit z-1 text-gray-800 antialiased;
     background:
-      radial-gradient(1200px 600px at -10% -10%, rgba(91, 91, 240, 0.10), transparent 60%),
-      radial-gradient(900px 500px at 110% 10%, rgba(122, 90, 248, 0.10), transparent 60%),
-      radial-gradient(800px 600px at 50% 120%, rgba(11, 165, 236, 0.08), transparent 60%),
-      #f6f7fb;
+      radial-gradient(1200px 600px at -10% -10%, rgba(24, 47, 121, 0.10), transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, rgba(59, 79, 194, 0.10), transparent 60%),
+      radial-gradient(800px 600px at 50% 120%, rgba(125, 145, 224, 0.08), transparent 60%),
+      #f5f7fc;
     background-attachment: fixed;
     font-feature-settings: 'cv11', 'ss01', 'ss03';
     letter-spacing: -0.005em;
   }
   .dark body {
     background:
-      radial-gradient(1200px 600px at -10% -10%, rgba(91, 91, 240, 0.18), transparent 60%),
-      radial-gradient(900px 500px at 110% 10%, rgba(122, 90, 248, 0.16), transparent 60%),
-      radial-gradient(800px 600px at 50% 120%, rgba(11, 165, 236, 0.10), transparent 60%),
-      #0b0f1a;
+      radial-gradient(1200px 600px at -10% -10%, rgba(24, 47, 121, 0.22), transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, rgba(59, 79, 194, 0.18), transparent 60%),
+      radial-gradient(800px 600px at 50% 120%, rgba(125, 145, 224, 0.10), transparent 60%),
+      #080c1a;
   }
   ::selection {
-    background: rgba(91, 91, 240, 0.22);
+    background: rgba(24, 47, 121, 0.20);
     color: inherit;
   }
 }
@@ -212,10 +222,10 @@ layer(base);
 @utility aurora-bg {
   position: relative;
   background:
-    radial-gradient(800px 500px at 10% 20%, rgba(91, 91, 240, 0.55), transparent 60%),
-    radial-gradient(700px 500px at 90% 10%, rgba(122, 90, 248, 0.50), transparent 60%),
-    radial-gradient(700px 500px at 50% 100%, rgba(11, 165, 236, 0.40), transparent 60%),
-    linear-gradient(135deg, #14133d 0%, #1a1b4b 50%, #2a1f6b 100%);
+    radial-gradient(800px 500px at 10% 20%, rgba(59, 79, 194, 0.55), transparent 60%),
+    radial-gradient(700px 500px at 90% 10%, rgba(37, 64, 175, 0.50), transparent 60%),
+    radial-gradient(700px 500px at 50% 100%, rgba(125, 145, 224, 0.40), transparent 60%),
+    linear-gradient(135deg, #0e205b 0%, #142766 50%, #182f79 100%);
 }
 
 @utility glass-panel {
@@ -227,13 +237,13 @@ layer(base);
 }
 
 @utility btn-gradient {
-  background-image: linear-gradient(135deg, #5b5bf0 0%, #7a5af8 50%, #4a44d6 100%);
+  background-image: linear-gradient(135deg, #182f79 0%, #1e40af 55%, #3b4fc2 100%);
   background-size: 200% 200%;
   background-position: 0% 50%;
   transition: background-position 400ms ease, box-shadow 250ms ease, transform 150ms ease;
 }
 @utility btn-gradient-hover {
-  &:hover { background-position: 100% 50%; box-shadow: 0 10px 24px -8px rgba(91,91,240,0.55); transform: translateY(-1px); }
+  &:hover { background-position: 100% 50%; box-shadow: 0 10px 24px -8px rgba(24,47,121,0.55); transform: translateY(-1px); }
   &:active { transform: translateY(0); }
 }
 
@@ -242,7 +252,7 @@ layer(base);
 }
 
 @utility menu-item-active {
-  @apply text-brand-700 bg-gradient-to-r from-brand-50 to-purple-50/60 dark:from-brand-500/[0.18] dark:to-purple-500/[0.10] dark:text-white shadow-[inset_0_0_0_1px_rgba(91,91,240,0.10)] dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)];
+  @apply text-brand-700 bg-gradient-to-r from-brand-50 to-purple-50/60 dark:from-brand-500/[0.18] dark:to-purple-500/[0.10] dark:text-white shadow-[inset_0_0_0_1px_rgba(24,47,121,0.10)] dark:shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)];
 }
 
 @utility menu-item-inactive {
@@ -359,16 +369,19 @@ table thead th {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-gray-500);
-  background: linear-gradient(180deg, rgba(249,250,251,0.9), rgba(249,250,251,0.55));
-  border-bottom: 1px solid rgba(228, 231, 236, 0.7);
+  background: linear-gradient(180deg, rgba(24, 47, 121, 0.06), rgba(24, 47, 121, 0.02));
+  border-bottom: 1px solid rgba(24, 47, 121, 0.12);
   padding-top: 14px;
   padding-bottom: 14px;
   white-space: nowrap;
 }
+/* Rounded top corners so the header reads as a card */
+table thead tr:first-child th:first-child { border-top-left-radius: 14px; }
+table thead tr:first-child th:last-child  { border-top-right-radius: 14px; }
 .dark table thead th {
   color: var(--color-gray-400);
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-  border-bottom-color: rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border-bottom-color: rgba(255,255,255,0.08);
 }
 table tbody td {
   border-bottom: 1px solid rgba(242, 244, 247, 0.9);
@@ -380,17 +393,26 @@ table tbody td {
   border-bottom-color: rgba(255,255,255,0.04);
 }
 table tbody tr {
-  transition: background-color 160ms ease, transform 160ms ease;
+  transition: background-color 160ms ease;
 }
-table tbody tr:hover {
-  background-color: rgba(91, 91, 240, 0.04);
+/* Subtle zebra striping for scan-ability */
+table tbody tr:nth-child(even) > td {
+  background-color: rgba(24, 47, 121, 0.018);
 }
-.dark table tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.025);
+.dark table tbody tr:nth-child(even) > td {
+  background-color: rgba(255, 255, 255, 0.015);
+}
+table tbody tr:hover > td {
+  background-color: rgba(24, 47, 121, 0.06);
+}
+.dark table tbody tr:hover > td {
+  background-color: rgba(255, 255, 255, 0.04);
 }
 table tbody tr:last-child td {
   border-bottom: 0;
 }
+table tbody tr:last-child td:first-child { border-bottom-left-radius: 14px; }
+table tbody tr:last-child td:last-child  { border-bottom-right-radius: 14px; }
 
 .tableCheckbox:checked ~ span span {
   @apply opacity-100;
@@ -618,13 +640,13 @@ span.flatpickr-weekday,
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-  background: #465fff;
+  background: #1e40af;
   @apply border-brand-500! bg-brand-500! hover:border-brand-500! hover:bg-brand-500!;
 }
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
-  box-shadow: -10px 0 0 #465fff;
+  box-shadow: -10px 0 0 #1e40af;
 }
 
 .flatpickr-months .flatpickr-prev-month svg,

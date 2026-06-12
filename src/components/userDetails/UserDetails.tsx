@@ -345,9 +345,9 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
         <>
             {profileCompleted === 1 ? (
                 <>
-                    <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6 mb-[50px]">
+                    <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-4 mb-[50px]">
                         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-                            <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
+                            <div className="flex flex-col items-center w-full gap-4 xl:flex-row">
                                 <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
                                     {user?.image ? (
                                         <div className="col-span-5 lg:col-span-1">
@@ -375,13 +375,13 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                             </div>
                         </div>
                     </div>
-                    <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
-                        <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+                    <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-4">
+                        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                             <div>
-                                <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-6">
+                                <h4 className="text-lg font-semibold text-gray-800 dark:text-white/90 lg:mb-4">
                                     Şəxsi məlumatlar
                                 </h4>
-                                <div className="grid grid-cols-5 gap-5 lg:grid-cols-5 lg:gap-7 2xl:gap-x-32">
+                                <div className="grid grid-cols-5 gap-5 lg:grid-cols-5 lg:gap-5 2xl:gap-x-32">
                                     <div>
                                         <p className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                                             Ad
@@ -598,7 +598,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                     </div>
                     {/* Edit Button */}
                     <div className="flex justify-end mt-4">
-                        <Button onClick={handleOpenEditModal} className="bg-blue-600 hover:bg-blue-700 text-white">
+                        <Button onClick={handleOpenEditModal} className="bg-brand-600 hover:bg-brand-700 text-white">
                             Redaktə et
                         </Button>
                     </div>
@@ -610,7 +610,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                     >
                         <div className="max-w-3xl mx-auto w-full">
                             <form onSubmit={handleEditSubmit}>
-                              <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
+                              <div className="grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-2">
                                 <div>
                                   <Label>Ad</Label>
                                   <Input type="text" name="name" value={editFormData.name ?? user?.name ?? ""} onChange={handleEditInputChange} />
@@ -696,7 +696,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                                   <Input type="text" name="work_email" value={editFormData.work_email ?? user?.work_email ?? ""} onChange={handleEditInputChange} />
                                 </div>
                               </div>
-                              <div className="flex justify-end gap-2 mt-6">
+                              <div className="flex justify-end gap-2 mt-4">
                                 <Button className="bg-gray-200 text-gray-800 hover:bg-gray-300" onClick={() => setIsEditModalOpen(false)}>
                                   Ləğv et
                                 </Button>
@@ -713,7 +713,7 @@ export default function UserDetails({ fin_kod }: { fin_kod: string | undefined |
                             Digər səhifələrə giriş icazəsi üçün bütün məlumatları doldurun və təsdiq edin!
                         </h1>
                         <form action="" onSubmit={(e) => handleSubmit(e)}>
-                            <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-3">
+                            <div className="grid grid-cols-1 gap-x-4 gap-y-5 lg:grid-cols-3">
                                 <div className="col-span-2 lg:col-span-1">
                                     <Label>Ad</Label>
                                     {user?.name ? (

@@ -410,7 +410,7 @@ const handleSubmit = async () => {
                                                     <button
                                                         onClick={() => handleEditClick(rent)}
                                                         title="Redaktə et"
-                                                        className="bg-blue-500 p-1 rounded text-white"
+                                                        className="bg-brand-600 hover:bg-brand-700 p-1 rounded text-white"
                                                     >
                                                         <EditIcon />
                                                     </button>

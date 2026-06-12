@@ -19,7 +19,7 @@ const LayoutContent: React.FC = () => {
       >
         <AppHeader />
         <main className="relative">
-          <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6 lg:px-10 lg:py-8 animate-[fadeIn_280ms_ease-out]">
+          <div className="p-3 mx-auto max-w-(--breakpoint-2xl) md:p-4 lg:px-6 lg:py-5 animate-[fadeIn_280ms_ease-out]">
             <Outlet />
           </div>
         </main>

@@ -350,7 +350,7 @@ export default function SmetaServices({ projectCode }: { projectCode: Number | n
                                             ) : pathname === "/project-smeta-services" ? (
                                                 <>
                                                     <div
-                                                        className="bg-blue-500 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px] mr-2"
+                                                        className="bg-brand-600 hover:bg-brand-700 rounded-[10px] inline-flex items-center justify-center p-1 cursor-pointer w-[35px] h-[35px] mr-2"
                                                         title="Redaktə et"
                                                         onClick={() => handleEditClick(service)}
                                                     >
