@@ -10,12 +10,14 @@ import SmetaServices from "../smetaServices/SmetaServices";
 import SmetaExpenses from "../smetaExpenses/SmetaExpenses";
 import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
 import { ActivitiesView } from "../ActivitiesView/ActivitiesView";
+import ProjectReportsView from "../projectReportsView/ProjectReportsView";
 
 export default function ProjectView() {
   const { projectCode } = useParams<{ projectCode: string }>();
   const contentRef = useRef<HTMLDivElement>(null);
   const [isLoadingPdf, setIsLoadingPdf] = useState(false);
   const [isLoadingExcel, setIsLoadingExcel] = useState(false);
+  const [showReports, setShowReports] = useState(false);
 
   if (!projectCode) {
     return <div>Project code is missing.</div>;
@@ -122,22 +124,38 @@ export default function ProjectView() {
 
   return (
     <>
-      <button
-        onClick={handleDownloadPdf}
-        disabled={isLoadingPdf}
-        className={`mb-4 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded ${isLoadingPdf ? "opacity-50" : ""}`}
-      >
-        {isLoadingPdf ? "Yüklənir..." : "PDF yükləyin"}
-      </button>
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        {!showReports && (
+          <>
+            <button
+              onClick={handleDownloadPdf}
+              disabled={isLoadingPdf}
+              className={`px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded ${isLoadingPdf ? "opacity-50" : ""}`}
+            >
+              {isLoadingPdf ? "Yüklənir..." : "PDF yükləyin"}
+            </button>
 
-      <button
-        onClick={handleDownloadExcel}
-        disabled={isLoadingExcel}
-        className={`mb-4 ml-5 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded${isLoadingExcel ? " opacity-50" : ""}`}
-      >
-        {isLoadingExcel ? "Yüklənir..." : "Excel ixrac edin"}
-      </button>
+            <button
+              onClick={handleDownloadExcel}
+              disabled={isLoadingExcel}
+              className={`px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded${isLoadingExcel ? " opacity-50" : ""}`}
+            >
+              {isLoadingExcel ? "Yüklənir..." : "Excel ixrac edin"}
+            </button>
+          </>
+        )}
 
+        <button
+          onClick={() => setShowReports((prev) => !prev)}
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded"
+        >
+          {showReports ? "Layihəyə qayıt" : "Hesabatlar"}
+        </button>
+      </div>
+
+      {showReports ? (
+        <ProjectReportsView projectCode={+projectCode} />
+      ) : (
       <div ref={contentRef}>
         <h1 style={headingStyle}>Layihə detalları</h1>
         <ProjectDetailsView projectCode={+projectCode} />
@@ -168,6 +186,7 @@ export default function ProjectView() {
         </h1>
         <SmetaOther projectCode={+projectCode} />
       </div>
+      )}
     </>
   );
 }
