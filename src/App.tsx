@@ -49,6 +49,7 @@ import CompetitionsPage from "./pages/CompetitionsPage/CompetitionsPage";
 import MessagesPage from "./pages/MessagesPage/MessagesPage";
 import AdminMessagesPage from "./pages/AdminMessagesPage/AdminMessagesPage";
 import ProjectHistoryViewPage from "./pages/ProjectHistoryView/ProjectHistoryViewPage";
+import ProjectsArchivePage from "./pages/ProjectsArchivePage/ProjectsArchivePage";
 
 export default function App() {
   return (
@@ -136,6 +137,7 @@ function AppWithRouterWrapper() {
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/messages-admin" element={<AdminMessagesPage />} />
             <Route path="/project-history/:projectCode" element={<ProjectHistoryViewPage />} />
+            <Route path="/projects/archive" element={<ProjectsArchivePage />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/signin" />} />

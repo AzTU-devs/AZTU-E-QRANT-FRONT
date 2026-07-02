@@ -24,6 +24,7 @@ import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 
 type NavItem = {
   name: string;
@@ -197,6 +198,11 @@ const AppSidebar: React.FC = () => {
           icon: <WorkIcon />,
           name: "Təqdim edilmiş layihələr",
           path: "/projects/submitted",
+        },
+        {
+          icon: <Inventory2OutlinedIcon />,
+          name: "Arxiv",
+          path: "/projects/archive"
         },
       ] : projectRole === 1 ? [
         {
