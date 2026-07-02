@@ -11,6 +11,7 @@ import SmetaExpenses from "../smetaExpenses/SmetaExpenses";
 import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
 import { ActivitiesView } from "../ActivitiesView/ActivitiesView";
 import ProjectReportsView from "../projectReportsView/ProjectReportsView";
+import { API_BASE_URL } from "../../util/apiClient";
 
 export default function ProjectView() {
   const { projectCode } = useParams<{ projectCode: string }>();
@@ -61,7 +62,7 @@ export default function ProjectView() {
       //   method: "GET",
       // });
 
-      const response = await fetch(`http://127.0.0.1:8080/api/project-pdf/${projectCode}`, {
+      const response = await fetch(`${API_BASE_URL}/api/project-pdf/${projectCode}`, {
         method: "GET",
       });
 
@@ -92,7 +93,7 @@ export default function ProjectView() {
       //   method: "GET",
       // });
 
-      const response = await fetch(`http://127.0.0.1:8080/api/project-excel/${projectCode}`, {
+      const response = await fetch(`${API_BASE_URL}/api/project-excel/${projectCode}`, {
         method: "GET",
       });
 

@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
+import Badge from "../ui/badge/Badge";
+import ReadMore from "../ui/ReadMore";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -31,7 +33,6 @@ export default function SubmittedUsers() {
         const fetchProjects = async () => {
             try {
                 const response = await apiClient.get('/api/projects/submitted');
-                console.log(response.data.data);
                 setProjects(response.data.data);
                 setLoading(false);
             } catch (error) {
@@ -151,7 +152,7 @@ export default function SubmittedUsers() {
         );
     };
 
-    console.log(isCollaborator);    
+    const emptyColSpan = projectRole === 2 ? 7 : projectRole === 1 ? 6 : 5;
 
     return (
         <>
@@ -221,15 +222,15 @@ export default function SubmittedUsers() {
                         <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                             {projects.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={5} className="text-center py-4 text-gray-500">
+                                    <TableCell colSpan={emptyColSpan} className="text-center py-8 text-gray-500">
                                         Məlumat yoxdur
                                     </TableCell>
                                 </TableRow>
                             ) : null}
                             {projects.map((project, index) => (
                                 <TableRow key={index}>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                        {project.project_name}
+                                    <TableCell className="px-4 py-3 text-gray-700 text-start text-theme-sm dark:text-gray-300 min-w-[200px] max-w-[340px]">
+                                        <ReadMore text={project.project_name} lines={2} />
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         {project.user.name && project.user.surname ? `${project.user.name} ${project.user.surname}` : "Mövcud deyil"}
@@ -239,13 +240,9 @@ export default function SubmittedUsers() {
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                         {project.approved === 0 ? (
-                                            <p className="bg-yellow-200 dark:bg-yellow-500 text-yellow-900 dark:text-yellow-100 px-2 py-1 rounded-[20px] inline-block">
-                                                Təsdiq gözləyir
-                                            </p>
+                                            <Badge color="warning" size="sm">Təsdiq gözləyir</Badge>
                                         ) : (
-                                            <p className="bg-green-200 dark:bg-green-600 text-green-900 dark:text-green-100 px-2 py-1 rounded-[20px] inline-block">
-                                                Təsdiq olunub
-                                            </p>
+                                            <Badge color="success" size="sm">Təsdiq olunub</Badge>
                                         )}
                                     </TableCell>
                                     {projectRole === 2 ? (

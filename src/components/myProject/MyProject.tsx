@@ -11,6 +11,7 @@ import SmetaExpenses from "../smetaExpenses/SmetaExpenses";
 import SmetaServices from "../smetaServices/SmetaServices";
 import Collaborators from "../collaborators/Collaborators";
 import CircularProgress from "@mui/material/CircularProgress";
+import { API_BASE_URL } from "../../util/apiClient";
 import { ActivitiesView } from "../ActivitiesView/ActivitiesView";
 import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
 
@@ -64,7 +65,7 @@ export default function MyProject() {
             //     method: "GET",
             // });
             
-            const response = await fetch(`http://127.0.0.1:8080/api/project-pdf/${projectCode}`, {
+            const response = await fetch(`${API_BASE_URL}/api/project-pdf/${projectCode}`, {
                 method: "GET",
             });
 
@@ -91,7 +92,7 @@ export default function MyProject() {
             //     method: "GET",
             // });
 
-            const response = await fetch(`http://127.0.0.1:8080/api/project-excel/${projectCode}`, {
+            const response = await fetch(`${API_BASE_URL}/api/project-excel/${projectCode}`, {
                 method: "GET",
             });
 

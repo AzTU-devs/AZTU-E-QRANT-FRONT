@@ -12,6 +12,7 @@ import Button from "../ui/button/Button";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Input from "../form/input/InputField";
+import ReadMore from "../ui/ReadMore";
 import apiClient from "../../util/apiClient";
 import { RootState } from "../../redux/store";
 import EditIcon from '@mui/icons-material/Edit';
@@ -25,6 +26,13 @@ interface Expert {
     prioritet_code: number;
     created_at: string;
 }
+
+const formatDate = (value: string | null) => {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (isNaN(date.getTime())) return value;
+    return date.toLocaleDateString("az-AZ", { year: "numeric", month: "long", day: "numeric" });
+};
 
 export default function Prioritets() {
     const [loading, setLoading] = useState(false);
@@ -220,7 +228,7 @@ export default function Prioritets() {
                         <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                             {prioritets.length === 0 ? (
                                 <TableRow className="p-5">
-                                    <TableCell colSpan={4} className="p-5">
+                                    <TableCell colSpan={5} className="text-center py-8 text-gray-500">
                                         Prioritet mövcud deyil
                                     </TableCell>
                                 </TableRow>
@@ -231,11 +239,11 @@ export default function Prioritets() {
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             {prioritet.prioritet_code}
                                         </TableCell>
-                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            {prioritet.prioritet_name}
+                                        <TableCell className="px-4 py-3 text-gray-700 text-start text-theme-sm dark:text-gray-300 min-w-[220px] max-w-[420px]">
+                                            <ReadMore text={prioritet.prioritet_name} lines={2} />
                                         </TableCell>
-                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                                            {prioritet.created_at}
+                                        <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 whitespace-nowrap">
+                                            {formatDate(prioritet.created_at)}
                                         </TableCell>
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             {

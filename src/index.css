@@ -373,7 +373,11 @@ table thead th {
   border-bottom: 1px solid rgba(24, 47, 121, 0.12);
   padding-top: 14px;
   padding-bottom: 14px;
-  white-space: nowrap;
+  /* Allow header labels to wrap so wide tables don't force horizontal scroll.
+     Columns that must stay on one line opt in with the `whitespace-nowrap`
+     utility class (higher specificity than this element selector). */
+  white-space: normal;
+  vertical-align: bottom;
 }
 /* Rounded top corners so the header reads as a card */
 table thead tr:first-child th:first-child { border-top-left-radius: 14px; }

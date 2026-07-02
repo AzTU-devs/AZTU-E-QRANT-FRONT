@@ -98,7 +98,7 @@ const TableCell: React.FC<TableCellProps> = ({
 }) => {
   const CellTag = isHeader ? "th" : "td";
   const base = isHeader
-    ? "px-5 py-3.5 text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 border-b border-gray-200/70 dark:border-white/[0.06] whitespace-nowrap"
+    ? "px-5 py-3.5 text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 border-b border-gray-200/70 dark:border-white/[0.06] align-bottom"
     : "px-5 py-3.5 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-100/80 dark:border-white/[0.04] align-middle";
 
   return (

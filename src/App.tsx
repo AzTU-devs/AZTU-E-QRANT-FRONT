@@ -44,6 +44,8 @@ import { getLockStatus } from "./services/lock/lockService";
 import LockViewPage from "./pages/LockViewPage.tsx/LockViewPage";
 import SubmittedUsersPage from "./pages/SubmittedUsersPage/SubmittedUsersPage";
 import AnnouncementsPage from "./pages/AnnouncementsPage/AnnouncementsPage";
+import RoleChangePage from "./pages/RoleChangePage/RoleChangePage";
+import RoleChangeRequestsPage from "./pages/RoleChangeRequestsPage/RoleChangeRequestsPage";
 
 export default function App() {
   return (
@@ -120,6 +122,8 @@ function AppWithRouterWrapper() {
             <Route path="/role-permissions" element={<RolePermissionsPage />} />
             <Route path="/projects/submitted" element={<SubmittedUsersPage />} />
             <Route path="/announcements" element={<AnnouncementsPage />} />
+            <Route path="/role-change" element={<RoleChangePage />} />
+            <Route path="/role-change-requests" element={<RoleChangeRequestsPage />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/signin" />} />

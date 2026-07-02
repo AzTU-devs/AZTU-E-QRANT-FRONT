@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import UserDropdown from "../components/header/UserDropdown";
+import NotificationBell from "../components/header/NotificationBell";
 import DarkLogo from "../../public/e-grant-logo-dark.png";
 import LightLogo from "../../public/e-grant-logo-light.png";
 
@@ -126,6 +127,8 @@ const AppHeader: React.FC = () => {
             {/* <!-- Dark Mode Toggler --> */}
             <ThemeToggleButton />
             {/* <!-- Dark Mode Toggler --> */}
+            {/* <!-- Notifications --> */}
+            <NotificationBell />
           </div>
           {/* <!-- User Area --> */}
           <UserDropdown />

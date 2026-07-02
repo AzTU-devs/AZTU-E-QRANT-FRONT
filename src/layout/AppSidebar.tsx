@@ -21,6 +21,7 @@ import GrantLogoLight from "../../public/e-grant-logo-light.png";
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 
 type NavItem = {
   name: string;
@@ -133,6 +134,11 @@ const AppSidebar: React.FC = () => {
             },
           ],
         },
+        {
+          icon: <SwapHorizIcon />,
+          name: "Rol dəyişikliyi",
+          path: "/role-change"
+        },
       ]
       : projectRole === 2 ? [
         {
@@ -166,6 +172,11 @@ const AppSidebar: React.FC = () => {
           path: "/role-permissions"
         },
         {
+          icon: <SwapHorizIcon />,
+          name: "Rol dəyişiklik sorğuları",
+          path: "/role-change-requests"
+        },
+        {
           icon: <WorkIcon />,
           name: "Təqdim edilmiş layihələr",
           path: "/projects/submitted",
@@ -175,6 +186,11 @@ const AppSidebar: React.FC = () => {
           icon: <WorkIcon />,
           name: "İcraçı olduğum layihə",
           path: "/collaborator-project"
+        },
+        {
+          icon: <SwapHorizIcon />,
+          name: "Rol dəyişikliyi",
+          path: "/role-change"
         },
       ]
         : []),
