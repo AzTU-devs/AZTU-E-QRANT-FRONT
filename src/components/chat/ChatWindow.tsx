@@ -81,6 +81,11 @@ export default function ChatWindow({ messages, viewerSide, onSend, loading, empt
                                 <div className={`max-w-[78%] rounded-2xl px-3.5 py-2.5 shadow-theme-xs ${mine
                                     ? "bg-gradient-to-br from-brand-500 to-purple-500 text-white"
                                     : "bg-white text-gray-800 border border-gray-100 dark:bg-white/[0.06] dark:text-gray-100 dark:border-white/10"}`}>
+                                    {!mine && (
+                                        <p className="mb-0.5 text-[11px] font-semibold text-brand-600 dark:text-brand-300">
+                                            {m.sender_name || (m.sender_type === "admin" ? "Admin" : "İstifadəçi")}
+                                        </p>
+                                    )}
                                     {m.body && <p className="whitespace-pre-line break-words text-sm">{m.body}</p>}
                                     {m.attachments.length > 0 && (
                                         <div className="mt-2 flex flex-wrap gap-2">

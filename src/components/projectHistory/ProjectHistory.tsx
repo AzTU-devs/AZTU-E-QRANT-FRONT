@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Badge from "../ui/badge/Badge";
 import ReadMore from "../ui/ReadMore";
 import apiClient from "../../util/apiClient";
 import WorkIcon from "@mui/icons-material/Work";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import CircularProgress from "@mui/material/CircularProgress";
 
 interface HistoryItem {
@@ -51,7 +53,11 @@ export default function ProjectHistory() {
             ) : (
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                     {items.map((item, idx) => (
-                        <div key={`${item.project_code}-${item.role}-${idx}`} className="rounded-xl border border-gray-100 p-4 dark:border-white/[0.05]">
+                        <Link
+                            to={`/project-history/${item.project_code}`}
+                            key={`${item.project_code}-${item.role}-${idx}`}
+                            className="group block rounded-xl border border-gray-100 p-4 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-theme-sm dark:border-white/[0.05]"
+                        >
                             <div className="mb-2 flex flex-wrap items-center gap-2">
                                 {item.competition_year && <Badge color="light" size="sm">{item.competition_year}</Badge>}
                                 <Badge color={item.role === "lead" ? "primary" : "info"} size="sm">
@@ -69,10 +75,15 @@ export default function ProjectHistory() {
                                 )}
                             </div>
                             <ReadMore text={item.project_name || "Adsız layihə"} lines={2} className="text-sm font-medium text-gray-800 dark:text-gray-100" />
-                            {item.competition_code && (
-                                <p className="mt-1 text-xs text-gray-400">{item.competition_code}</p>
-                            )}
-                        </div>
+                            <div className="mt-2 flex items-center justify-between">
+                                {item.competition_code ? (
+                                    <span className="text-xs text-gray-400">{item.competition_code}</span>
+                                ) : <span />}
+                                <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 opacity-0 transition-opacity group-hover:opacity-100 dark:text-brand-300">
+                                    <VisibilityIcon style={{ width: 14, height: 14 }} /> Bax
+                                </span>
+                            </div>
+                        </Link>
                     ))}
                 </div>
             )}

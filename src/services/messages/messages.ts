@@ -15,6 +15,7 @@ export interface ChatMessage {
     thread_id: number;
     sender_type: "user" | "admin";
     sender_fin_kod: string | null;
+    sender_name?: string | null;
     body: string | null;
     is_read: boolean;
     created_at: string | null;

@@ -48,6 +48,7 @@ import RoleChangeRequestsPage from "./pages/RoleChangeRequestsPage/RoleChangeReq
 import CompetitionsPage from "./pages/CompetitionsPage/CompetitionsPage";
 import MessagesPage from "./pages/MessagesPage/MessagesPage";
 import AdminMessagesPage from "./pages/AdminMessagesPage/AdminMessagesPage";
+import ProjectHistoryViewPage from "./pages/ProjectHistoryView/ProjectHistoryViewPage";
 
 export default function App() {
   return (
@@ -134,6 +135,7 @@ function AppWithRouterWrapper() {
             <Route path="/competitions" element={<CompetitionsPage />} />
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/messages-admin" element={<AdminMessagesPage />} />
+            <Route path="/project-history/:projectCode" element={<ProjectHistoryViewPage />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/signin" />} />
