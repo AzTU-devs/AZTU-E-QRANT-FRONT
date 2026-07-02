@@ -1,6 +1,5 @@
 import Home from "./pages/Dashboard/Home";
 import AppLayout from "./layout/AppLayout";
-import Intro from "./components/intro/Intro";
 import SignIn from "./pages/AuthPages/SignIn";
 import SignUp from "./pages/AuthPages/SignUp";
 import UserProfiles from "./pages/UserProfiles";
@@ -46,6 +45,9 @@ import SubmittedUsersPage from "./pages/SubmittedUsersPage/SubmittedUsersPage";
 import AnnouncementsPage from "./pages/AnnouncementsPage/AnnouncementsPage";
 import RoleChangePage from "./pages/RoleChangePage/RoleChangePage";
 import RoleChangeRequestsPage from "./pages/RoleChangeRequestsPage/RoleChangeRequestsPage";
+import CompetitionsPage from "./pages/CompetitionsPage/CompetitionsPage";
+import MessagesPage from "./pages/MessagesPage/MessagesPage";
+import AdminMessagesPage from "./pages/AdminMessagesPage/AdminMessagesPage";
 
 export default function App() {
   return (
@@ -92,7 +94,12 @@ function AppWithRouterWrapper() {
     <>
       <ScrollToTop />
       <Routes>
-        <Route index path="/" element={<Intro />} />
+        <Route
+          path="/"
+          element={
+            <Navigate to={token && !isTokenExpired(token) ? "/home" : "/signin"} replace />
+          }
+        />
         {token && !isTokenExpired(token) ? (
           <Route element={<AppLayout />}>
             <Route index path="/home" element={<Home />} />
@@ -124,6 +131,9 @@ function AppWithRouterWrapper() {
             <Route path="/announcements" element={<AnnouncementsPage />} />
             <Route path="/role-change" element={<RoleChangePage />} />
             <Route path="/role-change-requests" element={<RoleChangeRequestsPage />} />
+            <Route path="/competitions" element={<CompetitionsPage />} />
+            <Route path="/messages" element={<MessagesPage />} />
+            <Route path="/messages-admin" element={<AdminMessagesPage />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/signin" />} />

@@ -10,8 +10,14 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative p-4 bg-white z-1 dark:bg-gray-900 sm:p-0">
-      <div className="relative flex flex-col justify-center w-full h-screen lg:flex-row dark:bg-gray-900 sm:p-0">
+    <div className="relative p-4 z-1 bg-gradient-to-br from-brand-50 via-white to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-900 sm:p-0">
+      <div className="relative flex flex-col justify-center w-full h-screen lg:flex-row sm:p-0">
+        {/* mobile logos (aurora panel is hidden below lg) */}
+        <div className="flex items-center justify-center gap-4 pt-6 lg:hidden">
+          <img src={AztuLogoLight} alt="AzTU" className="h-12 w-auto drop-shadow-sm dark:brightness-0 dark:invert" />
+          <span className="h-8 w-px bg-gray-300 dark:bg-white/20" />
+          <img src={GrantLogoLight} alt="E-Grant" className="h-14 w-auto drop-shadow-sm dark:brightness-0 dark:invert" />
+        </div>
         {children}
         <div className="relative items-center hidden w-full h-full lg:w-1/2 aurora-bg overflow-hidden lg:grid">
           {/* glow blobs */}

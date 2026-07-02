@@ -22,6 +22,8 @@ import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 type NavItem = {
   name: string;
@@ -139,8 +141,18 @@ const AppSidebar: React.FC = () => {
           name: "Rol dəyişikliyi",
           path: "/role-change"
         },
+        {
+          icon: <ChatBubbleOutlineIcon />,
+          name: "Mesajlar",
+          path: "/messages"
+        },
       ]
       : projectRole === 2 ? [
+        {
+          icon: <EmojiEventsOutlinedIcon />,
+          name: "Müsabiqələr",
+          path: "/competitions"
+        },
         {
           icon: <PeopleOutlineIcon />,
           name: "Ekspertlər",
@@ -177,6 +189,11 @@ const AppSidebar: React.FC = () => {
           path: "/role-change-requests"
         },
         {
+          icon: <ChatBubbleOutlineIcon />,
+          name: "Mesajlar",
+          path: "/messages-admin"
+        },
+        {
           icon: <WorkIcon />,
           name: "Təqdim edilmiş layihələr",
           path: "/projects/submitted",
@@ -191,6 +208,11 @@ const AppSidebar: React.FC = () => {
           icon: <SwapHorizIcon />,
           name: "Rol dəyişikliyi",
           path: "/role-change"
+        },
+        {
+          icon: <ChatBubbleOutlineIcon />,
+          name: "Mesajlar",
+          path: "/messages"
         },
       ]
         : []),
