@@ -89,7 +89,7 @@ const QuarterlyReportForm: React.FC<Props> = ({ projectCode, quarter, year }) =>
                 icon: "success",
                 title: "Uğurlu!",
                 text: "Hesabat uğurla saxlanıldı.",
-                confirmButtonColor: "#182f79",
+                confirmButtonColor: "#4f46e5",
             });
         } catch (err) {
             console.error("Hesabat saxlanılarkən xəta:", err);
@@ -97,7 +97,7 @@ const QuarterlyReportForm: React.FC<Props> = ({ projectCode, quarter, year }) =>
                 icon: "error",
                 title: "Xəta",
                 text: "Hesabat saxlanılarkən xəta baş verdi.",
-                confirmButtonColor: "#182f79",
+                confirmButtonColor: "#4f46e5",
             });
         } finally {
             setSaving(false);

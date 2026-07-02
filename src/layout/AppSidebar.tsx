@@ -209,11 +209,6 @@ const AppSidebar: React.FC = () => {
           name: "Rol dəyişikliyi",
           path: "/role-change"
         },
-        {
-          icon: <ChatBubbleOutlineIcon />,
-          name: "Mesajlar",
-          path: "/messages"
-        },
       ]
         : []),
   ];

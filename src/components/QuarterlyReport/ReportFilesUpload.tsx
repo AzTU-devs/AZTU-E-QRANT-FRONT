@@ -62,7 +62,7 @@ const ReportFilesUpload: React.FC<Props> = ({ projectCode, quarter, year }) => {
                     icon: "warning",
                     title: "Yalnız PDF, DOC, DOCX",
                     text: "Bəzi fayllar dəstəklənmir və əlavə edilmədi.",
-                    confirmButtonColor: "#182f79",
+                    confirmButtonColor: "#4f46e5",
                 });
             }
             if (acceptedFiles.length === 0) return;
@@ -83,7 +83,7 @@ const ReportFilesUpload: React.FC<Props> = ({ projectCode, quarter, year }) => {
                     icon: "success",
                     title: "Uğurlu!",
                     text: `${acceptedFiles.length} fayl yükləndi.`,
-                    confirmButtonColor: "#182f79",
+                    confirmButtonColor: "#4f46e5",
                     timer: 1500,
                     showConfirmButton: false,
                 });
@@ -93,7 +93,7 @@ const ReportFilesUpload: React.FC<Props> = ({ projectCode, quarter, year }) => {
                     icon: "error",
                     title: "Xəta",
                     text: err?.response?.data?.error ?? "Fayl yüklənərkən xəta baş verdi.",
-                    confirmButtonColor: "#182f79",
+                    confirmButtonColor: "#4f46e5",
                 });
             } finally {
                 setUploading(false);
@@ -128,7 +128,7 @@ const ReportFilesUpload: React.FC<Props> = ({ projectCode, quarter, year }) => {
                 icon: "error",
                 title: "Xəta",
                 text: "Fayl endirilərkən xəta baş verdi.",
-                confirmButtonColor: "#182f79",
+                confirmButtonColor: "#4f46e5",
             });
         }
     };
@@ -142,7 +142,7 @@ const ReportFilesUpload: React.FC<Props> = ({ projectCode, quarter, year }) => {
             confirmButtonText: "Bəli, sil",
             cancelButtonText: "Ləğv et",
             confirmButtonColor: "#d33",
-            cancelButtonColor: "#182f79",
+            cancelButtonColor: "#4f46e5",
         });
         if (!result.isConfirmed) return;
 
@@ -155,7 +155,7 @@ const ReportFilesUpload: React.FC<Props> = ({ projectCode, quarter, year }) => {
                 icon: "error",
                 title: "Xəta",
                 text: "Fayl silinərkən xəta baş verdi.",
-                confirmButtonColor: "#182f79",
+                confirmButtonColor: "#4f46e5",
             });
         }
     };
