@@ -25,6 +25,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import HistoryIcon from '@mui/icons-material/History';
 
 type NavItem = {
   name: string;
@@ -147,6 +148,11 @@ const AppSidebar: React.FC = () => {
           name: "Mesajlar",
           path: "/messages"
         },
+        {
+          icon: <HistoryIcon />,
+          name: "Layihə tarixçəm",
+          path: "/my-history"
+        },
       ]
       : projectRole === 2 ? [
         {
@@ -214,6 +220,11 @@ const AppSidebar: React.FC = () => {
           icon: <SwapHorizIcon />,
           name: "Rol dəyişikliyi",
           path: "/role-change"
+        },
+        {
+          icon: <HistoryIcon />,
+          name: "Layihə tarixçəm",
+          path: "/my-history"
         },
       ]
         : []),

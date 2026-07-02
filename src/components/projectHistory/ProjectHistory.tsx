@@ -54,7 +54,7 @@ export default function ProjectHistory() {
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                     {items.map((item, idx) => (
                         <Link
-                            to={`/project-history/${item.project_code}`}
+                            to={`/project-view/${item.project_code}`}
                             key={`${item.project_code}-${item.role}-${idx}`}
                             className="group block rounded-xl border border-gray-100 p-4 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-theme-sm dark:border-white/[0.05]"
                         >
