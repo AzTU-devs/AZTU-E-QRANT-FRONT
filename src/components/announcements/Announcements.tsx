@@ -12,7 +12,7 @@ import Button from "../ui/button/Button";
 import { useEffect, useState } from "react";
 import Input from "../form/input/InputField";
 import Switch from "../form/switch/Switch";
-import TextArea from "../form/input/TextArea";
+import RichTextEditor from "../form/RichTextEditor";
 import { useModal } from "../../hooks/useModal";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -30,6 +30,12 @@ const formatDate = (value: string | null) => {
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;
     return date.toLocaleDateString("az-AZ", { year: "numeric", month: "long", day: "numeric" });
+};
+
+// Content is stored as HTML; show a plain-text snippet in the list.
+const stripHtml = (html: string) => {
+    const doc = new DOMParser().parseFromString(html || "", "text/html");
+    return (doc.body.textContent || "").trim();
 };
 
 export default function Announcements() {
@@ -75,7 +81,7 @@ export default function Announcements() {
     };
 
     const handleSubmit = async () => {
-        if (!title.trim() || !content.trim()) {
+        if (!title.trim() || !stripHtml(content)) {
             Swal.fire({ icon: "warning", title: "Başlıq və məzmun boş ola bilməz" });
             return;
         }
@@ -187,7 +193,7 @@ export default function Announcements() {
                                         <span className="line-clamp-2">{announcement.title}</span>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 max-w-[320px]">
-                                        <span className="line-clamp-2">{announcement.content}</span>
+                                        <span className="line-clamp-2">{stripHtml(announcement.content)}</span>
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-start text-theme-sm">
                                         <button
@@ -258,7 +264,7 @@ export default function Announcements() {
                                 </div>
                                 <div>
                                     <Label>Məzmun</Label>
-                                    <TextArea value={content} onChange={(value) => setContent(value)} rows={6} placeholder="Elanın məzmunu" />
+                                    <RichTextEditor value={content} onChange={setContent} placeholder="Elanın məzmunu" />
                                 </div>
                                 <div>
                                     <Switch

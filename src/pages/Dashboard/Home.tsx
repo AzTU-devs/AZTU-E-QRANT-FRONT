@@ -122,9 +122,11 @@ export default function Home() {
                     </span>
                   )}
                 </div>
-                <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                  {announcement.content}
-                </p>
+                {/* content is rich-text HTML, sanitized server-side (bleach) on write */}
+                <div
+                  className="announcement-html mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-300"
+                  dangerouslySetInnerHTML={{ __html: announcement.content }}
+                />
               </div>
             ))}
           </div>
