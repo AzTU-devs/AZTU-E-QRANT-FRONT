@@ -43,6 +43,7 @@ import { useState, useEffect } from "react";
 import { getLockStatus } from "./services/lock/lockService";
 import LockViewPage from "./pages/LockViewPage.tsx/LockViewPage";
 import SubmittedUsersPage from "./pages/SubmittedUsersPage/SubmittedUsersPage";
+import AnnouncementsPage from "./pages/AnnouncementsPage/AnnouncementsPage";
 
 export default function App() {
   return (
@@ -118,6 +119,7 @@ function AppWithRouterWrapper() {
             <Route path="/collaborator-project" element={<CollboratorProject />} />
             <Route path="/role-permissions" element={<RolePermissionsPage />} />
             <Route path="/projects/submitted" element={<SubmittedUsersPage />} />
+            <Route path="/announcements" element={<AnnouncementsPage />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/signin" />} />

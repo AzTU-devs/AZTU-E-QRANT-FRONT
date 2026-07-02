@@ -20,6 +20,7 @@ import GrantLogoDark from "../../public/e-grant-logo-dark.png";
 import GrantLogoLight from "../../public/e-grant-logo-light.png";
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 
 type NavItem = {
   name: string;
@@ -158,6 +159,11 @@ const AppSidebar: React.FC = () => {
           icon: <BookmarkBorderIcon />,
           name: "Prioritetlər",
           path: "/prioritets"
+        },
+        {
+          icon: <CampaignOutlinedIcon />,
+          name: "Elanlar",
+          path: "/announcements"
         },
         {
           icon: <VpnKeyIcon />,

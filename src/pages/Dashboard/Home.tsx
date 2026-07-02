@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import WorkIcon from '@mui/icons-material/Work';
 import SchoolIcon from '@mui/icons-material/School';
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import PageMeta from "../../components/common/PageMeta";
+import { Announcement, getAnnouncements } from "../../services/announcement/announcement";
 import AztuLogoDark from "../../../public/aztu-logo.webp";
 import AztuLogoLight from "../../../public/aztu-logo-light.png";
 import GrantLogoDark from "../../../public/e-grant-logo-dark.png";
@@ -31,9 +33,23 @@ function ActionCard({ to, icon, label }: { to: string; icon: ReactNode; label: s
   );
 }
 
+function formatDate(value: string | null) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (isNaN(date.getTime())) return "";
+  return date.toLocaleDateString("az-AZ", { year: "numeric", month: "long", day: "numeric" });
+}
+
 export default function Home() {
   const role = useSelector((state: RootState) => state.auth.projectRole);
   const finKod = useSelector((state: RootState) => state.auth.fin_kod);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+
+  useEffect(() => {
+    getAnnouncements()
+      .then(setAnnouncements)
+      .catch((err) => console.error("Failed to fetch announcements", err));
+  }, []);
 
   return (
     <>
@@ -77,6 +93,43 @@ export default function Home() {
           <ActionCard to="/collaborator-project" icon={<WorkIcon className="size-6" />} label="İcraçı olduğum layihə" />
         ) : null}
       </div>
+
+      {/* Announcements */}
+      {announcements.length > 0 && (
+        <div className="mt-8">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-purple-500 text-white">
+              <CampaignOutlinedIcon className="size-5" />
+            </span>
+            <h2 className="text-lg font-bold tracking-tight text-gray-800 dark:text-white/90">
+              Elanlar
+            </h2>
+          </div>
+          <div className="flex flex-col gap-4">
+            {announcements.map((announcement) => (
+              <div
+                key={announcement.id}
+                className="relative overflow-hidden rounded-2xl border border-gray-200/70 bg-white/80 p-5 shadow-theme-sm backdrop-blur-sm dark:border-white/[0.06] dark:bg-white/[0.03]"
+              >
+                <span className="pointer-events-none absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-brand-500 to-purple-500" />
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-base font-semibold text-gray-900 dark:text-white/90">
+                    {announcement.title}
+                  </h3>
+                  {announcement.created_at && (
+                    <span className="shrink-0 text-xs text-gray-400 dark:text-gray-500">
+                      {formatDate(announcement.created_at)}
+                    </span>
+                  )}
+                </div>
+                <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                  {announcement.content}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }
