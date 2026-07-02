@@ -35,11 +35,6 @@ const navItems: NavItem[] = [
     name: "Əsas",
     path: "/home",
   },
-  // {
-  //   icon: <UserCircleIcon />,
-  //   name: "Elanlar",
-  //   path: "/elanlar",
-  // },
   {
     icon: <WorkIcon />,
     name: "Lahiyələr",
