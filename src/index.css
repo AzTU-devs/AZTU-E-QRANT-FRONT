@@ -960,4 +960,6 @@ span.flatpickr-weekday,
 }
 .announcement-html .ql-align-center { text-align: center; }
 .announcement-html .ql-align-right { text-align: right; }
-.announcement-html .ql-align-justify { text-align: justify; }
+/* Justify → left: browsers can't hyphenate Azerbaijani, so justify creates
+   word-gaps and mid-word breaks. */
+.announcement-html .ql-align-justify { text-align: left; }
