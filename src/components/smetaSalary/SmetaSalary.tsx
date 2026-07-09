@@ -9,12 +9,10 @@ import {
 import Swal from 'sweetalert2';
 import { Link } from "react-router-dom";
 import Button from "../ui/button/Button";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import Input from "../form/input/InputField";
 import apiClient from "../../util/apiClient";
-import { RootState } from "../../redux/store";
 import DoneIcon from '@mui/icons-material/Done';
 import EditIcon from '@mui/icons-material/Edit';
 import WarningImage from "../../../public/warning.png";
@@ -55,7 +53,6 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
     const [editingRow, setEditingRow] = useState<string | null>(null); // "owner" for owner row or fin_kod for collaborators
     const location = useLocation();
     const [viewOnly, setViewOnly] = useState<boolean>(false);
-    const projectCodeRedux = useSelector((state: RootState) => state.auth.projectCode);
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
 
@@ -65,37 +62,38 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
         }
     }, [location.pathname]);
 
-    useEffect(() => {
-        const fetchSalaries = async () => {
-            try {
-                const response = await apiClient.get(`/api/salary/smeta/${projectCode}`);
-                setOwner(response.data.project_owner);
-                setCollaborators(response.data.collaborators);
+    const fetchSalaries = async () => {
+        try {
+            const response = await apiClient.get(`/api/salary/smeta/${projectCode}`);
+            setOwner(response.data.project_owner);
+            setCollaborators(response.data.collaborators || []);
 
-                if (response.data.project_owner?.salary) {
-                    setOwnerInputs({
-                        salary: response.data.project_owner.salary.salary_per_month.toString(),
-                        months: response.data.project_owner.salary.months.toString(),
-                    });
-                }
-
-                const collabInitInputs: { [finKod: string]: { salary: string; months: string } } = {};
-                response.data.collaborators.forEach((collab: Collaborator) => {
-                    if (collab.salary && collab.fin_kod) {
-                        collabInitInputs[collab.fin_kod] = {
-                            salary: collab.salary.salary_per_month.toString(),
-                            months: collab.salary.months.toString(),
-                        };
-                    }
+            if (response.data.project_owner?.salary) {
+                setOwnerInputs({
+                    salary: response.data.project_owner.salary.salary_per_month.toString(),
+                    months: response.data.project_owner.salary.months.toString(),
                 });
-                setCollabInputs(collabInitInputs);
-
-            } catch (error) {
-                console.error("Failed to fetch salary data:", error);
-            } finally {
-                setLoading(false);
             }
-        };
+
+            const collabInitInputs: { [finKod: string]: { salary: string; months: string } } = {};
+            (response.data.collaborators || []).forEach((collab: Collaborator) => {
+                if (collab.salary && collab.fin_kod) {
+                    collabInitInputs[collab.fin_kod] = {
+                        salary: collab.salary.salary_per_month.toString(),
+                        months: collab.salary.months.toString(),
+                    };
+                }
+            });
+            setCollabInputs(collabInitInputs);
+
+        } catch (error) {
+            console.error("Failed to fetch salary data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchSalaries();
     }, [projectCode]);
 
@@ -105,36 +103,21 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
         salary_per_month: string
     ) => {
         try {
-            console.log("Submitting New Salary =>", {
-                finKod,
-                salary_per_month,
-                months,
-                project_code: projectCodeRedux
-            });
-            const response = await apiClient.post("/api/create-salary-table", {
+            // axios rejects on non-2xx, so reaching past await == success.
+            await apiClient.post("/api/create-salary-table", {
                 salary_per_month: Number(salary_per_month),
                 months: Number(months),
                 fin_kod: finKod,
-                project_code: projectCodeRedux
+                project_code: projectCode
             });
-            console.log("New salary response:", response);
-            if (response.data.status === 201) {
-                await Swal.fire({
-                    icon: 'success',
-                    title: 'Yeniləndi!',
-                    text: 'Xidmət haqqı uğurla əlavə edildi',
-                    confirmButtonText: 'OK',
-                });
-                // window.location.reload();
-                return;
-            } else {
-                await Swal.fire({
-                    icon: 'error',
-                    title: 'Xəta!',
-                    text: 'Məlumatı saxlamaq mümkün olmadı',
-                    confirmButtonText: 'Bağla',
-                });
-            }
+            await Swal.fire({
+                icon: 'success',
+                title: 'Yeniləndi!',
+                text: 'Xidmət haqqı uğurla əlavə edildi',
+                confirmButtonText: 'OK',
+            });
+            setEditingRow(null);
+            await fetchSalaries();
         } catch (err) {
             await Swal.fire({
                 icon: 'error',
@@ -171,11 +154,8 @@ export default function SmetaSalary({ projectCode }: { projectCode: Number | nul
                 confirmButtonText: 'OK',
             });
 
-            window.location.reload();
-
-            const response = await apiClient.get(`/api/salary/smeta/${projectCode}`);
-            setOwner(response.data.project_owner);
-            setCollaborators(response.data.collaborators);
+            setEditingRow(null);
+            await fetchSalaries();
 
         } catch (error: any) {
             console.error('Error updating salary:', error);

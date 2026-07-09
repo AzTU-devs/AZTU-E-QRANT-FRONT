@@ -46,14 +46,11 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
     const [loading, setLoading] = useState(true);
     const pathname = useLocation().pathname;
 
-    console.log('fin_kod:', fin_kod);
-    console.log('projectCode:', projectCode);
-
     useEffect(() => {
         const fetchSubjects = async () => {
             try {
                 const response = await apiClient.get<SubjectApiResponse>(`/api/subject/smeta/${projectCode}`);
-                setSubjects(response.data.data);
+                setSubjects(response.data.data ?? []);
             } catch (error) {
                 console.error("Error fetching subjects:", error);
             } finally {
@@ -61,7 +58,7 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
             }
         };
         fetchSubjects();
-    }, []);
+    }, [projectCode]);
 
     const handleSaveSubject = async () => {
     if (
@@ -211,7 +208,7 @@ export default function SmetaTools({ projectCode }: { projectCode: Number | null
                         </TableHeader>
                         <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                             {subjects.map((subject, index) => (
-                                <TableRow key={index}>
+                                <TableRow key={subject.id ?? index}>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{subject.equipment_name}</TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{subject.unit_of_measure}</TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">{subject.price}</TableCell>

@@ -52,19 +52,20 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
         max_amount_error: null
     });
 
+    const fetchMainSmeta = async () => {
+        try {
+            const response = await apiClient.get(`/api/main-smeta/${projectCode}`);
+            setMainSmeta(response.data.data);
+        } catch (error: any) {
+            console.error("Failed to fetch main smeta:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                const response = await apiClient.get(`/api/main-smeta/${projectCode}`);
-                setMainSmeta(response.data.data);
-            } catch (error: any) {
-                console.error("Failed to fetch projects:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProjects();
-    }, []);
+        fetchMainSmeta();
+    }, [projectCode]);
 
     const handleSmetaUpdate = async (column: string, value: string | number) => {
         try {
@@ -74,10 +75,12 @@ export default function MainSmeta({ projectCode }: { projectCode: Number | null 
             });
 
             if (response.data && response.data.data) {
-                setMainSmeta((prev) => ({
-                    ...prev,
-                    [column]: value
-                }));
+                // Refetch so the recomputed total (Cəm) and the correct display
+                // fields update — an optimistic write on `column` targets the
+                // wrong state key.
+                setTaxEdit(false);
+                setSocialEdit(false);
+                await fetchMainSmeta();
                 Swal.fire({
                     icon: "success",
                     title: "Düzəliş edildi!",

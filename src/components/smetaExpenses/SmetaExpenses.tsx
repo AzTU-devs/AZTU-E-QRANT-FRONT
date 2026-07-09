@@ -52,7 +52,7 @@ export default function SmetaExpenses({ projectCode }: { projectCode: Number | n
         async function fetchRents() {
             try {
                 const response = await apiClient.get(`/api/get-rent-all-tables/${projectCode}`);
-                setRents(response.data);
+                setRents(response.data ?? []);
             } catch (error) {
                 console.error("Failed to fetch rents", error);
             } finally {
@@ -101,7 +101,7 @@ const handleSubmit = async () => {
             total_amount: totalAmount,
         });
 
-        if (response.status === 201) {
+        if (response.status === 201 || response.status === 200) {
             await Swal.fire({
                 icon: "success",
                 title: "Uğurlu!",
@@ -114,15 +114,14 @@ const handleSubmit = async () => {
                 title: "Xəta!",
                 text: "Xəta baş verdi",
             });
-            window.location.reload();
         }
     } catch (error: any) {
+        // Do NOT reload on failure — keep the user's typed input.
         await Swal.fire({
             icon: "error",
             title: "Xəta!",
             text: "Sorğu alınmadı",
         });
-        window.location.reload();
     }
 };
 
