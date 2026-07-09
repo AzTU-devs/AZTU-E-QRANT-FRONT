@@ -41,7 +41,7 @@ export default function Competitions() {
     const [code, setCode] = useState("");
     const [title, setTitle] = useState("");
     const [applicationDeadline, setApplicationDeadline] = useState("");
-    const [maxSmeta, setMaxSmeta] = useState("30000");
+    const [maxSmeta, setMaxSmeta] = useState("50000");
     const [collabLimit, setCollabLimit] = useState("7");
     const [activate, setActivate] = useState(true);
 
@@ -64,7 +64,7 @@ export default function Competitions() {
         setCode("");
         setTitle("");
         setApplicationDeadline("");
-        setMaxSmeta("30000");
+        setMaxSmeta("50000");
         setCollabLimit("7");
         setActivate(true);
         openModal();

@@ -12,6 +12,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import PageMeta from "../../components/common/PageMeta";
 import { Announcement, getAnnouncements } from "../../services/announcement/announcement";
+import AztuLogoLight from "../../../public/aztu-logo-light.png";
 import GrantLogoLight from "../../../public/e-grant-logo-light.png";
 
 interface Action {
@@ -105,8 +106,10 @@ export default function Home() {
               prinsipləri əsasında maliyyələşdirilməsi platforması.
             </p>
           </div>
-          <div className="shrink-0 rounded-2xl bg-white/10 p-5 backdrop-blur-md ring-1 ring-white/20">
-            <img src={GrantLogoLight} alt="e-Grant" className="h-16 w-auto md:h-20" />
+          <div className="flex shrink-0 items-center gap-5 rounded-2xl bg-white/10 p-5 backdrop-blur-md ring-1 ring-white/20">
+            <img src={AztuLogoLight} alt="AzTU" className="h-14 w-auto md:h-16" />
+            <span className="h-12 w-px bg-white/20" />
+            <img src={GrantLogoLight} alt="e-Grant" className="h-14 w-auto md:h-16" />
           </div>
         </div>
       </div>

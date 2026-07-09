@@ -5,8 +5,8 @@ import { useSidebar } from "../context/SidebarContext";
 import { ThemeToggleButton } from "../components/common/ThemeToggleButton";
 import UserDropdown from "../components/header/UserDropdown";
 import NotificationBell from "../components/header/NotificationBell";
-import DarkLogo from "../../public/e-grant-logo-dark.png";
-import LightLogo from "../../public/e-grant-logo-light.png";
+import DarkLogo from "../../public/aztu-logo-dark.png";
+import LightLogo from "../../public/aztu-logo-light.png";
 
 const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -87,14 +87,14 @@ const AppHeader: React.FC = () => {
 
           <Link to="/" className="lg:hidden">
             <img
-              className="dark:hidden w-[80px]"
+              className="dark:hidden h-10 w-auto"
               src={DarkLogo}
-              alt="Logo"
+              alt="AzTU"
             />
             <img
-              className="hidden dark:block w-[80px]"
+              className="hidden dark:block h-10 w-auto"
               src={LightLogo}
-              alt="Logo"
+              alt="AzTU"
             />
           </Link>
 
