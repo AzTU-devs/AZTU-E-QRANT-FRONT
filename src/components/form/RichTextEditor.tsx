@@ -7,6 +7,16 @@ interface RichTextEditorProps {
     placeholder?: string;
 }
 
+type TableModule = {
+    insertTable: (rows: number, cols: number) => void;
+    insertRowBelow: () => void;
+    insertColumnRight: () => void;
+    deleteRow: () => void;
+    deleteColumn: () => void;
+    deleteTable: () => void;
+};
+type ToolbarThis = { quill: { getModule: (name: string) => TableModule | undefined } };
+
 const modules = {
     // Quill 2's built-in table module.
     table: true,
@@ -17,15 +27,17 @@ const modules = {
             [{ list: "ordered" }, { list: "bullet" }],
             ["blockquote", "link"],
             [{ align: [] }],
-            ["table"],
+            ["table", "table-add-row", "table-add-column", "table-delete-row", "table-delete-column", "table-delete"],
             ["clean"],
         ],
         handlers: {
-            // Insert a 3×3 table. `this` is the Quill toolbar at call time.
-            table: function (this: { quill: { getModule: (name: string) => { insertTable: (r: number, c: number) => void } | undefined } }) {
-                const tableModule = this.quill.getModule("table");
-                if (tableModule) tableModule.insertTable(3, 3);
-            },
+            // `this` is the Quill toolbar; operations act on the focused cell.
+            table: function (this: ToolbarThis) { this.quill.getModule("table")?.insertTable(3, 3); },
+            "table-add-row": function (this: ToolbarThis) { this.quill.getModule("table")?.insertRowBelow(); },
+            "table-add-column": function (this: ToolbarThis) { this.quill.getModule("table")?.insertColumnRight(); },
+            "table-delete-row": function (this: ToolbarThis) { this.quill.getModule("table")?.deleteRow(); },
+            "table-delete-column": function (this: ToolbarThis) { this.quill.getModule("table")?.deleteColumn(); },
+            "table-delete": function (this: ToolbarThis) { this.quill.getModule("table")?.deleteTable(); },
         },
     },
 };
