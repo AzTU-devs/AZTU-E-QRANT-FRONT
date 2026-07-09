@@ -909,9 +909,23 @@ span.flatpickr-weekday,
 .announcement-html h2 { font-size: 1.15rem; font-weight: 700; margin: 0.5rem 0; }
 .announcement-html h3 { font-size: 1.05rem; font-weight: 600; margin: 0.5rem 0; }
 .announcement-html p { margin: 0.35rem 0; }
-.announcement-html ul { list-style: disc; padding-left: 1.5rem; margin: 0.35rem 0; }
-.announcement-html ol { list-style: decimal; padding-left: 1.5rem; margin: 0.35rem 0; }
+.announcement-html ul, .announcement-html ol { padding-left: 1.5rem; margin: 0.35rem 0; counter-reset: ql-list; }
+.announcement-html ul { list-style: disc; }
+.announcement-html ol { list-style: decimal; }
 .announcement-html li { margin: 0.15rem 0; }
+/* Quill 2 uses <li data-list="bullet|ordered"> with editor-drawn markers. */
+.announcement-html li[data-list] { list-style: none; }
+.announcement-html li[data-list]::before { display: inline-block; width: 1.3em; margin-left: -1.3em; }
+.announcement-html li[data-list="bullet"]::before { content: "•"; }
+.announcement-html li[data-list="ordered"] { counter-increment: ql-list; }
+.announcement-html li[data-list="ordered"]::before { content: counter(ql-list) ". "; }
+.announcement-html .ql-ui { display: none; }
+
+/* Announcement rich-text editor (Quill) — cap the content height so the create/
+   edit modal stays within the viewport and scrolls instead of overflowing. */
+.rich-text-editor .ql-editor { min-height: 160px; max-height: 300px; overflow-y: auto; }
+.rich-text-editor .ql-toolbar { position: sticky; top: 0; z-index: 1; background: #fff; }
+.dark .rich-text-editor .ql-toolbar { background: #111827; }
 .announcement-html a { color: #2563eb; text-decoration: underline; }
 .announcement-html strong, .announcement-html b { font-weight: 700; }
 .announcement-html em, .announcement-html i { font-style: italic; }
