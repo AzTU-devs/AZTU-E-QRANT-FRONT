@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import Input from '../form/input/InputField';
 import apiClient from '../../util/apiClient';
 import TextArea from '../form/input/TextArea';
+import ProjectFilesUpload from './ProjectFilesUpload';
 import { RootState } from '../../redux/store';
 import CircularProgress from '@mui/material/CircularProgress';
 import { setGlobalProjectCode } from '../../redux/slices/authSlice';
@@ -389,6 +390,7 @@ export default function ProjectDetails() {
                     disabled={!!submitted}
                 />
             </div>
+            <ProjectFilesUpload projectCode={projectCode} disabled={!!submitted} />
             {projectRole === 0 ? (
                 <div className='mt-[20px] flex justify-end items-end'>
                     <Button onClick={handleApprove}>

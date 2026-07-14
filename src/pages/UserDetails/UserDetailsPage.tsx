@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import PageMeta from "../../components/common/PageMeta";
 import UserDetails from "../../components/userDetails/UserDetails";
+import CvUpload from "../../components/userDetails/CvUpload";
 import ProjectHistory from "../../components/projectHistory/ProjectHistory";
 import { RootState } from "../../redux/store";
 
@@ -14,6 +15,7 @@ export default function UserDetailsPage() {
       />
       <div>
         <UserDetails fin_kod={fin_kod} />
+        <CvUpload finKod={fin_kod} />
         <ProjectHistory />
       </div>
     </>
