@@ -21,6 +21,8 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import CircularProgress from '@mui/material/CircularProgress';
 import useCollaborationStatus from "../../hooks/useCollaborationStatus";
 import AssignExpertModal from "../setExpert/AssignExpertModal";
+import ReturnProjectModal from "./ReturnProjectModal";
+import UndoIcon from '@mui/icons-material/Undo';
 
 /** `submitted_at` arrives as an RFC-1123 string; show just the day. */
 function formatSubmittedAt(value: string | null | undefined) {
@@ -38,6 +40,8 @@ export default function ProjectTable() {
     const [deletingCode, setDeletingCode] = useState<number | null>(null);
     // The project whose expert is being chosen; null when the dialog is closed.
     const [assigningProject, setAssigningProject] = useState<any | null>(null);
+    // The submitted project being sent back for corrections; null when closed.
+    const [returningProject, setReturningProject] = useState<any | null>(null);
     const fin_kod = useSelector((state: RootState) => state.auth.fin_kod);
     const projectRole = useSelector((state: RootState) => state.auth.projectRole);
     // Leads take part in projects too, so both roles get the "join" column.
@@ -380,7 +384,7 @@ export default function ProjectTable() {
                                     {projectRole === 2 ? (
                                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                                             {project.submitted ? (
-                                                <span className="inline-flex flex-col gap-0.5">
+                                                <span className="inline-flex flex-col items-start gap-1">
                                                     <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-success-50 px-2.5 py-1 text-xs font-semibold text-success-700 ring-1 ring-inset ring-success-200/60 dark:bg-success-500/15 dark:text-success-400 dark:ring-success-400/20">
                                                         <span className="h-1.5 w-1.5 rounded-full bg-success-500" />
                                                         Təqdim edilib
@@ -388,6 +392,27 @@ export default function ProjectTable() {
                                                     {project.submitted_at ? (
                                                         <span className="text-[11px] text-gray-400">
                                                             {formatSubmittedAt(project.submitted_at)}
+                                                        </span>
+                                                    ) : null}
+                                                    <button
+                                                        type="button"
+                                                        title="Düzəliş üçün geri qaytar"
+                                                        onClick={() => setReturningProject(project)}
+                                                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-600 hover:underline dark:text-brand-300"
+                                                    >
+                                                        <UndoIcon style={{ width: 13, height: 13 }} />
+                                                        Geri qaytar
+                                                    </button>
+                                                </span>
+                                            ) : project.needs_revision ? (
+                                                <span className="inline-flex flex-col items-start gap-1">
+                                                    <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-warning-50 px-2.5 py-1 text-xs font-semibold text-warning-700 ring-1 ring-inset ring-warning-200/60 dark:bg-warning-500/15 dark:text-warning-400 dark:ring-warning-400/20">
+                                                        <span className="h-1.5 w-1.5 rounded-full bg-warning-500 animate-pulse" />
+                                                        Düzəlişə qaytarılıb
+                                                    </span>
+                                                    {project.revision_note ? (
+                                                        <span className="max-w-[220px] truncate text-[11px] text-gray-400" title={project.revision_note}>
+                                                            {project.revision_note}
                                                         </span>
                                                     ) : null}
                                                 </span>
@@ -499,6 +524,20 @@ export default function ProjectTable() {
                     </Table>
                 </div>
             </div>
+
+            {returningProject ? (
+                <ReturnProjectModal
+                    isOpen={!!returningProject}
+                    project={returningProject}
+                    onClose={() => setReturningProject(null)}
+                    onReturned={(note) =>
+                        setProjects(prev => prev.map(p =>
+                            p.project_code === returningProject.project_code
+                                ? { ...p, submitted: false, needs_revision: true, revision_note: note }
+                                : p))
+                    }
+                />
+            ) : null}
 
             {assigningProject ? (
                 <AssignExpertModal

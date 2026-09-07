@@ -11,6 +11,7 @@ import apiClient from '../../util/apiClient';
 import TextArea from '../form/input/TextArea';
 import ProjectFilesUpload from './ProjectFilesUpload';
 import { RootState } from '../../redux/store';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CircularProgress from '@mui/material/CircularProgress';
 import { setGlobalProjectCode } from '../../redux/slices/authSlice';
 
@@ -58,6 +59,9 @@ export default function ProjectDetails(
     const [projectApproved, setProjectApproved] = useState<boolean | null>(null);
     const [submitted, setSubmitted] = useState<boolean | null>(null);
     const [loadError, setLoadError] = useState<string | null>(null);
+    // Set when an admin sent the proposal back; carries what has to be fixed.
+    const [revisionNote, setRevisionNote] = useState<string | null>(null);
+    const [needsRevision, setNeedsRevision] = useState(false);
     const dispatch = useDispatch();
 
     // A targeted edit is deliberate — an unlocked archive project, or an admin
@@ -93,6 +97,8 @@ export default function ProjectDetails(
                 setPrioritet(response.data.data.priotet || "");
                 setProjectApproved(response.data.data.approved);
                 setSubmitted(response.data.data.submitted);
+                setRevisionNote(response.data.data.revision_note ?? null);
+                setNeedsRevision(!!response.data.data.needs_revision);
             } catch (error: any) {
                 console.error('Error fetching project:', error);
                 if (isArchiveEdit) {
@@ -183,6 +189,8 @@ export default function ProjectDetails(
                 try {
                     const response = await apiClient.post('/api/submit-project', { project_code: projectCode });
                     if (response.status === 200) {
+                        setSubmitted(true);
+                        setNeedsRevision(false);
                         // Blank sections do not block the submission, but say
                         // which went in empty so it is a choice, not a surprise.
                         const blank = response.data?.incomplete_labels ?? [];
@@ -283,6 +291,25 @@ export default function ProjectDetails(
 
     return (
         <div>
+            {/* What the administrator asked to be corrected. Shown until the
+                proposal is handed in again. */}
+            {needsRevision ? (
+                <div className='mt-[20px] rounded-2xl border border-warning-300 bg-warning-50 p-5 dark:border-warning-500/30 dark:bg-warning-500/10'>
+                    <h3 className='flex items-center gap-2 text-base font-bold text-warning-800 dark:text-warning-300'>
+                        <ErrorOutlineIcon style={{ width: 20, height: 20 }} />
+                        Layihəniz düzəliş üçün geri qaytarılıb
+                    </h3>
+                    {revisionNote ? (
+                        <p className='mt-2 whitespace-pre-line rounded-xl bg-white/70 p-3 text-sm text-gray-800 dark:bg-white/[0.06] dark:text-gray-200'>
+                            {revisionNote}
+                        </p>
+                    ) : null}
+                    <p className='mt-3 text-sm text-warning-800/90 dark:text-warning-300/90'>
+                        Qeyd olunanları düzəldin və layihəni <b>yenidən təqdim edin</b> —
+                        əks halda layihə müsabiqəyə daxil edilməyəcək.
+                    </p>
+                </div>
+            ) : null}
             <div className='mt-[20px] flex justify-between items-center mb-[20px]'>
                 <div style={{
                     width: "calc((100% / 2) - 10px)"
