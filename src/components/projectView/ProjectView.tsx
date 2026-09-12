@@ -11,10 +11,14 @@ import SmetaExpenses from "../smetaExpenses/SmetaExpenses";
 import ProjectDetailsView from "../projectDetailsView/ProjectDetailsView";
 import { ActivitiesView } from "../ActivitiesView/ActivitiesView";
 import ProjectReportsView from "../projectReportsView/ProjectReportsView";
+import AssessmentsView from "../assessmentsView/AssessmentsView";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import { API_BASE_URL } from "../../util/apiClient";
 
 export default function ProjectView() {
   const { projectCode } = useParams<{ projectCode: string }>();
+  const projectRole = useSelector((state: RootState) => state.auth.projectRole);
   const contentRef = useRef<HTMLDivElement>(null);
   const [isLoadingPdf, setIsLoadingPdf] = useState(false);
   const [isLoadingExcel, setIsLoadingExcel] = useState(false);
@@ -162,6 +166,13 @@ export default function ProjectView() {
         <ProjectDetailsView projectCode={+projectCode} />
         <h1 style={headingStyle} className="mt-[20px]">Layihə üzrə görüləcək işlər (ay üzrə)</h1>
         <ActivitiesView projectCode={+projectCode}/>
+
+        {/* Expert verdicts are the administrator's to read. */}
+        {projectRole === 2 ? (
+          <div className="mt-6">
+            <AssessmentsView projectCode={+projectCode} />
+          </div>
+        ) : null}
         <h1 style={{ ...headingStyle, marginTop: "20px" }}>Layihənin komandası</h1>
         <Collaborators projectCode={+projectCode} />
         <h1 style={{ ...headingStyle, marginTop: "20px" }}>Layihə Smetası</h1>
